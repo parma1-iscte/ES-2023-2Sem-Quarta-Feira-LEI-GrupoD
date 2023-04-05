@@ -1,7 +1,7 @@
-# ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
-Nicholas Eliseu Nº 98008
-Bruno Amaro Nº 99437
-Heng Zheng Nº 98915
-Carlos Henriques Nº 98033 Username chenriques98033
-André Tavares Nº 92883 Username: andretavares2000
-Pedro Mendonça Nº 99024 Username: parma1-iscte
+# ES-2023-2Sem-Quarta-Feira-LEI-GrupoD <br />
+Nicholas Eliseu Nº 98008 Username N1ch0l4z <br />
+Bruno Amaro Nº 99437 Username bcaoa1 <br />
+Heng Zheng Nº 98915 Username hzgge1 <br />
+Carlos Henriques Nº 98033 Username chenriques98033 <br />
+André Tavares Nº 92883 Username andretavares2000 <br />
+Pedro Mendonça Nº 99024 Username parma1-iscte <br />
