@@ -116,33 +116,31 @@ public class Horario {
 
 
 	//ponto 11
-	public void saveToCsvRemoto(String url) throws URISyntaxException, IOException {
-
-		try (PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
+	public void saveToCsvRemoto(String url) throws Exception {
+		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
 				true, StandardCharsets.UTF_8);
-				CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("Curso", 
-						"Unidade Corricular", "Turno", "Turma","Inscritos no turno", "Dia da semana",
-						"Hora início da aula", "Hora fim da aula", "Data da aula", 
-						"Sala atribuída à aula", "Lotação da sala"))) 
-		{
-			for (Aula aula : horario) {
-				csvPrinter.printRecord(
-						aula.getCurso(), 
-						aula.getUc(), 
-						aula.getTurno(), 
-						aula.getTurma(), 
-						aula.getInscritos(), 
-						aula.getDiaSemana(), 
-						aula.getHoraInicio(),
-						aula.getHoraFim(), 
-						aula.getDia(), 
-						aula.getSala(), 
-						aula.getLotacaoSala()
-						);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader(
+				"Curso", "Unidade Curricular", "Turno", "Turma", "Inscritos no turno", 
+				"Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula",
+				"Sala atríbuida à aula", "Lotacao da sala");
+		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+
+		for (Aula aula : horario) {
+			csvPrinter.printRecord(
+					aula.getCurso(), 
+					aula.getUc(), 
+					aula.getTurno(), 
+					aula.getTurma(), 
+					aula.getInscritos(), 
+					aula.getDiaSemana(), 
+					aula.getHoraInicio(),
+					aula.getHoraFim(), 
+					aula.getDia(), 
+					aula.getSala(), 
+					aula.getLotacaoSala()
+					);
 		}
+
 	}
 
 	//ponto 12
