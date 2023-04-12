@@ -108,9 +108,8 @@ public class Horario {
 					aula.getHoraFim().toString(),
 					aula.getDia().toString(),
 					aula.getSala(),
-					aula.getLotacaoSala()
-					);
-		}
+					aula.getLotacaoSala());
+	}
 
 		
 		csvPrinter.close();
