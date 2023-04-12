@@ -87,10 +87,6 @@ public class Horario {
 	}
 
 	//ponto 10
-	public void saveToCsvLocal(String path) {
-
-	}
-
 	public void saveToCsvLocal(String path) throws IOException {
 
 		FileWriter writer = new FileWriter(path);
@@ -147,27 +143,16 @@ public class Horario {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		public void saveToCsvRemoto(String url) {
+	}
 
-		}
-
-		//ponto 12
-		public void saveToJsonLocal(String path) {
-
-		}
-
-		//ponto 12
-		public void saveToJsonLocal(String path) {
-
-		}
-
-		//ponto 13
-		public void saveToJsonRemoto(String url) {
-
-		}
-		//ponto 13
-		public void saveToJsonRemoto(String url) {
-
-		}
+	//ponto 12
+	public void saveToJsonLocal(String path) {
 
 	}
+
+	//ponto 13
+	public void saveToJsonRemoto(String url) {
+
+	}
+
+}
