@@ -14,7 +14,7 @@ public class Horario {
 		this.horario = horario;
 	}
 	
-	// funcoes commun para pontos 6,7
+	// funcoes communs para pontos 6,7
 	private static Aula jsonToAula(JsonObject json) {
 		String curso = json.get("Curso").toString();
 		String uc = json.get("Unidade Curricular").toString();
