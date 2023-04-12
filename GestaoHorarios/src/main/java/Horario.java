@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import org.apache.commons.csv.*;
-
+import org.apache.commons.csv.CSVFormat;
 import com.google.gson.*;
 import java.io.*;
 
@@ -17,6 +17,12 @@ public class Horario {
 	public Horario(List<Aula> horario) {
 		this.horario = horario;
 	}
+
+	public List<Aula> getHorario() {
+		return horario;
+	}
+
+
 
 	// funcoes communs para pontos 6,7
 	private static Aula jsonToAula(JsonObject json) {
@@ -69,6 +75,7 @@ public class Horario {
 
 	}
 
+
 	//ponto 8
 	public static Horario getHorarioFromCsvLocal(String path) {
 		return null;
@@ -84,9 +91,37 @@ public class Horario {
 
 	}
 
+	public void saveToCsvLocal(String path) throws IOException {
+
+		FileWriter writer = new FileWriter(path);
+		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
+				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atríbuida à aula", "Lotacao da sala");
+		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+
+		for (Aula aula: horario) {
+			csvPrinter.printRecord(
+					aula.getCurso(),
+					aula.getUc(),
+					aula.getTurno(),
+					aula.getTurma(),
+					aula.getInscritos(),
+					aula.getDiaSemana(),
+					aula.getHoraInicio().toString(),
+					aula.getHoraFim().toString(),
+					aula.getDia().toString(),
+					aula.getSala(),
+					aula.getLotacaoSala());
+		}
+
+
+		csvPrinter.close();
+		writer.close();
+	}
+
+
 	//ponto 11
 	public void saveToCsvRemoto(String url) throws URISyntaxException, IOException {
-		
+
 		try (PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
 				true, StandardCharsets.UTF_8);
 				CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("Curso", 
@@ -95,23 +130,44 @@ public class Horario {
 						"Sala atribuída à aula", "Lotação da sala"))) 
 		{
 			for (Aula aula : horario) {
-				csvPrinter.printRecord(aula.getCurso(), aula.getUc(), aula.getTurno(), aula.getTurma(), 
-						aula.getInscritos(), aula.getDiaSemana(), aula.getHoraInicio(),
-						aula.getHoraFim(), aula.getDia(), aula.getSala(), aula.getLotacaoSala());
+				csvPrinter.printRecord(
+						aula.getCurso(), 
+						aula.getUc(), 
+						aula.getTurno(), 
+						aula.getTurma(), 
+						aula.getInscritos(), 
+						aula.getDiaSemana(), 
+						aula.getHoraInicio(),
+						aula.getHoraFim(), 
+						aula.getDia(), 
+						aula.getSala(), 
+						aula.getLotacaoSala()
+						);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		public void saveToCsvRemoto(String url) {
+
+		}
+
+		//ponto 12
+		public void saveToJsonLocal(String path) {
+
+		}
+
+		//ponto 12
+		public void saveToJsonLocal(String path) {
+
+		}
+
+		//ponto 13
+		public void saveToJsonRemoto(String url) {
+
+		}
+		//ponto 13
+		public void saveToJsonRemoto(String url) {
+
+		}
+
 	}
-
-//ponto 12
-public void saveToJsonLocal(String path) {
-
-}
-
-//ponto 13
-public void saveToJsonRemoto(String url) {
-
-}
-
-}
