@@ -91,7 +91,7 @@ public class Horario {
 
 		FileWriter writer = new FileWriter(path);
 		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
-				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atríbuida à aula", "Lotacao da sala");
+				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atríbuida à aula", "Lotacão da sala");
 		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
 
 		for (Aula aula: horario) {
@@ -117,12 +117,14 @@ public class Horario {
 
 	//ponto 11
 	public void saveToCsvRemoto(String url) throws Exception {
+		
 		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
 				true, StandardCharsets.UTF_8);
+		
 		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader(
 				"Curso", "Unidade Curricular", "Turno", "Turma", "Inscritos no turno", 
 				"Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula",
-				"Sala atríbuida à aula", "Lotacao da sala");
+				"Sala atríbuida à aula", "Lotação da sala");
 		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
 
 		for (Aula aula : horario) {
@@ -140,6 +142,8 @@ public class Horario {
 					aula.getLotacaoSala()
 					);
 		}
+		csvPrinter.close();
+		writer.close();
 
 	}
 
