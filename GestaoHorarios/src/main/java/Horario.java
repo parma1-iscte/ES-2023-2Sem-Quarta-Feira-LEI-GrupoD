@@ -1,5 +1,5 @@
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
+import java.net.*;
 import java.util.*;
 import com.google.gson.*;
 import java.io.*;
@@ -10,31 +10,11 @@ public class Horario {
 	
 	private List<Aula> horario;
 
-public Horario(List<Aula> horario) {
-	this.horario = horario;
-}
-	
-	//ponto 6
-	public static Horario getHorarioFromJsonLocal(String path) throws JsonSyntaxException, IOException {
-		
-		File file = new File(path);
-		Gson gson = new Gson();
-		
-		BufferedReader in = new BufferedReader(new FileReader (file));
-		List<Aula> list = new ArrayList<>();
-		
-		JsonObject json;
-		while((json = gson.fromJson(in.readLine(), JsonObject.class)) != null) {
-			
-			// funcao validacao do json
-			list.add(jsonToAula(json));
-		}
-		return new Horario(list);
-		
+	public Horario(List<Aula> horario) {
+		this.horario = horario;
 	}
 	
-	// ponto 6
-	
+	// funcoes commun para pontos 6,7
 	private static Aula jsonToAula(JsonObject json) {
 		String curso = json.get("Curso").toString();
 		String uc = json.get("Unidade Curricular").toString();
@@ -51,12 +31,42 @@ public Horario(List<Aula> horario) {
 		return new Aula(curso,uc,turno,turma,inscritos,diaSemana,horaInicio,horaFim,dia,sala,lotacaoSala);
 	}
 	
+	private static List<Aula> readFileJsonWithBufferedReader(BufferedReader in) throws IOException{
+		List<Aula> list = new ArrayList<>();
+		Gson gson = new Gson();
+		
+		JsonObject json;
+		while((json = gson.fromJson(in.readLine(), JsonObject.class)) != null) {
+			if(Validacao.validarDocumento(json))
+				list.add(jsonToAula(json));
+		}
+		return list;
+	}
+	
+	//ponto 6
+	public static Horario getHorarioFromJsonLocal(String path) throws IOException {
+		File file = new File(path);
+
+		BufferedReader in = new BufferedReader(new FileReader(file));
+		
+		return new Horario(readFileJsonWithBufferedReader(in));
+	}
+	
+	
+	
 	
 	
 	//ponto 7
-	public static Horario getHorarioFromJsonRemoto(String url) {
-		return null;
+	public static Horario getHorarioFromJsonRemoto(String url) throws IOException, URISyntaxException {
+		BufferedReader in = 
+				new BufferedReader(new InputStreamReader(new URI(url).toURL().openStream()));
+		
+		return new Horario(readFileJsonWithBufferedReader(in));
+		
 	}
+	
+	
+	
 	
 	//ponto 8
 	public static Horario getHorarioFromCsvLocal(String path) {
