@@ -85,15 +85,9 @@ public class Horario {
 	public static Horario getHorarioFromCsvRemoto(String url) {
 		return null;
 	}
-
-	//ponto 10
-	public void saveToCsvLocal(String path) throws IOException {
-
-		FileWriter writer = new FileWriter(path);
-		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
-				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atríbuida à aula", "Lotacão da sala");
-		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
-
+	
+	//funcoes communs para pontos 10,11
+	private void writeHorarioWithCSVPrinter(CSVPrinter csvPrinter) throws IOException {
 		for (Aula aula: horario) {
 			csvPrinter.printRecord(
 					aula.getCurso(),
@@ -108,7 +102,17 @@ public class Horario {
 					aula.getSala(),
 					aula.getLotacaoSala());
 		}
+	}
 
+	//ponto 10
+	public void saveToCsvLocal(String path) throws IOException {
+
+		FileWriter writer = new FileWriter(path);
+		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
+				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atríbuida à aula", "Lotacão da sala");
+		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+
+		writeHorarioWithCSVPrinter(csvPrinter);
 
 		csvPrinter.close();
 		writer.close();
@@ -127,21 +131,8 @@ public class Horario {
 				"Sala atríbuida à aula", "Lotação da sala");
 		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
 
-		for (Aula aula : horario) {
-			csvPrinter.printRecord(
-					aula.getCurso(), 
-					aula.getUc(), 
-					aula.getTurno(), 
-					aula.getTurma(), 
-					aula.getInscritos(), 
-					aula.getDiaSemana(), 
-					aula.getHoraInicio(),
-					aula.getHoraFim(), 
-					aula.getDia(), 
-					aula.getSala(), 
-					aula.getLotacaoSala()
-					);
-		}
+		writeHorarioWithCSVPrinter(csvPrinter);
+		
 		csvPrinter.close();
 		writer.close();
 
