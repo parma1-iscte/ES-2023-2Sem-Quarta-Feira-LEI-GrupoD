@@ -23,6 +23,23 @@ public class Horario {
 	}
 
 
+	//ponto 6
+	public static Horario getHorarioFromJsonLocal(String path) throws IOException {
+		File file = new File(path);
+
+		BufferedReader in = new BufferedReader(new FileReader(file));
+
+		return new Horario(readFileJsonWithBufferedReader(in));
+	}
+
+
+	//ponto 7
+	public static Horario getHorarioFromJsonRemoto(String url) throws IOException, URISyntaxException {
+		BufferedReader in = new BufferedReader(new InputStreamReader(new URI(url).toURL().openStream()));
+
+		return new Horario(readFileJsonWithBufferedReader(in));
+
+	}
 
 	// funcoes communs para pontos 6,7
 	private static Aula jsonToAula(JsonObject json) {
@@ -53,37 +70,82 @@ public class Horario {
 		return list;
 	}
 
-	//ponto 6
-	public static Horario getHorarioFromJsonLocal(String path) throws IOException {
+	// ponto 8
+	public static Horario getHorarioFromCsvLocal(String path) throws FileNotFoundException, IOException {
 		File file = new File(path);
 
 		BufferedReader in = new BufferedReader(new FileReader(file));
 
-		return new Horario(readFileJsonWithBufferedReader(in));
-	}
-
-
-
-
-
-	//ponto 7
-	public static Horario getHorarioFromJsonRemoto(String url) throws IOException, URISyntaxException {
-		BufferedReader in = 
-				new BufferedReader(new InputStreamReader(new URI(url).toURL().openStream()));
-
-		return new Horario(readFileJsonWithBufferedReader(in));
-
-	}
-
-
-	//ponto 8
-	public static Horario getHorarioFromCsvLocal(String path) {
-		return null;
+		return new Horario(readFileCsvWithBufferedReader(in));
 	}
 
 	//ponto 9
-	public static Horario getHorarioFromCsvRemoto(String url) {
-		return null;
+	public static Horario getHorarioFromCsvRemoto(String url) throws MalformedURLException, IOException, URISyntaxException {
+		BufferedReader in = new BufferedReader(new InputStreamReader(new URI(url).toURL().openStream()));
+
+		return new Horario(readFileCsvWithBufferedReader(in));
+	}
+
+	private static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException{
+		List<Aula> lista = new ArrayList<>();
+		CSVFormat format = CSVFormat.EXCEL.withHeader();
+		CSVParser csvParser = new CSVParser(in, format);
+
+		for (CSVRecord csvRecord : csvParser) {
+			//função que valida csvRecord
+			String curso = csvRecord.get("Curso").toString();
+			String uc = csvRecord.get("Unidade Curricular").toString();
+			String turno = csvRecord.get("Turno").toString();
+			String turma = csvRecord.get("Turma").toString();
+			Integer inscritos = Integer.parseInt(csvRecord.get("Inscritos no turno").toString());
+			String diaSemana = csvRecord.get("Dia da semana").toString();
+			LocalTime horaInicio = LocalTime.parse(csvRecord.get("Hora início da aula").toString());
+			LocalTime horaFim = LocalTime.parse(csvRecord.get("Hora fim da aula").toString());
+			LocalDate dia = LocalDate.parse(csvRecord.get("Data da aula").toString());
+			String sala = csvRecord.get("Sala atribuída à aula").toString();
+			Integer lotacaoSala = Integer.parseInt(csvRecord.get("Lotação da sala").toString());
+
+			Aula x = new Aula(curso, uc, turno, turma, inscritos, diaSemana, horaInicio, horaFim, dia, sala,
+					lotacaoSala);
+			lista.add(x);
+		}
+		return lista;
+	}
+
+
+
+	//ponto 10
+	public void saveToCsvLocal(String path) throws IOException {
+
+		FileWriter writer = new FileWriter(path);
+		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
+				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atríbuida à aula", "Lotacão da sala");
+		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+
+		writeHorarioWithCSVPrinter(csvPrinter);
+
+		csvPrinter.close();
+		writer.close();
+	}
+
+
+	//ponto 11
+	public void saveToCsvRemoto(String url) throws Exception {
+
+		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
+				true, StandardCharsets.UTF_8);
+
+		CSVFormat csvFormat = CSVFormat.EXCEL.withHeader(
+				"Curso", "Unidade Curricular", "Turno", "Turma", "Inscritos no turno", 
+				"Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula",
+				"Sala atríbuida à aula", "Lotação da sala");
+		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+
+		writeHorarioWithCSVPrinter(csvPrinter);
+
+		csvPrinter.close();
+		writer.close();
+
 	}
 	
 	//funcoes communs para pontos 10,11
@@ -104,44 +166,10 @@ public class Horario {
 		}
 	}
 
-	//ponto 10
-	public void saveToCsvLocal(String path) throws IOException {
-
-		FileWriter writer = new FileWriter(path);
-		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
-				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atríbuida à aula", "Lotacão da sala");
-		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
-
-		writeHorarioWithCSVPrinter(csvPrinter);
-
-		csvPrinter.close();
-		writer.close();
-	}
-
-
-	//ponto 11
-	public void saveToCsvRemoto(String url) throws Exception {
-		
-		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
-				true, StandardCharsets.UTF_8);
-		
-		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader(
-				"Curso", "Unidade Curricular", "Turno", "Turma", "Inscritos no turno", 
-				"Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula",
-				"Sala atríbuida à aula", "Lotação da sala");
-		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
-
-		writeHorarioWithCSVPrinter(csvPrinter);
-		
-		csvPrinter.close();
-		writer.close();
-
-	}
-
 	//ponto 12
 	public void saveToJsonLocal(String path) {
-		
-		
+
+
 
 	}
 
