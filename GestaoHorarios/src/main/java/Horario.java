@@ -76,10 +76,35 @@ public class Horario {
 	}
 
 
-	//ponto 8
-	public static Horario getHorarioFromCsvLocal(String path) {
-		return null;
-	}
+	// ponto 8
+
+    private static List<Aula> getHorarioFromCsvLocal(File csvFile) throws FileNotFoundException, IOException {
+        List<Aula> lista = new ArrayList<>();
+
+        // para especificar que a 1 linha tem cabeçalho(nomes dos campos).
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader();
+        CSVParser csvParser = new CSVParser(new FileReader(csvFile), csvFormat);
+
+        for (CSVRecord csvRecord : csvParser) {
+            String curso = csvRecord.get("Curso").toString();
+            String uc = csvRecord.get("Unidade Curricular").toString();
+            String turno = csvRecord.get("Turno").toString();
+            String turma = csvRecord.get("Turma").toString();
+            Integer inscritos = Integer.parseInt(csvRecord.get("Inscritos no turno").toString());
+            String diaSemana = csvRecord.get("Dia da semana").toString();
+            LocalTime horaInicio = LocalTime.parse(csvRecord.get("Hora início da aula").toString());
+            LocalTime horaFim = LocalTime.parse(csvRecord.get("Hora fim da aula").toString());
+            LocalDate dia = LocalDate.parse(csvRecord.get("Data da aula").toString());
+            String sala = csvRecord.get("Sala atribuída à aula").toString();
+            Integer lotacaoSala = Integer.parseInt(csvRecord.get("Lotação da sala").toString());
+
+            Aula x = new Aula(curso, uc, turno, turma, inscritos, diaSemana, horaInicio, horaFim, dia, sala,
+                    lotacaoSala);
+            lista.add(x);
+        }
+
+        return lista;
+    }
 
 	//ponto 9
 	public static Horario getHorarioFromCsvRemoto(String url) {
