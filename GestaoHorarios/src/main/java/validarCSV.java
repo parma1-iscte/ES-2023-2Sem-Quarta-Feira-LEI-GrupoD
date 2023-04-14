@@ -28,6 +28,7 @@ public class validarCSV {
 
      */
     public static boolean validar() {
+        //TODO por path ou File instance como argumento (uma versao para ambos prov)
         CSVFormat format =   CSVFormat.Builder.create()
                 .setHeader()
                 .setSkipHeaderRecord(true)
