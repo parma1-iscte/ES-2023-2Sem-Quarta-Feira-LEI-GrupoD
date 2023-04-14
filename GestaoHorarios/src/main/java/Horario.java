@@ -167,7 +167,18 @@ public class Horario {
 	}
 
 	//ponto 12
-	public void saveToJsonLocal(String path) {
+	public void saveToJsonLocal(String csvFilePath, String jsonFilePath) throws IOException {
+		Reader reader = new FileReader(csvFilePath);
+        CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
+        List<Object> data = new ArrayList<>();
+        for (CSVRecord csvRecord : csvParser) {
+            data.add(csvRecord.toMap());
+        }
+        Gson gson = new Gson();
+        String json = gson.toJson(data);
+        FileWriter writer = new FileWriter(jsonFilePath);
+        writer.write(json);
+        writer.close();
 
 
 
