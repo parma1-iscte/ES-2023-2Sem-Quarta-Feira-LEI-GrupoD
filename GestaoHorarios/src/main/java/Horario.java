@@ -185,8 +185,19 @@ public class Horario {
 	}
 
 	//ponto 13
-	public void saveToJsonRemoto(String url) {
-
-	}
+    public void saveToJsonRemoto(String csvFilePath, String jsonFilePath,String url) throws IOException, URISyntaxException{
+        PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
+                true, StandardCharsets.UTF_8);
+        Reader reader = new FileReader(csvFilePath);
+        CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
+        List<Object> data = new ArrayList<>();
+        for (CSVRecord csvRecord : csvParser) {
+            data.add(csvRecord.toMap());
+        }
+        Gson gson = new Gson();
+        String json = gson.toJson(data);
+        writer.write(json);
+        writer.close();
+    }
 
 }
