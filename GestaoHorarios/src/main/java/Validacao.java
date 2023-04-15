@@ -104,14 +104,12 @@ public class Validacao{
             //TODO
         }
 
-
-        if (!parser.getHeaderNames().containsAll(colunasDoCSV))//TODO corrigir
-            //https://docs.oracle.com/javase/8/docs/api/java/util/List.html#containsAll-java.util.Collection-
+        if (!(parser.getHeaderNames().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(parser.getHeaderNames())))
             /*
-             * Se tiver colunas que não são as que era suposto ter
-             * (que são as guardadas na lista colunasDoCSV)
-             * retorna falso senão continua para
-             * o resto das veirficações.
+             * O interessante deste if é que garante antes de continuar a execução que o ficheiro csv que importamos
+             * têm exatamente as colunas que é suposto ter (que são as guardadas na lista colunasDoCSV);
+             * sem colunas a mais, a menos ou diferentes independente da ordem das colunas no ficheiro.
+             * Retorna falso e termina a execução da função caso isso não seja garantido.
              */
             return false;
 
