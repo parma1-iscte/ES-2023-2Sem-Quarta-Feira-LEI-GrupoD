@@ -165,7 +165,6 @@ public class Validacao{
 
         }
     }
-    //TODO Normalizar o documento Pedro e Henrique
 }
 
 
