@@ -120,25 +120,30 @@ public class Validacao{
 
         List<CSVRecord> list = parser.getRecords();
         for(CSVRecord record : list){
-            boolean isRecordValid =  areAllFieldsNonNull(record);
+            if(!areAllFieldsNonNull(record)) return false;
 
+            if(!areAllFieldsNotEmpty(record)) return false;
 
-            isRecordValid = isRecordValid &&
-                    !record.get("Curso").isEmpty() &&
-                    !record.get("Unidade Curricular").isEmpty() &&
-                    !record.get("Turno").isEmpty()  &&  !record.get("Turma").isEmpty()  &&
-                    !record.get("Inscritos no turno").isEmpty()
-                    &&  !record.get("Dia da semana").isEmpty() && !record.get("Hora início da aula").isEmpty()
-                    &&  !record.get("Hora fim da aula").isEmpty() && !record.get("Data da aula").isEmpty() &&
-                    !record.get("Lotação da sala").isEmpty() && !record.get("Sala atribuída à aula").isEmpty() ;
             //TODO extra hora de inicio < hora de fim ou hora de inicio +1h30 = hora de fim?
             //TODO extra sala formato de string certo?
-            isRecordValid = isRecordValid  &&  Integer.parseInt(record.get("Inscritos no turno")) >= 0 && Integer.parseInt(record.get("Lotação da sala")) >=0;
+          boolean  areTheIntsValid =
+                    Integer.parseInt(record.get("Inscritos no turno")) >= 0
+                    && Integer.parseInt(record.get("Lotação da sala")) >=0;
 
 
-            if(!isRecordValid) return false;
+            if(!areTheIntsValid) return false;
         }
         return true;
+    }
+
+    private static boolean areAllFieldsNotEmpty(CSVRecord record) {
+        return !record.get("Curso").isEmpty() &&
+                !record.get("Unidade Curricular").isEmpty() &&
+                !record.get("Turno").isEmpty() && !record.get("Turma").isEmpty() &&
+                !record.get("Inscritos no turno").isEmpty()
+                && !record.get("Dia da semana").isEmpty() && !record.get("Hora início da aula").isEmpty()
+                && !record.get("Hora fim da aula").isEmpty() && !record.get("Data da aula").isEmpty() &&
+                !record.get("Lotação da sala").isEmpty() && !record.get("Sala atribuída à aula").isEmpty();
     }
 
     private static boolean areAllFieldsNonNull(CSVRecord record) {
@@ -160,7 +165,6 @@ public class Validacao{
 
         }
     }
-
     //TODO Normalizar o documento Pedro e Henrique
 }
 
