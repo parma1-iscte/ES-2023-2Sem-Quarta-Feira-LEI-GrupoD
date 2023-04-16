@@ -2,6 +2,9 @@ package Horario;
 import java.io.*;
 import java.util.List;
 
+import java.nio.charset.Charset;
+
+import java.io.IOException;
 import org.apache.commons.csv.*;
 
 import com.google.gson.JsonObject;
@@ -92,8 +95,7 @@ public class Validacao{
         return true;
     }
 
-    public static boolean validarDocumento() {
-        //TODO por path ou File instance como argumento (uma versao para ambos prov)
+    public static boolean validarDocumento(File csvData) {
         CSVFormat format =   CSVFormat.Builder.create()
                 .setHeader()
                 .setSkipHeaderRecord(true)
@@ -101,12 +103,11 @@ public class Validacao{
                 .build();
         CSVParser parser = null;
         try {
-            File csvData = new File("horario_exemplo1.csv");
             parser = CSVParser.parse(csvData,Charset.defaultCharset() ,format);
-        } catch (java.lang.Exception e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
-            //TODO
         }
+
 
         if (!(parser.getHeaderNames().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(parser.getHeaderNames())))
             /*
@@ -119,11 +120,7 @@ public class Validacao{
 
         List<CSVRecord> list = parser.getRecords();
         for(CSVRecord record : list){
-            boolean isRecordValid = record.get("Curso") != null && record.get("Unidade Curricular") != null &&
-                    record.get("Turno") != null  && record.get("Turma") != null &&  record.get("Inscritos no turno") != null
-                    &&  record.get("Dia da semana") != null && record.get("Hora início da aula") != null
-                    &&  record.get("Hora fim da aula") != null && record.get("Data da aula") != null &&
-                    record.get("Lotação da sala") != null && record.get("Sala atribuída à aula") != null;
+            boolean isRecordValid =  areAllFieldsNonNull(record);
 
 
             isRecordValid = isRecordValid &&
@@ -142,6 +139,26 @@ public class Validacao{
             if(!isRecordValid) return false;
         }
         return true;
+    }
+
+    private static boolean areAllFieldsNonNull(CSVRecord record) {
+        return record.get("Curso") != null && record.get("Unidade Curricular") != null &&
+                record.get("Turno") != null && record.get("Turma") != null && record.get("Inscritos no turno") != null
+                && record.get("Dia da semana") != null && record.get("Hora início da aula") != null
+                && record.get("Hora fim da aula") != null && record.get("Data da aula") != null &&
+                record.get("Lotação da sala") != null && record.get("Sala atribuída à aula") != null;
+    }
+
+    public static void main(String[] args)
+    {
+
+        try {
+            File f = new File("horario_exemplo1.csv");
+
+            System.out.println(validarDocumento( f));
+        } catch (java.lang.Exception e) {
+
+        }
     }
 
     //TODO Normalizar o documento Pedro e Henrique
