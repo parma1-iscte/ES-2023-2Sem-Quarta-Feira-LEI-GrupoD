@@ -1,5 +1,6 @@
 package Horario;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -88,29 +89,33 @@ public class Horario {
 		return new Horario(readFileCsvWithBufferedReader(in));
 	}
 
-	private static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException{
+	public static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException {
 		List<Aula> lista = new ArrayList<>();
-		CSVFormat format = CSVFormat.EXCEL.withHeader();
+		CSVFormat format = CSVFormat.DEFAULT.withDelimiter(';').withSkipHeaderRecord(true).withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
+				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atribuída à aula", "Lotação da sala");
 		CSVParser csvParser = new CSVParser(in, format);
 
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
 		for (CSVRecord csvRecord : csvParser) {
-			//função que valida csvRecord
-			String curso = csvRecord.get("Curso").toString();
-			String uc = csvRecord.get("Unidade Curricular").toString();
-			String turno = csvRecord.get("Turno").toString();
-			String turma = csvRecord.get("Turma").toString();
-			Integer inscritos = Integer.parseInt(csvRecord.get("Inscritos no turno").toString());
-			String diaSemana = csvRecord.get("Dia da semana").toString();
-			LocalTime horaInicio = LocalTime.parse(csvRecord.get("Hora início da aula").toString());
-			LocalTime horaFim = LocalTime.parse(csvRecord.get("Hora fim da aula").toString());
-			LocalDate dia = LocalDate.parse(csvRecord.get("Data da aula").toString());
-			String sala = csvRecord.get("Sala atribuída à aula").toString();
-			Integer lotacaoSala = Integer.parseInt(csvRecord.get("Lotação da sala").toString());
+			String curso = csvRecord.get("Curso");
+			String uc = csvRecord.get("Unidade Curricular");
+			String turno = csvRecord.get("Turno");
+			String turma = csvRecord.get("Turma");
+			Integer inscritos = Integer.parseInt(csvRecord.get("Inscritos no turno"));
+			String diaSemana = csvRecord.get("Dia da semana");
+			LocalTime horaInicio = LocalTime.parse(csvRecord.get("Hora início da aula"), timeFormatter);
+			LocalTime horaFim = LocalTime.parse(csvRecord.get("Hora fim da aula"), timeFormatter);
+			LocalDate dia = LocalDate.parse(csvRecord.get("Data da aula"), dateFormatter);
+			String sala = csvRecord.get("Sala atribuída à aula");
+			Integer lotacaoSala = Integer.parseInt(csvRecord.get("Lotação da sala"));
 
 			Aula x = new Aula(curso, uc, turno, turma, inscritos, diaSemana, horaInicio, horaFim, dia, sala,
 					lotacaoSala);
 			lista.add(x);
 		}
+
 		return lista;
 	}
 
@@ -149,7 +154,7 @@ public class Horario {
 		writer.close();
 
 	}
-	
+
 	//funcoes communs para pontos 10,11
 	private void writeHorarioWithCSVPrinter(CSVPrinter csvPrinter) throws IOException {
 		for (Aula aula: horario) {
@@ -171,35 +176,35 @@ public class Horario {
 	//ponto 12
 	public void saveToJsonLocal(String csvFilePath, String jsonFilePath) throws IOException {
 		Reader reader = new FileReader(csvFilePath);
-        CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
-        List<Object> data = new ArrayList<>();
-        for (CSVRecord csvRecord : csvParser) {
-            data.add(csvRecord.toMap());
-        }
-        Gson gson = new Gson();
-        String json = gson.toJson(data);
-        FileWriter writer = new FileWriter(jsonFilePath);
-        writer.write(json);
-        writer.close();
+		CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
+		List<Object> data = new ArrayList<>();
+		for (CSVRecord csvRecord : csvParser) {
+			data.add(csvRecord.toMap());
+		}
+		Gson gson = new Gson();
+		String json = gson.toJson(data);
+		FileWriter writer = new FileWriter(jsonFilePath);
+		writer.write(json);
+		writer.close();
 
 
 
 	}
 
 	//ponto 13
-    public void saveToJsonRemoto(String csvFilePath, String jsonFilePath,String url) throws IOException, URISyntaxException{
-        PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
-                true, StandardCharsets.UTF_8);
-        Reader reader = new FileReader(csvFilePath);
-        CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
-        List<Object> data = new ArrayList<>();
-        for (CSVRecord csvRecord : csvParser) {
-            data.add(csvRecord.toMap());
-        }
-        Gson gson = new Gson();
-        String json = gson.toJson(data);
-        writer.write(json);
-        writer.close();
-    }
+	public void saveToJsonRemoto(String csvFilePath, String jsonFilePath,String url) throws IOException, URISyntaxException{
+		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
+				true, StandardCharsets.UTF_8);
+		Reader reader = new FileReader(csvFilePath);
+		CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
+		List<Object> data = new ArrayList<>();
+		for (CSVRecord csvRecord : csvParser) {
+			data.add(csvRecord.toMap());
+		}
+		Gson gson = new Gson();
+		String json = gson.toJson(data);
+		writer.write(json);
+		writer.close();
+	}
 
 }
