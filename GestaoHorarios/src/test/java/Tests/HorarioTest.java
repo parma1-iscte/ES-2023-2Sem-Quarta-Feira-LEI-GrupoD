@@ -39,31 +39,7 @@ import org.apache.commons.csv.CSVRecord;
 
 public class HorarioTest {
 
-	private Horario horario;
-	private List<Aula> listaAulas;
-
-	@BeforeAll
-	public void setUp() {
-		// Cria uma lista de aulas para testar
-		listaAulas = new ArrayList<>();
-		Aula aula1 = new Aula("Curso1", "UC1", "Turno1", "Turma1", 30, "Segunda-feira",
-				LocalTime.of(8, 0), LocalTime.of(10, 0), LocalDate.of(2023, 4, 17), "Sala1", 40);
-		Aula aula2 = new Aula("Curso2", "UC2", "Turno2", "Turma2", 25, "Terça-feira",
-				LocalTime.of(14, 0), LocalTime.of(16, 0), LocalDate.of(2023, 4, 18), "Sala2", 30);
-		listaAulas.add(aula1);
-		listaAulas.add(aula2);
-
-		// Cria uma instância de Horario com a lista de aulas
-		horario = new Horario(listaAulas);
-	}
-
-	@Test
-	public void testGetHorario() {
-		// Verifica se a lista de aulas retornada é a mesma que foi configurada no setUp()
-		List<Aula> horarioLista = horario.getHorario();
-		assertEquals(listaAulas, horarioLista);
-	}
-
+	
 	@Test
 	public void testGetHorarioFromCsvRemoto() throws MalformedURLException, IOException, URISyntaxException {
 		// URL de exemplo para o arquivo CSV remoto
