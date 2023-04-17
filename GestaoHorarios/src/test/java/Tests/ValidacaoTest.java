@@ -1,6 +1,8 @@
 package Tests;
 
 import org.apache.commons.csv.CSVFormat;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -25,9 +27,12 @@ import Horario.*;
  */
 
 public class ValidacaoTest {
-    @Test
-    public void testValidarCsvLine(){
 
+    List<CSVRecord> headers;
+    List<CSVRecord> lines;
+
+    @BeforeAll
+    public void setUp() {
         CSVFormat format =  CSVFormat.EXCEL
                 .withHeader()  //This causes the parser to read the first record and use its values as column names
                 .withSkipHeaderRecord(true)
@@ -39,14 +44,39 @@ public class ValidacaoTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        List<CSVRecord> list = parser.getRecords();
-        assertTrue( Validacao.validarCsvLine(list.get(0)));
-        assertTrue( Validacao.validarCsvLine(list.get(1)));
-        assertFalse( Validacao.validarCsvLine(list.get(2)));
-        assertFalse( Validacao.validarCsvLine(list.get(3)));
-        assertFalse( Validacao.validarCsvLine(list.get(4)));
+       headers = parser.getRecords();
+    }
+
+    @BeforeAll
+    public void setUp2(){
+        CSVFormat format =  CSVFormat.EXCEL
+                .withHeader()  //This causes the parser to read the first record and use its values as column names
+                .withSkipHeaderRecord(true)
+                .withDelimiter(';');
+        CSVParser parser = null;
+        try {
+            File csvData = new File("HeaderSet.csv");
+            parser = CSVParser.parse(csvData,Charset.defaultCharset(),format);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        lines = parser.getRecords();
+    }
+    @Test
+    public void testValidarCsvLine(){
+        assertTrue(Validacao.validarCsvLine(headers.get(0)));  //Record valido
+        assertFalse(Validacao.validarCsvLine(headers.get(2))); //Record com um campo a null
+        assertFalse(Validacao.validarCsvLine(headers.get(3))); // Record com um campo com empty String
+        assertFalse(Validacao.validarCsvLine(headers.get(4))); // Record com campo numerico negativo
+    }
+
+    @Test
+    public void testValidarCsvHeader(){
+        assertTrue(Validacao.validarCsvLine(headers.get(0)));  //Header correto
+        assertTrue(Validacao.validarCsvLine(headers.get(1)));  //Header com linhas desodenadas
+        assertFalse(Validacao.validarCsvLine(headers.get(2))); // Header com colunas a mais
+        assertFalse(Validacao.validarCsvLine(headers.get(3))); // Header com colunas a menos
+        assertFalse(Validacao.validarCsvLine(headers.get(4))); // Header com colunas a alteradas
 
     }
- 
-
 }
