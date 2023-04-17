@@ -17,12 +17,6 @@ import com.google.gson.JsonObject;
  */
 
 public class Validacao{
-    /**
-     * É singleton.
-     */
-    public static final Validacao INSTANCIA = new Validacao();
-
-    private Validacao(){}
 
     private static final List<String> colunasDoCSV = List.of("Curso",
             "Unidade Curricular", "Turno", "Turma", "Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula",
@@ -108,7 +102,6 @@ public class Validacao{
         return true;
     }
 
-
     public static boolean validarCsvHeader(CSVRecord csvHeader){
         /**
          * O interessante deste if é que garante antes de continuar a execução que o ficheiro csv que importamos
@@ -116,62 +109,22 @@ public class Validacao{
          * sem colunas a mais, a menos ou diferentes independente da ordem das colunas no ficheiro.
          * Retorna falso e termina a execução da função caso isso não seja garantido.
          */
-        return (parser.getHeaderNames().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(parser.getHeaderNames()));
+        return (csvHeader.values().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(csvHeader.values()));
     }
 
-    public static boolean validarCsvLine(CSVRecord csvHeader){
-        if(!areAllFieldsNonNull(record)) return false;
+    public static boolean validarCsvLine(CSVRecord csvLine){
+        if(!areAllFieldsNonNull(csvLine)) return false;
 
-        if(!areAllFieldsNotEmptyStrings(record)) return false;
+        if(!areAllFieldsNotEmptyStrings(csvLine)) return false;
 
         //TODO extra hora de inicio < hora de fim ou hora de inicio +1h30 = hora de fim?
         //TODO extra sala formato de string certo?
         boolean  areTheIntsValid =
-                Integer.parseInt(record.get("Inscritos no turno")) >= 0
-                        && Integer.parseInt(record.get("Lotação da sala")) >=0;
+                Integer.parseInt(csvLine.get("Inscritos no turno")) >= 0
+                        && Integer.parseInt(csvLine.get("Lotação da sala")) >=0;
 
 
         if(!areTheIntsValid) return false;
-        return true;
-    }
-    public static boolean validarDocumento(File csvData) {
-/*        CSVFormat format =   CSVFormat.Builder.create()
-                .setHeader()
-                .setSkipHeaderRecord(true)
-                .setDelimiter(';')
-                .build();*/
-
-        CSVFormat format =  CSVFormat.EXCEL
-                .withHeader()  //This causes the parser to read the first record and use its values as column names
-                .withSkipHeaderRecord(true)
-                .withDelimiter(';');
-        CSVParser parser = null;
-        try {
-            parser = CSVParser.parse(csvData,Charset.defaultCharset(),format);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-       /* if (!(parser.getHeaderNames().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(parser.getHeaderNames())))
-            *//*
-            return false;*/
-
-        List<CSVRecord> list = parser.getRecords();
-        for(CSVRecord record : list){
-            if(!areAllFieldsNonNull(record)) return false;
-
-            if(!areAllFieldsNotEmptyStrings(record)) return false;
-
-            //TODO extra hora de inicio < hora de fim ou hora de inicio +1h30 = hora de fim?
-            //TODO extra sala formato de string certo?
-          boolean  areTheIntsValid =
-                    Integer.parseInt(record.get("Inscritos no turno")) >= 0
-                    && Integer.parseInt(record.get("Lotação da sala")) >=0;
-
-
-            if(!areTheIntsValid) return false;
-        }
         return true;
     }
 
@@ -184,27 +137,12 @@ public class Validacao{
                 && !record.get("Hora fim da aula").isEmpty() && !record.get("Data da aula").isEmpty() &&
                 !record.get("Lotação da sala").isEmpty() && !record.get("Sala atribuída à aula").isEmpty();
     }
-
     private static boolean areAllFieldsNonNull(CSVRecord record) {
         return record.get("Curso") != null && record.get("Unidade Curricular") != null &&
                 record.get("Turno") != null && record.get("Turma") != null && record.get("Inscritos no turno") != null
                 && record.get("Dia da semana") != null && record.get("Hora início da aula") != null
                 && record.get("Hora fim da aula") != null && record.get("Data da aula") != null &&
                 record.get("Lotação da sala") != null && record.get("Sala atribuída à aula") != null;
-    }
-
-    public static void main(String[] args)
-    {
-        //TODO remover
-
-
-        try {
-            File f = new File("horario_exemplo1.csv");
-
-            System.out.println(validarDocumento( f));
-        } catch (java.lang.Exception e) {
-
-        }
     }
 }
 
