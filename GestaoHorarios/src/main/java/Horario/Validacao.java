@@ -18,7 +18,7 @@ import com.google.gson.JsonObject;
 
 public class Validacao{
     /**
-     * É singleto.
+     * É singleton.
      */
     public static final Validacao INSTANCIA = new Validacao();
 
@@ -29,7 +29,7 @@ public class Validacao{
             "Data da aula","Lotação da sala", "Sala atribuída à aula");
     public static boolean validarDocumento(JsonObject objeto) {
         if (objeto.get("Curso").toString().isEmpty()) {
-            //throw new RuntimeException("Curso é de preenchimento obrigatório");v
+            //throw new RuntimeException("Curso é de preenchimento obrigatório");
             return false;
         }
 
