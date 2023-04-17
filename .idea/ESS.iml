@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="apache.commons.csv" level="application" />
+    <orderEntry type="library" exported="" name="google.code.gson" level="application" />
+    <orderEntry type="library" exported="" name="junit.jupiter" level="application" />
+    <orderEntry type="library" exported="" name="java" level="application" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES />
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/GestaoHorarios/src/main/java" />
+          <root url="file://$MODULE_DIR$/GestaoHorarios/src/test/java" />
+          <root url="file://$MODULE_DIR$/untitled/src" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>
