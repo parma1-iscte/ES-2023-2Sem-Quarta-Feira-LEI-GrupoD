@@ -10,14 +10,16 @@ import org.apache.commons.csv.*;
 import com.google.gson.JsonObject;
 
 /**
- * @author Carlos Henriques e Pedro Mendonça
+ * @author Carlos Henriques
+ * @author Pedro Mendonça
  * Desenvolver uma função que valida documentos de um ficheiro JSON ou CSV (se têm o formato correto)
  * (3 horas cada)
  */
 
 public class Validacao{
-    // É singleton
-
+    /**
+     * É singleto.
+     */
     public static final Validacao INSTANCIA = new Validacao();
 
     private Validacao(){}
@@ -96,21 +98,26 @@ public class Validacao{
     }
 
     public static boolean validarDocumento(File csvData) {
-        CSVFormat format =   CSVFormat.Builder.create()
+/*        CSVFormat format =   CSVFormat.Builder.create()
                 .setHeader()
                 .setSkipHeaderRecord(true)
                 .setDelimiter(';')
-                .build();
+                .build();*/
+
+        CSVFormat format =  CSVFormat.EXCEL
+                .withHeader()  //This causes the parser to read the first record and use its values as column names
+                .withSkipHeaderRecord(true)
+                .withDelimiter(';');
         CSVParser parser = null;
         try {
-            parser = CSVParser.parse(csvData,Charset.defaultCharset() ,format);
+            parser = CSVParser.parse(csvData,Charset.defaultCharset(),format);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
 
         if (!(parser.getHeaderNames().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(parser.getHeaderNames())))
-            /*
+            /**
              * O interessante deste if é que garante antes de continuar a execução que o ficheiro csv que importamos
              * têm exatamente as colunas que é suposto ter (que são as guardadas na lista colunasDoCSV);
              * sem colunas a mais, a menos ou diferentes independente da ordem das colunas no ficheiro.
@@ -122,7 +129,7 @@ public class Validacao{
         for(CSVRecord record : list){
             if(!areAllFieldsNonNull(record)) return false;
 
-            if(!areAllFieldsNotEmpty(record)) return false;
+            if(!areAllFieldsNotEmptyStrings(record)) return false;
 
             //TODO extra hora de inicio < hora de fim ou hora de inicio +1h30 = hora de fim?
             //TODO extra sala formato de string certo?
@@ -136,7 +143,7 @@ public class Validacao{
         return true;
     }
 
-    private static boolean areAllFieldsNotEmpty(CSVRecord record) {
+    private static boolean areAllFieldsNotEmptyStrings(CSVRecord record) {
         return !record.get("Curso").isEmpty() &&
                 !record.get("Unidade Curricular").isEmpty() &&
                 !record.get("Turno").isEmpty() && !record.get("Turma").isEmpty() &&
@@ -156,6 +163,8 @@ public class Validacao{
 
     public static void main(String[] args)
     {
+        //TODO remover
+
 
         try {
             File f = new File("horario_exemplo1.csv");
