@@ -33,6 +33,14 @@ public class Horario {
 		return horario;
 	}
 	
+	/**
+	 * Cria um bufferedReader que le um file remoto ou local dependendo do parametro recebido
+	 * @param filePathOrUrl
+	 * @return bufferedReader
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	
 	public static BufferedReader createBufferedReader(String filePathOrUrl) throws IOException, URISyntaxException {
 	    if (filePathOrUrl.startsWith("http")) {
 	        URL url = new URL(filePathOrUrl);
@@ -42,6 +50,14 @@ public class Horario {
 	        return new BufferedReader(new FileReader(file));
 	    }
 	}
+	
+	/**
+	 * Cria um PrintWriter que escreve num file remoto ou local dependendo do path(parametro recebido)
+	 * @param path
+	 * @return printWriter
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
 	
 	public static PrintWriter createPrintWriter(String path) throws IOException, URISyntaxException {
 	    PrintWriter writer;
@@ -57,7 +73,7 @@ public class Horario {
 	//ponto 6
 	/**
 	 * Lê um arquivo JSON local e converte seu conteúdo em uma lista de aulas.
-	 * @param file o arquivo JSON a ser lido
+	 * @param file o arquivo JSON a ser lido ou url a URL do arquivo JSON a ser lido
 	 * @return uma lista de aulas contidas no arquivo JSON
 	 * @throws IOException se ocorrer um erro ao ler o arquivo
 	 * @throws URISyntaxException 
@@ -69,22 +85,6 @@ public class Horario {
 		return new Horario(readFileJsonWithBufferedReader(in));
 	}
 
-
-	//ponto 7
-	/**
-	 * Lê um arquivo JSON remoto e converte seu conteúdo em uma lista de aulas.
-	 * @param url a URL do arquivo JSON a ser lido
-	 * @return uma lista de aulas contidas no arquivo JSON
-	 * @throws IOException se ocorrer um erro ao ler o arquivo
-	 * @throws URISyntaxException se a URI da URL estiver incorreta
-	 */
-//	public static Horario getHorarioFromJsonRemoto(String url) throws IOException, URISyntaxException {
-//		
-//		BufferedReader in = createBufferedReader(url);
-//		
-//		return new Horario(readFileJsonWithBufferedReader(in));
-//
-//	}
 
 	// funcoes communs para pontos 6,7
 	/**
@@ -125,21 +125,16 @@ public class Horario {
 		}
 		return list;
 	}
-
-	// ponto 8
-
 	/**
+	
+	 
+	 ponto 8/9 
+	 Este método lê um arquivo CSV de uma URL remoto ou file path e cria um objeto Horario.
 
-    Cria e retorna um objeto Horario a partir de um arquivo CSV local.
-
-	@param file O arquivo CSV local contendo os dados do horário.
-
-    @return um objeto Horario criado a partir do arquivo CSV
-
-    @throws FileNotFoundException se o arquivo no caminho fornecido não for encontrado
-
+    @param url a URL do arquivo CSV remoto ou file path do arquivo CSV local contendo os dados do horário.
+    @return um objeto Horario criado a partir do arquivo CSV remoto
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
-	 * @throws URISyntaxException 
+    @throws URISyntaxException se a sintaxe da URI estiver incorreta
 	 */
 
 
@@ -150,28 +145,7 @@ public class Horario {
 		return new Horario(readFileCsvWithBufferedReader(in));
 	}
 
-	//ponto 9
 
-	/**
-
-    Este método lê um arquivo CSV de uma URL remoto e cria um objeto Horario.
-
-    @param url a URL do arquivo CSV remoto
-
-    @return um objeto Horario criado a partir do arquivo CSV remoto
-
-    @throws MalformedURLException se a URL estiver malformada
-
-    @throws IOException se ocorrer um erro de I/O ao ler o arquivo
-
-    @throws URISyntaxException se a sintaxe da URI estiver incorreta
-	 */
-
-//	public static Horario getHorarioFromCsvRemoto(String url) throws MalformedURLException, IOException, URISyntaxException {
-//		BufferedReader in = createBufferedReader(url);
-//
-//		return new Horario(readFileCsvWithBufferedReader(in));
-//	}
 
 
 
@@ -180,13 +154,10 @@ public class Horario {
 	/**
 
     Este método lê um arquivo CSV com um BufferedReader e cria uma lista de objetos Aula.
-
+    
     @param in o BufferedReader que aponta para o arquivo CSV
-
     @return uma lista de objetos Aula criados a partir do arquivo CSV
-
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
-
     @throws IllegalArgumentException se o arquivo CSV estiver mal estruturado
 	 */
 
@@ -229,15 +200,17 @@ public class Horario {
 		return lista;
 	}
 
-
-
-	//ponto 10
+	
 	/**
+	 * //ponto 10 e 11 estao juntos
+	 *
 	 * Salva o horário em um arquivo CSV localmente.
-	 * @param file o arquivo onde o horário será salvo.
+	 * @param Path do file do arquivo onde o horário será salvo ou url a URL do arquivo CSV remoto a ser criado
 	 * @throws IOException se ocorrer um erro de I/O ao escrever no arquivo.
 	 * @throws URISyntaxException 
-	 */
+	 
+	*/		
+	
 	public void saveToCsvLocalOrRemote(String FilePathOrRemote) throws IOException, URISyntaxException {
 
 		PrintWriter writer = createPrintWriter (FilePathOrRemote);
@@ -250,23 +223,7 @@ public class Horario {
 	}
 
 
-	//ponto 11
-	/**
-	 * Salva os dados do horário em um arquivo CSV remoto, a partir da URL especificada.
-	 * @param url a URL do arquivo CSV remoto a ser criado
-	 * @throws Exception se ocorrer um erro durante a escrita do arquivo CSV remoto
-	 */
-//	public void saveToCsvRemoto(String url) throws Exception {
-//
-//		PrintWriter writer = createPrintWriter (url);
-//		CSVPrinter csvPrinter = new CSVPrinter(writer, format);
-//
-//		writeHorarioWithCSVPrinter(csvPrinter);
-//
-//		csvPrinter.close();
-//		writer.close();
-//
-//	}
+
 
 	//funcoes communs para pontos 10,11
 	/**
@@ -291,38 +248,16 @@ public class Horario {
 		}
 	}
 
-	//ponto 12
+	//ponto 12 e 13 estao juntos
 
 	/**
 
-    Guarda o objeto atual em formato JSON em um arquivo local.
+    Guarda o objeto atual em formato JSON em um arquivo local ou remoto.
 
-    @param file O arquivo onde o objeto será salvo.
-
+    @param filePath do arquivo onde o objeto será salvo ou url A URL onde o objeto será salvo.
     @throws IOException se ocorrer um erro ao escrever o arquivo.
-	 * @throws URISyntaxException 
-	 */
+	@throws URISyntaxException 
 
-//	public void saveToJsonLocal(String FilePath) throws IOException, URISyntaxException {
-//		PrintWriter writer = createPrintWriter (FilePath);
-//	    Gson gson = new Gson();
-//	    String json = gson.toJson(this);
-//	    writer.write(json);
-//	    writer.close();
-//	}
-
-
-	//ponto 13
-
-	/**
-
-    Guarda o objeto atual em formato JSON em uma URL remota.
-
-    @param url A URL onde o objeto será salvo.
-
-    @throws IOException se ocorrer um erro de entrada/saída ao conectar com a URL.
-
-    @throws URISyntaxException se a sintaxe da URL for inválida.
 	 */
 
 	public void saveToJsonRemotoOrLocal(String urlOrFilePath) throws IOException, URISyntaxException{
