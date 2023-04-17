@@ -89,14 +89,22 @@ public class Horario {
 
 	public static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException {
 		List<Aula> lista = new ArrayList<>();
-		CSVFormat format = CSVFormat.DEFAULT.withDelimiter(';').withSkipHeaderRecord(true).withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
+		CSVFormat format = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
 				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atribuída à aula", "Lotação da sala");
 		CSVParser csvParser = new CSVParser(in, format);
-
+		Iterator<CSVRecord> iterator = csvParser.iterator();
+		
+		if(iterator.hasNext()) Validacao.validarCsvHeader(iterator.next());
+ 
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-		for (CSVRecord csvRecord : csvParser) {
+		while (iterator.hasNext()) {
+			
+			CSVRecord csvRecord = iterator.next();
+			if(!Validacao.validarCsvLine(csvRecord))
+				throw new IllegalArgumentException("Ficheiro mal estruturado");
+	
 			String curso = csvRecord.get("Curso");
 			String uc = csvRecord.get("Unidade Curricular");
 			String turno = csvRecord.get("Turno");
