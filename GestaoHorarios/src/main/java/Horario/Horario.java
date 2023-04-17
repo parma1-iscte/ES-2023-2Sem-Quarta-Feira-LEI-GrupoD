@@ -102,6 +102,21 @@ public class Horario {
 	}
 
 	// ponto 8
+	
+	/**
+
+    Este método lê um arquivo CSV de um caminho local e cria um objeto Horario.
+
+    @param pathCSV o caminho para o arquivo CSV
+
+    @return um objeto Horario criado a partir do arquivo CSV
+
+    @throws FileNotFoundException se o arquivo no caminho fornecido não for encontrado
+
+    @throws IOException se ocorrer um erro de I/O ao ler o arquivo
+    */
+	
+	
 	public static Horario getHorarioFromCsvLocal(String pathCSV) throws FileNotFoundException, IOException {
 
 		BufferedReader in = new BufferedReader(new FileReader(pathCSV));
@@ -110,12 +125,45 @@ public class Horario {
 	}
 
 	//ponto 9
+	
+	/**
+
+    Este método lê um arquivo CSV de uma URL remoto e cria um objeto Horario.
+
+    @param url a URL do arquivo CSV remoto
+
+    @return um objeto Horario criado a partir do arquivo CSV remoto
+
+    @throws MalformedURLException se a URL estiver malformada
+
+    @throws IOException se ocorrer um erro de I/O ao ler o arquivo
+
+    @throws URISyntaxException se a sintaxe da URI estiver incorreta
+    */
+	
 	public static Horario getHorarioFromCsvRemoto(String url) throws MalformedURLException, IOException, URISyntaxException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(new URI(url).toURL().openStream()));
 
 		return new Horario(readFileCsvWithBufferedReader(in));
 	}
 
+	
+	
+	// funcao comum  dos pontos 8,9
+	
+	/**
+
+    Este método lê um arquivo CSV com um BufferedReader e cria uma lista de objetos Aula.
+
+    @param in o BufferedReader que aponta para o arquivo CSV
+
+    @return uma lista de objetos Aula criados a partir do arquivo CSV
+
+    @throws IOException se ocorrer um erro de I/O ao ler o arquivo
+
+    @throws IllegalArgumentException se o arquivo CSV estiver mal estruturado
+    */
+	
 	public static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException {
 		List<Aula> lista = new ArrayList<>();
 		CSVFormat format = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
