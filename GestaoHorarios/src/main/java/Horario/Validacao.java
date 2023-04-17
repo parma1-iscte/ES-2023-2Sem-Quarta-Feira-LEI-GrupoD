@@ -22,6 +22,12 @@ public class Validacao{
             "Unidade Curricular", "Turno", "Turma", "Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula",
             "Data da aula","Lotação da sala", "Sala atribuída à aula");
     
+    /**
+     * Esta funcao recebe como parametro um JsonObject e verifica se os seus campos estao validos
+     * @param objeto 
+     * @return boolean (se returnar true significa que o objeto tem os campos todos validos, ou seja, estao no formato correto, se for false esta invalido)
+     *  
+     */
     public static boolean validarDocumento(JsonObject objeto) {
         if (objeto.get("Curso").toString().isEmpty()) {
             //throw new RuntimeException("Curso é de preenchimento obrigatório");
