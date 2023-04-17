@@ -4,7 +4,7 @@ import java.time.*;
 /**
  * 
  * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
- *
+ * Versão 1.0
  */
 
 public class Aula {
@@ -97,10 +97,19 @@ public class Aula {
 		return lotacaoSala;
 	}
 
+	
+	
 	public boolean isSobrelotada() {
 		return inscritos > lotacaoSala;
 	}
 
+	/**
+
+    Verifica se duas aulas estão sobrepostas.
+    @param aula a aula a ser comparada com a aula atual.
+    @return true se as aulas estiverem sobrepostas, false caso contrário.
+    */
+	
 	public boolean isSobreposta(Aula aula) {
 		// Verificar se a aula atual começa antes ou no mesmo horário da outra aula
 		boolean comecaAntes = horaInicio.isBefore(aula.getHoraInicio()) || horaInicio.equals(aula.getHoraInicio());

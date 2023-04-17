@@ -34,7 +34,7 @@ import org.apache.commons.csv.CSVRecord;
 /**
  * 
  * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
- *
+ * Versão 1.0
  */
 
 public class HorarioTest {
@@ -156,41 +156,41 @@ public class HorarioTest {
 		assertThrows(IOException.class, () -> Horario.getHorarioFromJsonRemoto(url));
 	}
 
-	
+
 
 	@Test
 	public void testGetHorarioFromJsonLocal() throws IOException {
-	    // Criar um arquivo temporário com conteúdo JSON válido
-	    File tempFile = File.createTempFile("test", ".json");
-	    PrintWriter writer = new PrintWriter(tempFile);
-	    writer.println("[{ \"Curso\": \"Curso A\", \"Unidade Curricular\": \"UC A\", \"Turno\": \"T1\", \"Turma\": \"TA\", \"Inscritos no turno\": 20, \"Dia da semana\": \"SEG\", \"Hora início da aula\": \"08:00\", \"Hora fim da aula\": \"10:00\", \"Data da aula\": \"2023-04-17\", \"Sala atribuída à aula\": \"Sala 1\", \"Lotação da sala\": 30 }, { \"Curso\": \"Curso B\", \"Unidade Curricular\": \"UC B\", \"Turno\": \"T2\", \"Turma\": \"TB\", \"Inscritos no turno\": 15, \"Dia da semana\": \"TER\", \"Hora início da aula\": \"13:00\", \"Hora fim da aula\": \"15:00\", \"Data da aula\": \"2023-04-18\", \"Sala atribuída à aula\": \"Sala 2\", \"Lotação da sala\": 25 }]");
-	    writer.close();
+		// Criar um arquivo temporário com conteúdo JSON válido
+		File tempFile = File.createTempFile("test", ".json");
+		PrintWriter writer = new PrintWriter(tempFile);
+		writer.println("[{ \"Curso\": \"Curso A\", \"Unidade Curricular\": \"UC A\", \"Turno\": \"T1\", \"Turma\": \"TA\", \"Inscritos no turno\": 20, \"Dia da semana\": \"SEG\", \"Hora início da aula\": \"08:00\", \"Hora fim da aula\": \"10:00\", \"Data da aula\": \"2023-04-17\", \"Sala atribuída à aula\": \"Sala 1\", \"Lotação da sala\": 30 }, { \"Curso\": \"Curso B\", \"Unidade Curricular\": \"UC B\", \"Turno\": \"T2\", \"Turma\": \"TB\", \"Inscritos no turno\": 15, \"Dia da semana\": \"TER\", \"Hora início da aula\": \"13:00\", \"Hora fim da aula\": \"15:00\", \"Data da aula\": \"2023-04-18\", \"Sala atribuída à aula\": \"Sala 2\", \"Lotação da sala\": 25 }]");
+		writer.close();
 
-	    // Chamar a função getHorarioFromJsonLocal
-	    Horario horario = null;
-	    try {
-	        horario = Horario.getHorarioFromJsonLocal(tempFile);
-	    } catch (IOException e) {
-	        fail("Erro ao ler arquivo JSON local.");
-	    }
+		// Chamar a função getHorarioFromJsonLocal
+		Horario horario = null;
+		try {
+			horario = Horario.getHorarioFromJsonLocal(tempFile);
+		} catch (IOException e) {
+			fail("Erro ao ler arquivo JSON local.");
+		}
 
-	    // Verificar se o objeto Horario retornado pela função está correto
-	    assertNotNull(horario);
-	    List<Aula> aulas = horario.getHorario();
-	    assertEquals(2, aulas.size());
-	    assertEquals("Curso A", aulas.get(0).getCurso());
-	    assertEquals("UC A", aulas.get(0).getUc());
-	    assertEquals("T1", aulas.get(0).getTurno());
-	    assertEquals("TA", aulas.get(0).getTurma());
-	    assertEquals(20, aulas.get(0).getInscritos());
-	    assertEquals("SEG", aulas.get(0).getDiaSemana());
-	    assertEquals(LocalTime.of(8, 0), aulas.get(0).getHoraInicio());
-	    assertEquals(LocalTime.of(10, 0), aulas.get(0).getHoraFim());
-	    assertEquals(LocalDate.of(2023, 4, 17), aulas.get(0).getDia());
-	    assertEquals("Sala 1", aulas.get(0).getSala());
-	    assertEquals(30, aulas.get(0).getLotacaoSala());
-	
-	
+		// Verificar se o objeto Horario retornado pela função está correto
+		assertNotNull(horario);
+		List<Aula> aulas = horario.getHorario();
+		assertEquals(2, aulas.size());
+		assertEquals("Curso A", aulas.get(0).getCurso());
+		assertEquals("UC A", aulas.get(0).getUc());
+		assertEquals("T1", aulas.get(0).getTurno());
+		assertEquals("TA", aulas.get(0).getTurma());
+		assertEquals(20, aulas.get(0).getInscritos());
+		assertEquals("SEG", aulas.get(0).getDiaSemana());
+		assertEquals(LocalTime.of(8, 0), aulas.get(0).getHoraInicio());
+		assertEquals(LocalTime.of(10, 0), aulas.get(0).getHoraFim());
+		assertEquals(LocalDate.of(2023, 4, 17), aulas.get(0).getDia());
+		assertEquals("Sala 1", aulas.get(0).getSala());
+		assertEquals(30, aulas.get(0).getLotacaoSala());
+
+
 	}
 
 
