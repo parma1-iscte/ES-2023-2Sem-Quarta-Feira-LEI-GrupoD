@@ -27,6 +27,14 @@ public class Horario {
 
 
 	//ponto 6
+	
+	/**
+	Lê um arquivo JSON local e converte seu conteúdo em uma lista de aulas.
+    @param file o arquivo JSON a ser lido
+    @return uma lista de aulas contidas no arquivo JSON
+    @throws IOException se ocorrer um erro ao ler o arquivo
+    */
+	
 	public static Horario getHorarioFromJsonLocal(File file) throws IOException {
 
 		BufferedReader in = new BufferedReader(new FileReader(file));
@@ -36,6 +44,16 @@ public class Horario {
 
 
 	//ponto 7
+	
+	/**
+
+    Lê um arquivo JSON remoto e converte seu conteúdo em uma lista de aulas.
+    @param url a URL do arquivo JSON a ser lido
+    @return uma lista de aulas contidas no arquivo JSON
+    @throws IOException se ocorrer um erro ao ler o arquivo
+    @throws URISyntaxException se a URI da URL estiver incorreta
+    */
+	
 	public static Horario getHorarioFromJsonRemoto(String url) throws IOException, URISyntaxException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(new URI(url).toURL().openStream()));
 
@@ -43,6 +61,15 @@ public class Horario {
 
 	}
 
+	/**
+
+    Converte um objeto JSON em uma instância de Aula.
+
+    @param json o objeto JSON a ser convertido
+
+    @return uma instância de Aula contida no objeto JSON
+    */
+	
 	// funcoes communs para pontos 6,7
 	private static Aula jsonToAula(JsonObject json) {
 		String curso = json.get("Curso").toString();
@@ -59,6 +86,17 @@ public class Horario {
 
 		return new Aula(curso,uc,turno,turma,inscritos,diaSemana,horaInicio,horaFim,dia,sala,lotacaoSala);
 	}
+	
+	/**
+
+    Lê o conteúdo de um arquivo JSON com o auxílio de um BufferedReader e o converte em uma lista de aulas.
+
+    @param in um BufferedReader para ler o conteúdo do arquivo JSON
+
+    @return uma lista de aulas contidas no arquivo JSON
+
+    @throws IOException se ocorrer um erro ao ler o arquivo
+    */
 
 	private static List<Aula> readFileJsonWithBufferedReader(BufferedReader in) throws IOException{
 		List<Aula> list = new ArrayList<>();
