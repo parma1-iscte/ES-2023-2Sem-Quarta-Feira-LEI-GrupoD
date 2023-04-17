@@ -102,11 +102,11 @@ public class Horario {
 	}
 
 	// ponto 8
-	
+
 	/**
 
     Cria e retorna um objeto Horario a partir de um arquivo CSV local.
-	
+
 	@param file O arquivo CSV local contendo os dados do horário.
 
     @return um objeto Horario criado a partir do arquivo CSV
@@ -114,9 +114,9 @@ public class Horario {
     @throws FileNotFoundException se o arquivo no caminho fornecido não for encontrado
 
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
-    */
-	
-	
+	 */
+
+
 	public static Horario getHorarioFromCsvLocal(File file) throws FileNotFoundException, IOException {
 
 		BufferedReader in = new BufferedReader(new FileReader(file));
@@ -125,7 +125,7 @@ public class Horario {
 	}
 
 	//ponto 9
-	
+
 	/**
 
     Este método lê um arquivo CSV de uma URL remoto e cria um objeto Horario.
@@ -139,18 +139,18 @@ public class Horario {
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
 
     @throws URISyntaxException se a sintaxe da URI estiver incorreta
-    */
-	
+	 */
+
 	public static Horario getHorarioFromCsvRemoto(String url) throws MalformedURLException, IOException, URISyntaxException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(new URI(url).toURL().openStream()));
 
 		return new Horario(readFileCsvWithBufferedReader(in));
 	}
 
-	
-	
+
+
 	// funcao comum  dos pontos 8,9
-	
+
 	/**
 
     Este método lê um arquivo CSV com um BufferedReader e cria uma lista de objetos Aula.
@@ -162,8 +162,8 @@ public class Horario {
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
 
     @throws IllegalArgumentException se o arquivo CSV estiver mal estruturado
-    */
-	
+	 */
+
 	public static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException {
 		List<Aula> lista = new ArrayList<>();
 		CSVFormat format = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
@@ -275,10 +275,20 @@ public class Horario {
 	}
 
 	//ponto 12
+
+	/**
+
+    Guarda o objeto atual em formato JSON em um arquivo local.
+
+    @param file O arquivo onde o objeto será salvo.
+
+    @throws IOException se ocorrer um erro ao escrever o arquivo.
+	 */
+
 	public void saveToJsonLocal(File file) throws IOException {
-		
+
 		FileWriter writer = new FileWriter(file);
-		
+
 		Gson gson = new Gson();
 		String json = gson.toJson(this);
 		gson.toJson(this,writer);
@@ -286,23 +296,35 @@ public class Horario {
 	}
 
 	//ponto 13
+
+	/**
+
+    Guarda o objeto atual em formato JSON em uma URL remota.
+
+    @param url A URL onde o objeto será salvo.
+
+    @throws IOException se ocorrer um erro de entrada/saída ao conectar com a URL.
+
+    @throws URISyntaxException se a sintaxe da URL for inválida.
+	 */
+
 	public void saveToJsonRemoto(String url) throws IOException, URISyntaxException{
 
 		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
 				true, StandardCharsets.UTF_8);
-		
+
 		Gson gson = new Gson();
-		
+
 		gson.toJson(this,writer);
 		writer.close();
-		
+
 	}
 
 	public static void main(String[] args) {
 		Aula aula = new Aula("Curos","UC","Turno","Turma",20,"Sex",
 				LocalTime.of(13, 0, 0),LocalTime.of(14, 30, 0),LocalDate.of(2022, 12, 2),
 				"Sala",30);
-		
+
 		Horario h = new Horario(List.of(aula));
 		try {
 			h.saveToJsonLocal(new File("json_teste.json"));
@@ -310,14 +332,14 @@ public class Horario {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		Gson gson = new Gson();
-//		String s = "[ {  \"name\": \"john\", \"city\": \"chicago\", \"age\": \"22\" }, { \"name\": \"gary\", \"city\": \"florida\", \"age\": \"35\" }, { \"name\": \"sal\",  \"city\": \"vegas\", \"age\": \"18\"} ]";
-//		String json = gson.toJson(s);
-//		System.out.println(s);
-//		System.out.println(json);
-		
+		//		Gson gson = new Gson();
+		//		String s = "[ {  \"name\": \"john\", \"city\": \"chicago\", \"age\": \"22\" }, { \"name\": \"gary\", \"city\": \"florida\", \"age\": \"35\" }, { \"name\": \"sal\",  \"city\": \"vegas\", \"age\": \"18\"} ]";
+		//		String json = gson.toJson(s);
+		//		System.out.println(s);
+		//		System.out.println(json);
+
 	}
-	
+
 }
 
 
