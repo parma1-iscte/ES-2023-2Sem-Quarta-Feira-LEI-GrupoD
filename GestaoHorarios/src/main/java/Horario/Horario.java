@@ -105,9 +105,9 @@ public class Horario {
 	
 	/**
 
-    Este método lê um arquivo CSV de um caminho local e cria um objeto Horario.
-
-    @param pathCSV o caminho para o arquivo CSV
+    Cria e retorna um objeto Horario a partir de um arquivo CSV local.
+	
+	@param file O arquivo CSV local contendo os dados do horário.
 
     @return um objeto Horario criado a partir do arquivo CSV
 
