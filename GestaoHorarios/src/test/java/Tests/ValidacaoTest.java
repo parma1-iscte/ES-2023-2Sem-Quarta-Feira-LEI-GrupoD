@@ -2,8 +2,17 @@ package Tests;
 
 import org.junit.jupiter.api.Test;
 
-import Horario.*;
+import java.io.*;
+import java.util.List;
 
+import java.nio.charset.Charset;
+import java.util.Arrays;
+
+import java.io.IOException;
+import org.apache.commons.csv.*;
+
+import com.google.gson.JsonObject;
+import Horario.*;
 
 /**
  * 
@@ -27,11 +36,11 @@ public class ValidacaoTest {
             throw new RuntimeException(e);
         }
         List<CSVRecord> list = parser.getRecords();
-        assertTrue(validarCsvLine(list.get(0)));
-        assertTrue(validarCsvLine(list.get(1)));
-        assertFalse(validarCsvLine(list.get(2)));
-        assertFalse(validarCsvLine(list.get(3)));
-        assertFalse(validarCsvLine(list.get(4)));
+        assertTrue( Validacao.validarCsvLine(list.get(0)));
+        assertTrue( Validacao.validarCsvLine(list.get(1)));
+        assertFalse( Validacao.validarCsvLine(list.get(2)));
+        assertFalse( Validacao.validarCsvLine(list.get(3)));
+        assertFalse( Validacao.validarCsvLine(list.get(4)));
 
     }
  
