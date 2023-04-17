@@ -213,9 +213,9 @@ public class Horario {
 	 * @param file o arquivo onde o horário será salvo.
 	 * @throws IOException se ocorrer um erro de I/O ao escrever no arquivo.
 	 */
-	public void saveToCsvLocal(String path) throws IOException {
+	public void saveToCsvLocal(File file) throws IOException {
 
-		PrintWriter writer = new PrintWriter(path);
+		PrintWriter writer = new PrintWriter(file);
 		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
 				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atríbuida à aula", "Lotacão da sala");
 		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
@@ -275,30 +275,49 @@ public class Horario {
 	}
 
 	//ponto 12
-	public void saveToJsonLocal(String pathCSV, String jsonPath) throws IOException {
-
-		Horario horario = getHorarioFromCsvLocal(pathCSV);
-
+	public void saveToJsonLocal(File file) throws IOException {
+		
+		FileWriter writer = new FileWriter(file);
+		
 		Gson gson = new Gson();
-		String json = gson.toJson(horario);
-		try (FileWriter writer = new FileWriter(jsonPath)) {
-			gson.toJson(horario, writer);
-		}
-
-
-
-	}
-
-	//ponto 13
-	public void saveToJsonRemoto(String pathCSV, String urlJson) throws IOException, URISyntaxException{
-
-		Horario horario = getHorarioFromCsvLocal(pathCSV);
-		PrintWriter writer = new PrintWriter(new URI(urlJson).toURL().openConnection().getOutputStream(),true, StandardCharsets.UTF_8);
-
-		Gson gson = new Gson();
-		String json = gson.toJson(horario);
-		writer.write(json);
+		String json = gson.toJson(this);
+		gson.toJson(this,writer);
 		writer.close();
 	}
 
+	//ponto 13
+	public void saveToJsonRemoto(String url) throws IOException, URISyntaxException{
+
+		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
+				true, StandardCharsets.UTF_8);
+		
+		Gson gson = new Gson();
+		
+		gson.toJson(this,writer);
+		writer.close();
+		
+	}
+
+	public static void main(String[] args) {
+		Aula aula = new Aula("Curos","UC","Turno","Turma",20,"Sex",
+				LocalTime.of(13, 0, 0),LocalTime.of(14, 30, 0),LocalDate.of(2022, 12, 2),
+				"Sala",30);
+		
+		Horario h = new Horario(List.of(aula));
+		try {
+			h.saveToJsonLocal(new File("json_teste.json"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		Gson gson = new Gson();
+//		String s = "[ {  \"name\": \"john\", \"city\": \"chicago\", \"age\": \"22\" }, { \"name\": \"gary\", \"city\": \"florida\", \"age\": \"35\" }, { \"name\": \"sal\",  \"city\": \"vegas\", \"age\": \"18\"} ]";
+//		String json = gson.toJson(s);
+//		System.out.println(s);
+//		System.out.println(json);
+		
+	}
+	
 }
+
+

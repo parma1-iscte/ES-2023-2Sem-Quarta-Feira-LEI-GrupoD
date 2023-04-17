@@ -15,11 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.*;
-import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
@@ -39,7 +35,7 @@ import org.apache.commons.csv.CSVRecord;
 
 public class HorarioTest {
 
-	
+
 	@Test
 	public void testGetHorarioFromCsvRemoto() throws MalformedURLException, IOException, URISyntaxException {
 		// URL de exemplo para o arquivo CSV remoto
@@ -190,6 +186,31 @@ public class HorarioTest {
 		assertEquals("Sala 1", aulas.get(0).getSala());
 		assertEquals(30, aulas.get(0).getLotacaoSala());
 
+
+	}
+
+	@Test
+	public void testSaveHorarioToJsonLocal() {
+		Aula aula = new Aula("Curos","UC","Turno","Turma",20,"Sex",
+				LocalTime.of(13, 0, 0),LocalTime.of(14, 30, 0),LocalDate.of(2022, 12, 2),
+				"Sala",30);
+
+		Horario h = new Horario(List.of(aula));
+		try {
+			h.saveToJsonLocal(new File("json_teste.json"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testSaveHorarioToJsonRemote() throws IOException, URISyntaxException {
+		Aula aula = new Aula("Curos","UC","Turno","Turma",20,"Sex",
+				LocalTime.of(13, 0, 0),LocalTime.of(14, 30, 0),LocalDate.of(2022, 12, 2),
+				"Sala",30);
+
+		Horario h = new Horario(List.of(aula));
+		h.saveToJsonRemoto("https://github.com/parma1-iscte/ES-2023-2Sem-Quarta-Feira-LEI-GrupoD/blob/Sprint1/json_exemplo.json");
 
 	}
 
