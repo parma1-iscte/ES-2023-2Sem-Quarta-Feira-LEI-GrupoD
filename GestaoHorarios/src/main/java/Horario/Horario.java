@@ -132,7 +132,10 @@ public class Horario {
 		CSVParser csvParser = new CSVParser(in, format);
 		Iterator<CSVRecord> iterator = csvParser.iterator();
 		
-		if(iterator.hasNext()) Validacao.validarCsvHeader(iterator.next());
+		if(iterator.hasNext())
+			if (!Validacao.validarCsvHeader(iterator.next()))
+				throw new IllegalArgumentException("Ficheiro mal estruturado");
+
  
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

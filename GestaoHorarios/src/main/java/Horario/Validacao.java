@@ -108,6 +108,32 @@ public class Validacao{
         return true;
     }
 
+
+    public static boolean validarCsvHeader(CSVRecord csvHeader){
+        /**
+         * O interessante deste if é que garante antes de continuar a execução que o ficheiro csv que importamos
+         * têm exatamente as colunas que é suposto ter (que são as guardadas na lista colunasDoCSV);
+         * sem colunas a mais, a menos ou diferentes independente da ordem das colunas no ficheiro.
+         * Retorna falso e termina a execução da função caso isso não seja garantido.
+         */
+        return (parser.getHeaderNames().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(parser.getHeaderNames()));
+    }
+
+    public static boolean validarCsvLine(CSVRecord csvHeader){
+        if(!areAllFieldsNonNull(record)) return false;
+
+        if(!areAllFieldsNotEmptyStrings(record)) return false;
+
+        //TODO extra hora de inicio < hora de fim ou hora de inicio +1h30 = hora de fim?
+        //TODO extra sala formato de string certo?
+        boolean  areTheIntsValid =
+                Integer.parseInt(record.get("Inscritos no turno")) >= 0
+                        && Integer.parseInt(record.get("Lotação da sala")) >=0;
+
+
+        if(!areTheIntsValid) return false;
+        return true;
+    }
     public static boolean validarDocumento(File csvData) {
 /*        CSVFormat format =   CSVFormat.Builder.create()
                 .setHeader()
@@ -127,14 +153,9 @@ public class Validacao{
         }
 
 
-        if (!(parser.getHeaderNames().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(parser.getHeaderNames())))
-            /**
-             * O interessante deste if é que garante antes de continuar a execução que o ficheiro csv que importamos
-             * têm exatamente as colunas que é suposto ter (que são as guardadas na lista colunasDoCSV);
-             * sem colunas a mais, a menos ou diferentes independente da ordem das colunas no ficheiro.
-             * Retorna falso e termina a execução da função caso isso não seja garantido.
-             */
-            return false;
+       /* if (!(parser.getHeaderNames().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(parser.getHeaderNames())))
+            *//*
+            return false;*/
 
         List<CSVRecord> list = parser.getRecords();
         for(CSVRecord record : list){
