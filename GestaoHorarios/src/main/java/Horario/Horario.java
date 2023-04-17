@@ -14,7 +14,7 @@ import java.io.*;
 /**
  * 
  * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
- *
+ * Versão 1.0
  */
 
 public class Horario {
@@ -228,25 +228,25 @@ public class Horario {
 
 	//ponto 12
 	public void saveToJsonLocal(String pathCSV, String jsonPath) throws IOException {
-		
+
 		Horario horario = getHorarioFromCsvLocal(pathCSV);
-		
+
 		Gson gson = new Gson();
 		String json = gson.toJson(horario);
 		try (FileWriter writer = new FileWriter(jsonPath)) {
-		    gson.toJson(horario, writer);
+			gson.toJson(horario, writer);
 		}
-		
-		
+
+
 
 	}
 
 	//ponto 13
 	public void saveToJsonRemoto(String pathCSV, String urlJson) throws IOException, URISyntaxException{
-		
+
 		Horario horario = getHorarioFromCsvLocal(pathCSV);
 		PrintWriter writer = new PrintWriter(new URI(urlJson).toURL().openConnection().getOutputStream(),true, StandardCharsets.UTF_8);
-		
+
 		Gson gson = new Gson();
 		String json = gson.toJson(horario);
 		writer.write(json);

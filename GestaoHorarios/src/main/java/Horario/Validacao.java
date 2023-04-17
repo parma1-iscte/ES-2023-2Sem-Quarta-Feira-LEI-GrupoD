@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 /**
  * 
  * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
- *
+ * Versão 1.0
  */
 
 public class Validacao{
