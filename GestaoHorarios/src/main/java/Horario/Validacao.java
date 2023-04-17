@@ -3,6 +3,7 @@ import java.io.*;
 import java.util.List;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 import java.io.IOException;
 import org.apache.commons.csv.*;
@@ -108,7 +109,7 @@ public class Validacao{
          * sem colunas a mais, a menos ou diferentes independente da ordem das colunas no ficheiro.
          * Retorna falso e termina a execução da função caso isso não seja garantido.
          */
-        return (csvHeader.values().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(csvHeader.values()));
+        return (Arrays.asList(csvHeader.values()).containsAll(colunasDoCSV) && colunasDoCSV.containsAll(Arrays.asList(csvHeader.values())));
     }
 
     public static boolean validarCsvLine(CSVRecord csvLine){
