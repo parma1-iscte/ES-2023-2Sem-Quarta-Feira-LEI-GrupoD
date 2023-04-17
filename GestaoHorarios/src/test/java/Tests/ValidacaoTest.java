@@ -3,8 +3,17 @@ package Tests;
 import org.apache.commons.csv.CSVFormat;
 import org.junit.jupiter.api.Test;
 
-import Horario.*;
+import java.io.*;
+import java.util.List;
 
+import java.nio.charset.Charset;
+import java.util.Arrays;
+
+import java.io.IOException;
+import org.apache.commons.csv.*;
+
+import com.google.gson.JsonObject;
+import Horario.*;
 
 /**
  * 
@@ -13,8 +22,6 @@ import Horario.*;
  */
 
 public class ValidacaoTest {
-
-
     @Test
     public void testValidarCsvLine(){
 
@@ -24,17 +31,17 @@ public class ValidacaoTest {
                 .withDelimiter(';');
         CSVParser parser = null;
         try {
-            File csvData = new File("HeaderSet.csv")
+            File csvData = new File("HeaderSet.csv");
             parser = CSVParser.parse(csvData,Charset.defaultCharset(),format);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         List<CSVRecord> list = parser.getRecords();
-        assertTrue(validarCsvLine(list.get(0)));
-        assertTrue(validarCsvLine(list.get(1)));
-        assertFalse(validarCsvLine(list.get(2)));
-        assertFalse(validarCsvLine(list.get(3)));
-        assertFalse(validarCsvLine(list.get(4)));
+        assertTrue( Validacao.validarCsvLine(list.get(0)));
+        assertTrue( Validacao.validarCsvLine(list.get(1)));
+        assertFalse( Validacao.validarCsvLine(list.get(2)));
+        assertFalse( Validacao.validarCsvLine(list.get(3)));
+        assertFalse( Validacao.validarCsvLine(list.get(4)));
 
     }
  
