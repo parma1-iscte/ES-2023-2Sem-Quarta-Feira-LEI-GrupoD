@@ -221,35 +221,28 @@ public class Horario {
 	}
 
 	//ponto 12
-	public void saveToJsonLocal(String csvFilePath, String jsonFilePath) throws IOException {
-		Reader reader = new FileReader(csvFilePath);
-		CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
-		List<Object> data = new ArrayList<>();
-		for (CSVRecord csvRecord : csvParser) {
-			data.add(csvRecord.toMap());
-		}
+	public void saveToJsonLocal(File file, String jsonPath) throws IOException {
+		
+		Horario horario = getHorarioFromCsvLocal(file);
+		
 		Gson gson = new Gson();
-		String json = gson.toJson(data);
-		FileWriter writer = new FileWriter(jsonFilePath);
-		writer.write(json);
-		writer.close();
-
-
+		String json = gson.toJson(horario);
+		try (FileWriter writer = new FileWriter(jsonPath)) {
+		    gson.toJson(horario, writer);
+		}
+		
+		
 
 	}
 
 	//ponto 13
-	public void saveToJsonRemoto(String csvFilePath, String jsonFilePath,String url) throws IOException, URISyntaxException{
-		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
-				true, StandardCharsets.UTF_8);
-		Reader reader = new FileReader(csvFilePath);
-		CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
-		List<Object> data = new ArrayList<>();
-		for (CSVRecord csvRecord : csvParser) {
-			data.add(csvRecord.toMap());
-		}
+	public void saveToJsonRemoto(File file, String url) throws IOException, URISyntaxException{
+		
+		Horario horario = getHorarioFromCsvLocal(file);
+		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),true, StandardCharsets.UTF_8);
+		
 		Gson gson = new Gson();
-		String json = gson.toJson(data);
+		String json = gson.toJson(horario);
 		writer.write(json);
 		writer.close();
 	}
