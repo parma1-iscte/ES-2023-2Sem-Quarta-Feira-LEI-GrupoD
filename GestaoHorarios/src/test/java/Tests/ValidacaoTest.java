@@ -12,8 +12,6 @@ import Horario.*;
  */
 
 public class ValidacaoTest {
-
-
     @Test
     public void testValidarCsvLine(){
 
@@ -23,7 +21,7 @@ public class ValidacaoTest {
                 .withDelimiter(';');
         CSVParser parser = null;
         try {
-            File csvData = new File("HeaderSet.csv")
+            File csvData = new File("HeaderSet.csv");
             parser = CSVParser.parse(csvData,Charset.defaultCharset(),format);
         } catch (IOException e) {
             throw new RuntimeException(e);
