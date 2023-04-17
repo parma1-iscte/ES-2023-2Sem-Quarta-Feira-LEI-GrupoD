@@ -286,14 +286,13 @@ public class Horario {
 	 */
 
 	public void saveToJsonLocal(File file) throws IOException {
-
-		FileWriter writer = new FileWriter(file);
-
-		Gson gson = new Gson();
-		String json = gson.toJson(this);
-		gson.toJson(this,writer);
-		writer.close();
+	    FileWriter writer = new FileWriter(file);
+	    Gson gson = new Gson();
+	    String json = gson.toJson(this);
+	    writer.write(json);
+	    writer.close();
 	}
+
 
 	//ponto 13
 
@@ -320,25 +319,6 @@ public class Horario {
 
 	}
 
-	public static void main(String[] args) {
-		Aula aula = new Aula("Curos","UC","Turno","Turma",20,"Sex",
-				LocalTime.of(13, 0, 0),LocalTime.of(14, 30, 0),LocalDate.of(2022, 12, 2),
-				"Sala",30);
-
-		Horario h = new Horario(List.of(aula));
-		try {
-			h.saveToJsonLocal(new File("json_teste.json"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//		Gson gson = new Gson();
-		//		String s = "[ {  \"name\": \"john\", \"city\": \"chicago\", \"age\": \"22\" }, { \"name\": \"gary\", \"city\": \"florida\", \"age\": \"35\" }, { \"name\": \"sal\",  \"city\": \"vegas\", \"age\": \"18\"} ]";
-		//		String json = gson.toJson(s);
-		//		System.out.println(s);
-		//		System.out.println(json);
-
-	}
 
 }
 
