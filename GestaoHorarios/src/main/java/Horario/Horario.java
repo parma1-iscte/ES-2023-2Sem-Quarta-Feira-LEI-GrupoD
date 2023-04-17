@@ -117,9 +117,9 @@ public class Horario {
     */
 	
 	
-	public static Horario getHorarioFromCsvLocal(String pathCSV) throws FileNotFoundException, IOException {
+	public static Horario getHorarioFromCsvLocal(File file) throws FileNotFoundException, IOException {
 
-		BufferedReader in = new BufferedReader(new FileReader(pathCSV));
+		BufferedReader in = new BufferedReader(new FileReader(file));
 
 		return new Horario(readFileCsvWithBufferedReader(in));
 	}
