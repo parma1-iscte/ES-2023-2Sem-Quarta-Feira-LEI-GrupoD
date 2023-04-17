@@ -11,6 +11,11 @@ import com.google.gson.*;
 
 import java.io.*;
 
+/**
+ * 
+ * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
+ *
+ */
 
 public class Horario {
 
