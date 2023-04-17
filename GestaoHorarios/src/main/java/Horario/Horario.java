@@ -102,11 +102,11 @@ public class Horario {
 	}
 
 	// ponto 8
-	
+
 	/**
 
     Cria e retorna um objeto Horario a partir de um arquivo CSV local.
-	
+
 	@param file O arquivo CSV local contendo os dados do horário.
 
     @return um objeto Horario criado a partir do arquivo CSV
@@ -114,9 +114,9 @@ public class Horario {
     @throws FileNotFoundException se o arquivo no caminho fornecido não for encontrado
 
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
-    */
-	
-	
+	 */
+
+
 	public static Horario getHorarioFromCsvLocal(File file) throws FileNotFoundException, IOException {
 
 		BufferedReader in = new BufferedReader(new FileReader(file));
@@ -125,7 +125,7 @@ public class Horario {
 	}
 
 	//ponto 9
-	
+
 	/**
 
     Este método lê um arquivo CSV de uma URL remoto e cria um objeto Horario.
@@ -139,18 +139,18 @@ public class Horario {
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
 
     @throws URISyntaxException se a sintaxe da URI estiver incorreta
-    */
-	
+	 */
+
 	public static Horario getHorarioFromCsvRemoto(String url) throws MalformedURLException, IOException, URISyntaxException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(new URI(url).toURL().openStream()));
 
 		return new Horario(readFileCsvWithBufferedReader(in));
 	}
 
-	
-	
+
+
 	// funcao comum  dos pontos 8,9
-	
+
 	/**
 
     Este método lê um arquivo CSV com um BufferedReader e cria uma lista de objetos Aula.
@@ -162,8 +162,8 @@ public class Horario {
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
 
     @throws IllegalArgumentException se o arquivo CSV estiver mal estruturado
-    */
-	
+	 */
+
 	public static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException {
 		List<Aula> lista = new ArrayList<>();
 		CSVFormat format = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
@@ -213,9 +213,9 @@ public class Horario {
 	 * @param file o arquivo onde o horário será salvo.
 	 * @throws IOException se ocorrer um erro de I/O ao escrever no arquivo.
 	 */
-	public void saveToCsvLocal(String path) throws IOException {
+	public void saveToCsvLocal(File file) throws IOException {
 
-		PrintWriter writer = new PrintWriter(path);
+		PrintWriter writer = new PrintWriter(file);
 		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
 				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atríbuida à aula", "Lotacão da sala");
 		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
@@ -275,30 +275,51 @@ public class Horario {
 	}
 
 	//ponto 12
-	public void saveToJsonLocal(String pathCSV, String jsonPath) throws IOException {
 
-		Horario horario = getHorarioFromCsvLocal(pathCSV);
+	/**
 
-		Gson gson = new Gson();
-		String json = gson.toJson(horario);
-		try (FileWriter writer = new FileWriter(jsonPath)) {
-			gson.toJson(horario, writer);
-		}
+    Guarda o objeto atual em formato JSON em um arquivo local.
 
+    @param file O arquivo onde o objeto será salvo.
 
+    @throws IOException se ocorrer um erro ao escrever o arquivo.
+	 */
 
+	public void saveToJsonLocal(File file) throws IOException {
+	    FileWriter writer = new FileWriter(file);
+	    Gson gson = new Gson();
+	    String json = gson.toJson(this);
+	    writer.write(json);
+	    writer.close();
 	}
+
 
 	//ponto 13
-	public void saveToJsonRemoto(String pathCSV, String urlJson) throws IOException, URISyntaxException{
 
-		Horario horario = getHorarioFromCsvLocal(pathCSV);
-		PrintWriter writer = new PrintWriter(new URI(urlJson).toURL().openConnection().getOutputStream(),true, StandardCharsets.UTF_8);
+	/**
+
+    Guarda o objeto atual em formato JSON em uma URL remota.
+
+    @param url A URL onde o objeto será salvo.
+
+    @throws IOException se ocorrer um erro de entrada/saída ao conectar com a URL.
+
+    @throws URISyntaxException se a sintaxe da URL for inválida.
+	 */
+
+	public void saveToJsonRemoto(String url) throws IOException, URISyntaxException{
+
+		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
+				true, StandardCharsets.UTF_8);
 
 		Gson gson = new Gson();
-		String json = gson.toJson(horario);
-		writer.write(json);
+
+		gson.toJson(this,writer);
 		writer.close();
+
 	}
 
+
 }
+
+
