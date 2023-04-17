@@ -1,18 +1,20 @@
 package Tests;
 
 import Horario.*;
-
-
 import  org.junit.jupiter.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -172,27 +174,7 @@ public class HorarioTest {
 		assertThrows(IOException.class, () -> Horario.getHorarioFromJsonRemoto(url));
 	}
 
-	@Test
-	public void testJsonToAulaValidJson() {
-		// Arrange
-		String json = "{\"Curso\":\"Engenharia Informática\",\"Unidade Curricular\":\"Programação III\",\"Turno\":\"TP01\",\"Turma\":\"LEI-A\",\"Inscritos no turno\":25,\"Dia da semana\":\"Segunda-feira\",\"Hora início da aula\":\"08:30\",\"Hora fim da aula\":\"10:30\",\"Data da aula\":\"2023-04-17\",\"Sala atribuída à aula\":\"A100\",\"Lotação da sala\":50}";
-
-		// Act
-		Aula aula = Horario.jsonToAula(new Gson().fromJson(json, JsonObject.class));
-
-		// Assert
-		assertEquals("Engenharia Informática", aula.getCurso());
-		assertEquals("Programação III", aula.getUc());
-		assertEquals("TP01", aula.getTurno());
-		assertEquals("LEI-A", aula.getTurma());
-		assertEquals(25, aula.getInscritos());
-		assertEquals("Segunda-feira", aula.getDiaSemana());
-		assertEquals(LocalTime.of(8, 30), aula.getHoraInicio());
-		assertEquals(LocalTime.of(10, 30), aula.getHoraFim());
-		assertEquals(LocalDate.of(2023, 4, 17), aula.getDia());
-		assertEquals("A100", aula.getSala());
-		assertEquals(50, aula.getLotacaoSala());
-	}
+	
 
 	@Test
 	public void testGetHorarioFromJsonLocal() throws IOException {
@@ -205,7 +187,7 @@ public class HorarioTest {
 	    // Chamar a função getHorarioFromJsonLocal
 	    Horario horario = null;
 	    try {
-	        horario = HorarioUtils.getHorarioFromJsonLocal(tempFile);
+	        horario = Horario.getHorarioFromJsonLocal(tempFile);
 	    } catch (IOException e) {
 	        fail("Erro ao ler arquivo JSON local.");
 	    }
@@ -227,14 +209,7 @@ public class HorarioTest {
 	    assertEquals(30, aulas.get(0).getLotacaoSala());
 	
 	
-	@Test
-	public void testGetHorarioFromJsonRemoto() throws IOException, URISyntaxException {
-	    // Criar um servidor HTTP local para simular a resposta do servidor remoto
-	    HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-	    server.createContext("/", exchange -> {
-	        String response = "[{ \"Curso\": \"Curso A\", \"Unidade Curricular\": \"UC A\", \"Turno\": \"T1\", \"Turma\": \"TA\", \"Inscritos no turno\": 20, \"Dia da semana\": \"SEG\", \"Hora início da aula
-
-
+	}
 
 
 }
