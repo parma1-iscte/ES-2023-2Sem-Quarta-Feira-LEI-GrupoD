@@ -2,9 +2,14 @@ package Tests;
 
 import Horario.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+
+import  org.junit.jupiter.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,8 +23,6 @@ import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.junit.Before;
-import org.junit.Test;
 
 
 public class HorarioTest {
@@ -27,7 +30,7 @@ public class HorarioTest {
 	private Horario horario;
 	private List<Aula> listaAulas;
 
-	@Before
+	@BeforeAll
 	public void setUp() {
 		// Cria uma lista de aulas para testar
 		listaAulas = new ArrayList<>();

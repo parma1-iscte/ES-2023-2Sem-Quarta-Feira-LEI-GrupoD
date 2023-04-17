@@ -27,8 +27,7 @@ public class Horario {
 
 
 	//ponto 6
-	public static Horario getHorarioFromJsonLocal(String path) throws IOException {
-		File file = new File(path);
+	public static Horario getHorarioFromJsonLocal(File file) throws IOException {
 
 		BufferedReader in = new BufferedReader(new FileReader(file));
 
@@ -74,8 +73,7 @@ public class Horario {
 	}
 
 	// ponto 8
-	public static Horario getHorarioFromCsvLocal(String path) throws FileNotFoundException, IOException {
-		File file = new File(path);
+	public static Horario getHorarioFromCsvLocal(File file) throws FileNotFoundException, IOException {
 
 		BufferedReader in = new BufferedReader(new FileReader(file));
 
@@ -122,9 +120,9 @@ public class Horario {
 
 
 	//ponto 10
-	public void saveToCsvLocal(String path) throws IOException {
+	public void saveToCsvLocal(File file) throws IOException {
 
-		FileWriter writer = new FileWriter(path);
+		PrintWriter writer = new PrintWriter(file);
 		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
 				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atríbuida à aula", "Lotacão da sala");
 		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
