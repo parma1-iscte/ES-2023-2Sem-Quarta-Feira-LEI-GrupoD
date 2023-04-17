@@ -10,10 +10,9 @@ import org.apache.commons.csv.*;
 import com.google.gson.JsonObject;
 
 /**
- * @author Carlos Henriques
- * @author Pedro Mendonça
- * Desenvolver uma função que valida documentos de um ficheiro JSON ou CSV (se têm o formato correto)
- * (3 horas cada)
+ * 
+ * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
+ *
  */
 
 public class Validacao{

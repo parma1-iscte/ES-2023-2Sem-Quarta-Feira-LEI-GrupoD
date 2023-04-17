@@ -31,6 +31,12 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
 
+/**
+ * 
+ * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
+ *
+ */
+
 public class HorarioTest {
 
 	private Horario horario;

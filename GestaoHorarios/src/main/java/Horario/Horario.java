@@ -11,6 +11,11 @@ import com.google.gson.*;
 
 import java.io.*;
 
+/**
+ * 
+ * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
+ *
+ */
 
 public class Horario {
 
@@ -27,14 +32,12 @@ public class Horario {
 
 
 	//ponto 6
-	
 	/**
-	Lê um arquivo JSON local e converte seu conteúdo em uma lista de aulas.
-    @param file o arquivo JSON a ser lido
-    @return uma lista de aulas contidas no arquivo JSON
-    @throws IOException se ocorrer um erro ao ler o arquivo
-    */
-	
+	 * Lê um arquivo JSON local e converte seu conteúdo em uma lista de aulas.
+	 * @param file o arquivo JSON a ser lido
+	 * @return uma lista de aulas contidas no arquivo JSON
+	 * @throws IOException se ocorrer um erro ao ler o arquivo
+	 */
 	public static Horario getHorarioFromJsonLocal(File file) throws IOException {
 
 		BufferedReader in = new BufferedReader(new FileReader(file));
@@ -44,16 +47,13 @@ public class Horario {
 
 
 	//ponto 7
-	
 	/**
-
-    Lê um arquivo JSON remoto e converte seu conteúdo em uma lista de aulas.
-    @param url a URL do arquivo JSON a ser lido
-    @return uma lista de aulas contidas no arquivo JSON
-    @throws IOException se ocorrer um erro ao ler o arquivo
-    @throws URISyntaxException se a URI da URL estiver incorreta
-    */
-	
+	 * Lê um arquivo JSON remoto e converte seu conteúdo em uma lista de aulas.
+	 * @param url a URL do arquivo JSON a ser lido
+	 * @return uma lista de aulas contidas no arquivo JSON
+	 * @throws IOException se ocorrer um erro ao ler o arquivo
+	 * @throws URISyntaxException se a URI da URL estiver incorreta
+	 */
 	public static Horario getHorarioFromJsonRemoto(String url) throws IOException, URISyntaxException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(new URI(url).toURL().openStream()));
 
@@ -61,16 +61,12 @@ public class Horario {
 
 	}
 
-	/**
-
-    Converte um objeto JSON em uma instância de Aula.
-
-    @param json o objeto JSON a ser convertido
-
-    @return uma instância de Aula contida no objeto JSON
-    */
-	
 	// funcoes communs para pontos 6,7
+	/**
+	 * Converte um objeto JSON em uma instância de Aula.
+	 * @param json o objeto JSON a ser convertido
+	 * @return uma instância de Aula contida no objeto JSON
+	 */
 	private static Aula jsonToAula(JsonObject json) {
 		String curso = json.get("Curso").toString();
 		String uc = json.get("Unidade Curricular").toString();
@@ -86,18 +82,13 @@ public class Horario {
 
 		return new Aula(curso,uc,turno,turma,inscritos,diaSemana,horaInicio,horaFim,dia,sala,lotacaoSala);
 	}
-	
+
 	/**
-
-    Lê o conteúdo de um arquivo JSON com o auxílio de um BufferedReader e o converte em uma lista de aulas.
-
-    @param in um BufferedReader para ler o conteúdo do arquivo JSON
-
-    @return uma lista de aulas contidas no arquivo JSON
-
-    @throws IOException se ocorrer um erro ao ler o arquivo
-    */
-
+	 * Lê o conteúdo de um arquivo JSON com o auxílio de um BufferedReader e o converte em uma lista de aulas.
+	 * @param in um BufferedReader para ler o conteúdo do arquivo JSON
+	 * @return uma lista de aulas contidas no arquivo JSON
+	 * @throws IOException se ocorrer um erro ao ler o arquivo
+	 */
 	private static List<Aula> readFileJsonWithBufferedReader(BufferedReader in) throws IOException{
 		List<Aula> list = new ArrayList<>();
 		Gson gson = new Gson();
@@ -111,9 +102,9 @@ public class Horario {
 	}
 
 	// ponto 8
-	public static Horario getHorarioFromCsvLocal(File file) throws FileNotFoundException, IOException {
+	public static Horario getHorarioFromCsvLocal(String pathCSV) throws FileNotFoundException, IOException {
 
-		BufferedReader in = new BufferedReader(new FileReader(file));
+		BufferedReader in = new BufferedReader(new FileReader(pathCSV));
 
 		return new Horario(readFileCsvWithBufferedReader(in));
 	}
@@ -131,21 +122,21 @@ public class Horario {
 				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atribuída à aula", "Lotação da sala");
 		CSVParser csvParser = new CSVParser(in, format);
 		Iterator<CSVRecord> iterator = csvParser.iterator();
-		
+
 		if(iterator.hasNext())
 			if (!Validacao.validarCsvHeader(iterator.next()))
 				throw new IllegalArgumentException("Ficheiro mal estruturado");
 
- 
+
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 		while (iterator.hasNext()) {
-			
+
 			CSVRecord csvRecord = iterator.next();
 			if(!Validacao.validarCsvLine(csvRecord))
 				throw new IllegalArgumentException("Ficheiro mal estruturado");
-	
+
 			String curso = csvRecord.get("Curso");
 			String uc = csvRecord.get("Unidade Curricular");
 			String turno = csvRecord.get("Turno");
@@ -169,9 +160,14 @@ public class Horario {
 
 
 	//ponto 10
-	public void saveToCsvLocal(File file) throws IOException {
+	/**
+	 * Salva o horário em um arquivo CSV localmente.
+	 * @param file o arquivo onde o horário será salvo.
+	 * @throws IOException se ocorrer um erro de I/O ao escrever no arquivo.
+	 */
+	public void saveToCsvLocal(String path) throws IOException {
 
-		PrintWriter writer = new PrintWriter(file);
+		PrintWriter writer = new PrintWriter(path);
 		CSVFormat csvFormat = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
 				"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atríbuida à aula", "Lotacão da sala");
 		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
@@ -184,6 +180,11 @@ public class Horario {
 
 
 	//ponto 11
+	/**
+	 * Salva os dados do horário em um arquivo CSV remoto, a partir da URL especificada.
+	 * @param url a URL do arquivo CSV remoto a ser criado
+	 * @throws Exception se ocorrer um erro durante a escrita do arquivo CSV remoto
+	 */
 	public void saveToCsvRemoto(String url) throws Exception {
 
 		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
@@ -203,6 +204,11 @@ public class Horario {
 	}
 
 	//funcoes communs para pontos 10,11
+	/**
+	 * Escreve os dados do horário em formato CSV utilizando o {@link CSVPrinter}.
+	 * @param csvPrinter o {@link CSVPrinter} a ser utilizado para escrever os dados
+	 * @throws IOException se ocorrer um erro de entrada/saída ao escrever os dados
+	 */
 	private void writeHorarioWithCSVPrinter(CSVPrinter csvPrinter) throws IOException {
 		for (Aula aula: horario) {
 			csvPrinter.printRecord(
@@ -221,35 +227,28 @@ public class Horario {
 	}
 
 	//ponto 12
-	public void saveToJsonLocal(String csvFilePath, String jsonFilePath) throws IOException {
-		Reader reader = new FileReader(csvFilePath);
-		CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
-		List<Object> data = new ArrayList<>();
-		for (CSVRecord csvRecord : csvParser) {
-			data.add(csvRecord.toMap());
-		}
+	public void saveToJsonLocal(String pathCSV, String jsonPath) throws IOException {
+		
+		Horario horario = getHorarioFromCsvLocal(pathCSV);
+		
 		Gson gson = new Gson();
-		String json = gson.toJson(data);
-		FileWriter writer = new FileWriter(jsonFilePath);
-		writer.write(json);
-		writer.close();
-
-
+		String json = gson.toJson(horario);
+		try (FileWriter writer = new FileWriter(jsonPath)) {
+		    gson.toJson(horario, writer);
+		}
+		
+		
 
 	}
 
 	//ponto 13
-	public void saveToJsonRemoto(String csvFilePath, String jsonFilePath,String url) throws IOException, URISyntaxException{
-		PrintWriter writer = new PrintWriter(new URI(url).toURL().openConnection().getOutputStream(),
-				true, StandardCharsets.UTF_8);
-		Reader reader = new FileReader(csvFilePath);
-		CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
-		List<Object> data = new ArrayList<>();
-		for (CSVRecord csvRecord : csvParser) {
-			data.add(csvRecord.toMap());
-		}
+	public void saveToJsonRemoto(String pathCSV, String urlJson) throws IOException, URISyntaxException{
+		
+		Horario horario = getHorarioFromCsvLocal(pathCSV);
+		PrintWriter writer = new PrintWriter(new URI(urlJson).toURL().openConnection().getOutputStream(),true, StandardCharsets.UTF_8);
+		
 		Gson gson = new Gson();
-		String json = gson.toJson(data);
+		String json = gson.toJson(horario);
 		writer.write(json);
 		writer.close();
 	}
