@@ -4,6 +4,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.JsonObject;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,7 +20,6 @@ import org.apache.commons.csv.*;
 import Horario.*;
 
 
-import com.google.gson.JsonObject;
 
 /**
  * 
@@ -27,16 +28,23 @@ import com.google.gson.JsonObject;
  */
 
 public class ValidacaoTest {
+	static JsonObject objeto=new JsonObject();
+	@BeforeAll
+	public static void setup() {
+		
+		objeto.addProperty("Curso", "LEI");
+	     objeto.addProperty("Unidade Curricular", "POO");
+	     objeto.addProperty("Turma", "LEI-P");
+	     objeto.addProperty("Dia da semana", "SEG");
+	     objeto.addProperty("Inscritos no turno", 50);
+	     objeto.addProperty("Hora de início da aula", "09:00:00");
+	     objeto.addProperty("Hora de fim da aula", "11:00:00");
+	     objeto.addProperty("Data da aula", "18/04/2023");
+	     objeto.addProperty("Lotação da sala", 100);
+	     objeto.addProperty("Sala atribuída à aula", "Sala 1");	
+	}
 	
-	 @Test
-	    public void testValidarDocumentoObjetoVazio() {
-	        // Cria um objeto JsonObject vazio
-	        JsonObject objeto = new JsonObject();
-
-	        // Chama o método a ser testado e verifica se retorna false
-	        assertFalse(Validacao.validarDocumento(objeto));
-	    }
-	 
+	 /*
 	 @Test
 	 public void testValidar_Curso_Vazio() {
 	     // Cria um objeto JsonObject com o campo "Curso" vazio
@@ -46,7 +54,30 @@ public class ValidacaoTest {
 	     // Chama o método a ser testado e verifica se retorna false
 	     assertFalse(Validacao.validarDocumento(objeto));
 	 }
-	 
+	 */
+	 @Test
+	    void testValidarDocumento() {
+	       
+
+	        Assertions.assertTrue(Validacao.validarDocumento(objeto));
+	    }
+
+	    @Test
+	      void testCursoObrigatorio() {
+	        objeto = new JsonObject();
+	        objeto.addProperty("Curso", "");
+	        objeto.addProperty("Unidade Curricular", "POO");
+	        objeto.addProperty("Turma", "LEI-P");
+	        objeto.addProperty("Dia da semana", "SEG");
+	        objeto.addProperty("Inscritos no turno", 50);
+	        objeto.addProperty("Hora de início da aula", "09:00:00");
+	        objeto.addProperty("Hora de fim da aula", "11:00:00");
+	        objeto.addProperty("Data da aula", "18/04/2023");
+	        objeto.addProperty("Lotação da sala", 100);
+	        objeto.addProperty("Sala atribuída à aula", "Sala 1");
+
+	        Assertions.assertFalse(Validacao.validarDocumento(objeto));
+	    }
 	 
 
    private static  final CSVFormat format = CSVFormat.EXCEL
