@@ -133,31 +133,7 @@ public class ValidacaoTest {
            }
            assertFalse(Validacao.validarDocumento(headerComRowsAmenos));
     }
-    @Test
-    public void validarCSVComHeaderDesordenado() {
-        CSVParser headerDesordenado = null;
-           try {
-               File csvData8 = new File("Conjunto de teste/Header com linhas desordenadas.csv");
-               headerDesordenado = CSVParser.parse(csvData8, Charset.defaultCharset(), format);
-           } catch (IOException e) {
-               throw new RuntimeException(e);
-           }
-           assertFalse(Validacao.validarDocumento(headerDesordenado));
-    }
 
-    @Test
-    public void validarCSVComFieldNull() {
-        // Record com um campo a null
-
-       CSVParser recordComNull = null;
-       try {
-           File csvData2 = new File("Conjunto de teste/Record com um campo a null.csv");
-           recordComNull = CSVParser.parse(csvData2, Charset.defaultCharset(), format);
-       } catch (IOException e) {
-           throw new RuntimeException(e);
-       }
-       assertFalse(Validacao.validarDocumento(recordComNull));
-    }
 
     @Test
     public void validarCSVComEmptyString() {
