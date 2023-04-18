@@ -17,6 +17,9 @@ import org.apache.commons.csv.*;
 
 import Horario.*;
 
+
+import com.google.gson.JsonObject;
+
 /**
  * 
  * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
@@ -35,13 +38,10 @@ public class ValidacaoTest {
 	    }
 	 
 	 @Test
-	 public void testValidar_Curso_UC_Turma_Vazio() {
+	 public void testValidar_Curso_Vazio() {
 	     // Cria um objeto JsonObject com o campo "Curso" vazio
 	     JsonObject objeto = new JsonObject();
 	     objeto.addProperty("Curso", "");
-	     objeto.addProperty("Unidadde Curricular", "");
-	     objeto.addProperty("Turma", "");
-	     objeto.addProperty("Turno", "");
 
 	     // Chama o método a ser testado e verifica se retorna false
 	     assertFalse(Validacao.validarDocumento(objeto));

@@ -46,7 +46,13 @@ public class Validacao {
             System.out.println("A UC é de preenchimento obrigatório");
             return false;
         }
-
+        
+        if (objeto.get("Turno").toString().isEmpty()) {
+            // throw new RuntimeException("A UC é de preenchimento obrigatório");
+            System.out.println("O turno é de preenchimento obrigatório");
+            return false;
+        }
+        
         if (objeto.get("Turma").toString().isEmpty()) {
             // throw new RuntimeException("Cada aula tem de ter uma turma associada e pode
             // conter letras/números");
