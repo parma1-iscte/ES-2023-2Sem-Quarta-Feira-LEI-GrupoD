@@ -43,7 +43,7 @@ public class ValidacaoTest {
     }
     
     @Test
-    private void validarCSVComHeaderAlterado() {
+    public void validarCSVComHeaderAlterado() {
         CSVParser headerAlterado = null;
            try {
                File csvData5 = new File("Conjunto de teste/Header com colunas a alteradas.csv");
@@ -54,7 +54,7 @@ public class ValidacaoTest {
            assertFalse(Validacao.validarDocumento(headerAlterado));
     }
     @Test
-    private void validarCSVComHeaderComLinhasAMais() {
+    public void validarCSVComHeaderComLinhasAMais() {
         CSVParser headerComRowsAmais = null;
            try {
                File csvData6 = new File("Conjunto de teste/Header com colunas a mais.csv");
@@ -66,7 +66,7 @@ public class ValidacaoTest {
     }
 
     @Test
-    private void validarCSVComHeaderComLinhasAMenos() {
+    public void validarCSVComHeaderComLinhasAMenos() {
         CSVParser headerComRowsAmenos = null;
            try {
                File csvData7 = new File("Conjunto de teste/Header com colunas a menos.csv");
@@ -77,7 +77,7 @@ public class ValidacaoTest {
            assertFalse(Validacao.validarDocumento(headerComRowsAmenos));
     }
     @Test
-    private void validarCSVComHeaderDesordenado() {
+    public void validarCSVComHeaderDesordenado() {
         CSVParser headerDesordenado = null;
            try {
                File csvData8 = new File("Conjunto de teste/Header com linhas desordenadas.csv");
@@ -89,7 +89,7 @@ public class ValidacaoTest {
     }
 
     @Test
-    private void validarCSVComFieldNull() {
+    public void validarCSVComFieldNull() {
         // Record com um campo a null
 
        CSVParser recordComNull = null;
@@ -103,7 +103,7 @@ public class ValidacaoTest {
     }
 
     @Test
-    private void validarCSVComEmptyString() {
+    public void validarCSVComEmptyString() {
         // Record com um campo com empty String
          CSVParser recordComEmptyString = null;
         try {
@@ -115,7 +115,7 @@ public class ValidacaoTest {
         assertFalse(Validacao.validarDocumento(recordComEmptyString));
     }
     @Test
-    private void validarCSVComFieldNegativo() {
+    public void validarCSVComFieldNegativo() {
         // Record com campo numerico negativo
            CSVParser recordComNumNeg = null;
            try {
