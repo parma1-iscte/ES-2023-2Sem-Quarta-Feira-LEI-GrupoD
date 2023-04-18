@@ -3,6 +3,8 @@ package Tests;
 import org.apache.commons.csv.CSVFormat;
 import org.junit.jupiter.api.Test;
 
+import com.google.gson.JsonObject;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,6 +24,30 @@ import Horario.*;
  */
 
 public class ValidacaoTest {
+	
+	 @Test
+	    public void testValidarDocumentoObjetoVazio() {
+	        // Cria um objeto JsonObject vazio
+	        JsonObject objeto = new JsonObject();
+
+	        // Chama o método a ser testado e verifica se retorna false
+	        assertFalse(Validacao.validarDocumento(objeto));
+	    }
+	 
+	 @Test
+	 public void testValidar_Curso_UC_Turma_Vazio() {
+	     // Cria um objeto JsonObject com o campo "Curso" vazio
+	     JsonObject objeto = new JsonObject();
+	     objeto.addProperty("Curso", "");
+	     objeto.addProperty("Unidadde Curricular", "");
+	     objeto.addProperty("Turma", "");
+	     objeto.addProperty("Turno", "");
+
+	     // Chama o método a ser testado e verifica se retorna false
+	     assertFalse(Validacao.validarDocumento(objeto));
+	 }
+	 
+	 
 
    private static  final CSVFormat format = CSVFormat.EXCEL
     .withHeader() // This causes the parser to read the first record and use its values as column
