@@ -1,0 +1,26 @@
+{
+  "Curso": "Curso1",
+  "Unidade Curricular": "UC1",
+  "Turno": "Turno1",
+  "Turma": "Turma1",
+  "Inscritos no Turno": 30,
+  "Dia da semana": "Segunda-feira",
+  "Hora in]icio da aula": "08:00:00",
+  "Hora fim da aula": "10:00:00",
+  "Data da aula": "2023-04-16",
+  "Sala atribuída à aula": "Sala1",
+  "Lotação da aula": 50
+}
+{
+  "Curso": "Curso2",
+  "Unidade Curricular": "UC2",
+  "Turno": "Turno2",
+  "Turma": "Turma2",
+  "Inscritos no Turno": 25,
+  "Dia da semana": "Terça-feira",
+  "Hora in]icio da aula": "14:00:00",
+  "Hora fim da aula": "16:00:00",
+  "Data da aula": "2023-04-17",
+  "Sala atribuída à aula": "Sala2",
+  "Lotação da aula": 40
+}

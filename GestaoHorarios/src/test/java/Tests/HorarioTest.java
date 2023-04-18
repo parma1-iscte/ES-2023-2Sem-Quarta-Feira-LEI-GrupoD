@@ -200,7 +200,7 @@ public class HorarioTest {
 	    String path = "/path/to/invalid/directory/horario.csv";
 
 	    // Chama o método, espera-se que uma exceção IOException seja lançada
-	    assertThrows(IOException.class, () -> horario.saveToJsonRemotoOrLocal(path));
+	    assertThrows(IOException.class, () -> horario.saveToCsvLocalOrRemote(path));
 	}
 
 	//Testes para Escrita CSV Remoto
@@ -219,7 +219,7 @@ public class HorarioTest {
 	    String url = "https://example.com/horario.csv";
 
 	    // Chama o método para salvar o horário no arquivo CSV remoto
-	    horario.saveToJsonRemotoOrLocal(url);
+	    horario.saveToCsvLocalOrRemote(url);
 
 	    // Verifica se o arquivo foi salvo corretamente remotamente
 	    assertEquals(horario, Horario.getHorarioFromCsvLocalOrRemote(url));
@@ -240,13 +240,13 @@ public class HorarioTest {
 	    String url = "https://example.com/invalid/horario.csv";
 
 	    // Chama o método, espera-se que uma exceção Exception seja lançada
-	    assertThrows(IOException.class, () -> horario.saveToJsonRemotoOrLocal(url));
+	    assertThrows(IOException.class, () -> horario.saveToCsvLocalOrRemote(url));
 	}
 
 	
 	//Testes para Escrita JSON Local
 	@Test
-    public void testSaveToJsonLocal() throws IOException, URISyntaxException {
+    public void testSaveToJsonLocal() throws Exception {
 		List<Aula> list = new ArrayList<>();
 	    Aula a1 = new Aula("Curso1", "UC1", "Turno1", "Turma1", 30, "Segunda-feira", LocalTime.parse("08:00:00"),
 	            LocalTime.parse("10:00:00"), LocalDate.parse("2023-04-16"), "Sala1", 50);
@@ -254,9 +254,9 @@ public class HorarioTest {
 	            LocalTime.parse("16:00:00"), LocalDate.parse("2023-04-17"), "Sala2", 40);
 	    list.add(a1);list.add(a2);
 	    Horario horario = new Horario(list);
-		File file = new File("json_exemplo.json");
+		File file = new File("json_teste.json");
         // Executa o método de teste
-        horario.saveToJsonRemotoOrLocal("json_exemplo.json");
+        horario.saveToJsonLocal("json_teste.json");
         
         // Verifica se o arquivo foi criado
         assertTrue(file.exists());
@@ -272,7 +272,7 @@ public class HorarioTest {
 	
 	//Testes para Escrita JSON Remoto
 	@Test
-    public void testSaveToJsonRemoto() throws IOException, URISyntaxException {
+    public void testSaveToJsonRemoto() throws Exception {
 		List<Aula> list = new ArrayList<>();
 	    Aula a1 = new Aula("Curso1", "UC1", "Turno1", "Turma1", 30, "Segunda-feira", LocalTime.parse("08:00:00"),
 	            LocalTime.parse("10:00:00"), LocalDate.parse("2023-04-16"), "Sala1", 50);
@@ -280,9 +280,9 @@ public class HorarioTest {
 	            LocalTime.parse("16:00:00"), LocalDate.parse("2023-04-17"), "Sala2", 40);
 	    list.add(a1);list.add(a2);
 	    Horario horario = new Horario(list);
-	    String url = "";
+	    String url = "https://github.com/parma1-iscte/ES-2023-2Sem-Quarta-Feira-LEI-GrupoD/blob/main/json_exemplo.json";
         // Executa o método de teste
-        horario.saveToJsonRemotoOrLocal(url);
+        horario.saveToJsonRemote(url);
         
         // Verifica se o arquivo foi salvo remotamente corretamente
         // Aqui você pode implementar verificações específicas, como verificar
