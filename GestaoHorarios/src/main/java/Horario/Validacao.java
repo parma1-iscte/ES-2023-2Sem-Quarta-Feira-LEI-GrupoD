@@ -163,11 +163,12 @@ public class Validacao {
 
         List<CSVRecord> list = parser.getRecords();
         for (CSVRecord record : list) {
+            
+            if (!areAllFieldsNotEmptyStrings(record))
+                return false;
             if (!areAllFieldsNonNull(record))
                 return false;
 
-            if (!areAllFieldsNotEmptyStrings(record))
-                return false;
 
             // TODO extra hora de inicio < hora de fim ou hora de inicio +1h30 = hora de
             // fim?
@@ -207,8 +208,10 @@ public class Validacao {
                 .withDelimiter(';');
         CSVParser parser = null;
         try {
-            File csvData = new File("linesSets.csv");
+            File csvData = new File("Conjunto de teste/Record com um campo a null.csv");
             parser = CSVParser.parse(csvData, Charset.defaultCharset(), format);
+            for (CSVRecord r : parser)
+                 System.out.println(r.get("Sala atribuída à aula"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
