@@ -6,7 +6,6 @@ import java.util.List;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
 
 import java.io.IOException;
 import org.apache.commons.csv.*;
@@ -66,8 +65,6 @@ public class Validacao {
    }
    
    public static boolean validarTurma(String turma) {
-        
-        
         		if(turma.isEmpty()) {
             // throw new RuntimeException("Cada aula tem de ter uma turma associada e pode
             // conter letras/números");
@@ -189,25 +186,8 @@ public class Validacao {
         }
         return true;
    	}
-    
-   
-    
 
     public static boolean validarDocumento(CSVParser parser) {
-        /*
-         * CSVFormat format = CSVFormat.EXCEL
-         * .withHeader() //This causes the parser to read the first record and use its
-         * values as column names
-         * .withSkipHeaderRecord(true)
-         * .withDelimiter(';');
-         * CSVParser parser = null;
-         * try {
-         * parser = CSVParser.parse(csvData,Charset.defaultCharset(),format);
-         * } catch (IOException e) {
-         * throw new RuntimeException(e);
-         * }
-         */
-
         if (!(parser.getHeaderNames().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(parser.getHeaderNames())))
             /**
              * O interessante deste if é que garante antes de continuar a execução que o
@@ -228,9 +208,7 @@ public class Validacao {
             if (!areAllFieldsNotEmptyStrings(record))
                 return false;
 
-            // TODO extra hora de inicio < hora de fim ou hora de inicio +1h30 = hora de
-            // fim?
-            // TODO extra sala formato de string certo?
+            
             boolean areTheIntsValid = Integer.parseInt(record.get("Inscritos no turno")) >= 0
                     && Integer.parseInt(record.get("Lotação da sala")) >= 0;
 
@@ -258,7 +236,7 @@ public class Validacao {
                 record.get("Lotação da sala") != null && record.get("Sala atribuída à aula") != null;
     }
 
-    public static void main(String[] args) {
+     public static void main(String[] args) {
         CSVFormat format = CSVFormat.EXCEL
                 .withHeader() // This causes the parser to read the first record and use its values as column
                               // names
@@ -266,8 +244,10 @@ public class Validacao {
                 .withDelimiter(';');
         CSVParser parser = null;
         try {
-            File csvData = new File("linesSets.csv");
+            File csvData = new File("horario_exemplo (2).csv");
             parser = CSVParser.parse(csvData, Charset.defaultCharset(), format);
+            
+            Validacao.validarDocumento(parser);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
