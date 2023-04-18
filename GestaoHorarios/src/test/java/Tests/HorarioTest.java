@@ -165,7 +165,7 @@ public class HorarioTest {
 	
 	//Testes para Escrita CSV Local
 	@Test
-	public void testSaveToCsvLocal() throws IOException {
+	public void testSaveToCsvLocal() throws IOException, URISyntaxException {
 	    // Cria um objeto Horario com algumas aulas
 	    List<Aula> list = new ArrayList<>();
 	    Aula a1 = new Aula("Curso1", "UC1", "Turno1", "Turma1", 30, "Segunda-feira", LocalTime.parse("08:00:00"),
@@ -176,10 +176,9 @@ public class HorarioTest {
 	    Horario horario = new Horario(list);
 	    // Cria um arquivo temporário para salvar o CSV
 	    File file = File.createTempFile("horario", ".csv");
-	    String path = "horario.csv";
 
 	    // Chama o método para salvar o horário no arquivo CSV
-	    horario.saveToCsvLocalOrRemote(path);
+	    horario.saveToCsvLocalOrRemote("horario.csv");
 
 	    // Verifica se o arquivo foi criado corretamente
 	    assertTrue(file.exists());
@@ -247,7 +246,7 @@ public class HorarioTest {
 	
 	//Testes para Escrita JSON Local
 	@Test
-    public void testSaveToJsonLocal() throws IOException {
+    public void testSaveToJsonLocal() throws IOException, URISyntaxException {
 		List<Aula> list = new ArrayList<>();
 	    Aula a1 = new Aula("Curso1", "UC1", "Turno1", "Turma1", 30, "Segunda-feira", LocalTime.parse("08:00:00"),
 	            LocalTime.parse("10:00:00"), LocalDate.parse("2023-04-16"), "Sala1", 50);
