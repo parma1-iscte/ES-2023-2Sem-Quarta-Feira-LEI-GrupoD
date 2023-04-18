@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.List;
 
 import java.nio.charset.Charset;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -203,11 +204,12 @@ public class Validacao {
 
         List<CSVRecord> list = parser.getRecords();
         for (CSVRecord record : list) {
+            
+            if (!areAllFieldsNotEmptyStrings(record))
+                return false;
             if (!areAllFieldsNonNull(record))
                 return false;
 
-            if (!areAllFieldsNotEmptyStrings(record))
-                return false;
 
             
             boolean areTheIntsValid = Integer.parseInt(record.get("Inscritos no turno")) >= 0
@@ -236,6 +238,4 @@ public class Validacao {
                 && record.get("Hora fim da aula") != null && record.get("Data da aula") != null &&
                 record.get("Lotação da sala") != null && record.get("Sala atribuída à aula") != null;
     }
-
-  
 }
