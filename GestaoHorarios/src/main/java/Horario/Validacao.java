@@ -35,37 +35,47 @@ public class Validacao {
      * 
      */
     public static boolean validarDocumento(JsonObject objeto) {
-        if (objeto.get("Curso").toString().isEmpty()) {
+        if (objeto.get("Curso")!=null) {
+        		if(objeto.get("Curso").toString().isEmpty()) {
             // throw new RuntimeException("Curso é de preenchimento obrigatório");
-            System.out.println("Curso é de preenchimento obrigatório");
-            return false;
+        			System.out.println("Curso é de preenchimento obrigatório");
+        			return false;
+        		}
         }
 
-        if (objeto.get("Unidade Curricular").toString().isEmpty()) {
+        if (objeto.get("Unidade Curricular")!=null) {
+        		if(objeto.get("Unidade Curricular").toString().isEmpty()) {
             // throw new RuntimeException("A UC é de preenchimento obrigatório");
-            System.out.println("A UC é de preenchimento obrigatório");
-            return false;
+        			System.out.println("A UC é de preenchimento obrigatório");
+        			return false;
+        		}
         }
         
-        if (objeto.get("Turno").toString().isEmpty()) {
+        if (objeto.get("Turno")!=null) {
+        		if(objeto.get("Turno").toString().isEmpty()) {
             // throw new RuntimeException("A UC é de preenchimento obrigatório");
-            System.out.println("O turno é de preenchimento obrigatório");
-            return false;
+        			System.out.println("O turno é de preenchimento obrigatório");
+        			return false;
+        		}
         }
         
-        if (objeto.get("Turma").toString().isEmpty()) {
+        if (objeto.get("Turma")!=null) {
+        		if(objeto.get("Turma").toString().isEmpty()) {
             // throw new RuntimeException("Cada aula tem de ter uma turma associada e pode
             // conter letras/números");
-            System.out.println("Cada aula tem de ter uma turma associada e pode conter letras/números");
-            return false;
+        			System.out.println("Cada aula tem de ter uma turma associada e pode conter letras/números");
+        			return false;
+        		}
         }
 
-        if (objeto.get("Dia da semana").toString().isEmpty()) {
+        if (objeto.get("Dia da semana")!=null) {
+        		if(objeto.get("Dia da semana").toString().isEmpty()) {
             // throw new RuntimeException("O dia da semana é de preenchimento obrigatório e
             // tem de estar no formato (\"SEG,TER,QUA,QUI,SEX,SAB,DOM\") ");
-            System.out.println(
+        			System.out.println(
                     "O dia da semana é de preenchimento obrigatório e tem de estar no formato (\"SEG,TER,QUA,QUI,SEX,SAB,DOM\") ");
-            return false;
+        			return false;
+        		}
         }
 
         if (Integer.parseInt(objeto.get("Inscritos no turno").toString()) <= 0) { // podemos escolher o nº mínimo de
