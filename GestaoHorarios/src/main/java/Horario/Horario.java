@@ -166,20 +166,22 @@ public class Horario {
 		CSVParser csvParser = new CSVParser(in, format);
 		Iterator<CSVRecord> iterator = csvParser.iterator();
 
-		if(iterator.hasNext())
+		/*if(iterator.hasNext())
 			if (!Validacao.validarCsvHeader(iterator.next()))
 				throw new IllegalArgumentException("Ficheiro mal estruturado");
-
+		*/
 
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+		if(!Validacao.validarDocumento(csvParser)){
+			throw new IllegalArgumentException("Ficheiro mal estruturado");
+		}
 		while (iterator.hasNext()) {
-
 			CSVRecord csvRecord = iterator.next();
-			if(!Validacao.validarCsvLine(csvRecord))
+			/*if(!Validacao.validarCsvLine(csvRecord))
 				throw new IllegalArgumentException("Ficheiro mal estruturado");
-
+			*/
 			String curso = csvRecord.get("Curso");
 			String uc = csvRecord.get("Unidade Curricular");
 			String turno = csvRecord.get("Turno");
