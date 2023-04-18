@@ -200,6 +200,7 @@ public class Validacao {
              */
             return false;
 
+
         List<CSVRecord> list = parser.getRecords();
         for (CSVRecord record : list) {
             if (!areAllFieldsNonNull(record))
@@ -236,21 +237,5 @@ public class Validacao {
                 record.get("Lotação da sala") != null && record.get("Sala atribuída à aula") != null;
     }
 
-     public static void main(String[] args) {
-        CSVFormat format = CSVFormat.EXCEL
-                .withHeader() // This causes the parser to read the first record and use its values as column
-                              // names
-                .withSkipHeaderRecord(true)
-                .withDelimiter(';');
-        CSVParser parser = null;
-        try {
-            File csvData = new File("horario_exemplo (2).csv");
-            parser = CSVParser.parse(csvData, Charset.defaultCharset(), format);
-            
-            Validacao.validarDocumento(parser);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
+  
 }
