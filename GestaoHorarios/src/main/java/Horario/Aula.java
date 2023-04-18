@@ -1,6 +1,8 @@
 package Horario;
 import java.time.*;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * 
  * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
@@ -8,17 +10,27 @@ import java.time.*;
  */
 
 public class Aula {
-
+	@SerializedName("Curso")
 	private String curso;
+	@SerializedName("Unidade Curricular")
 	private String uc;
+	@SerializedName("Turno")	
 	private String turno;
+	@SerializedName("Turma")
 	private String turma;
+	@SerializedName("Inscritos no Turno")
 	private Integer inscritos;
+	@SerializedName("Dia da semana")
 	private String diaSemana;
+	@SerializedName("Hora in]icio da aula")
 	private LocalTime horaInicio;
+	@SerializedName("Hora fim da aula")
 	private LocalTime horaFim;
+	@SerializedName("Data da aula")
 	private LocalDate dia;
+	@SerializedName("Sala atribuída à aula")
 	private String sala;
+	@SerializedName("Lotação da aula")
 	private Integer lotacaoSala;
 
 	/**
