@@ -24,6 +24,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+<<<<<<< HEAD
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+=======
 	<classpathentry kind="src" path="target/generated-sources/annotations">
 		<attributes>
 			<attribute name="optional" value="true"/>
@@ -41,5 +44,6 @@
 			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
+>>>>>>> refs/remotes/origin/Sprint1
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
