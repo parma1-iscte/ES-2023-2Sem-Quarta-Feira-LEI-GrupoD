@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.List;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 import java.io.IOException;
 import org.apache.commons.csv.*;
