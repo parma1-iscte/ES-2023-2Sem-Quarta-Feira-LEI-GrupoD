@@ -163,14 +163,15 @@ public class Validacao {
 	   return true;
     }
    
-   /*
+   
    public static boolean validarSalaAtribuida(String salaAtribuida) {
-        String[] sala_atribuida = salaAtribuida.split(".");
-        String edificio_sala = sala_atribuida[0];
-        int sala = Integer.parseInt(sala_atribuida[1]);
-        if (!edificio_sala.startsWith("C") || !edificio_sala.startsWith("AA") || !edificio_sala.startsWith("D")
-                || !edificio_sala.startsWith("Auditório") || !edificio_sala.startsWith("B")
-                || !(sala >= 0 && sala <= 12)) {
+//        String[] sala_atribuida = salaAtribuida.split(".");
+//        String edificio_sala = sala_atribuida[0];
+//        int sala = Integer.parseInt(sala_atribuida[1]);
+//        if (!edificio_sala.startsWith("C") || !edificio_sala.startsWith("AA") || !edificio_sala.startsWith("D")
+//                || !edificio_sala.startsWith("Auditório") || !edificio_sala.startsWith("B")
+//                || !(sala >= 0 && sala <= 12)) {
+	   if(salaAtribuida ==null) {
             // throw new RuntimeException("Sala com formato incorreto, o formato tem de ser
             // por exemplo \"C5.06\" ");
             System.out.println("Sala com formato incorreto, o formato tem de ser por exemplo \"C5.06\" ");
@@ -178,7 +179,7 @@ public class Validacao {
         }
         return true;
    }
-   */
+  
    
    public static boolean validarLotacao(int lotacao) {
    

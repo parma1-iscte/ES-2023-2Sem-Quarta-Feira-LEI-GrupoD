@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.*;
 
 import java.nio.charset.Charset;
-
+import java.time.LocalTime;
 import java.io.IOException;
 import org.apache.commons.csv.*;
 
@@ -79,6 +79,52 @@ public class ValidacaoTest {
 	        Assertions.assertFalse(Validacao.validarDocumento(objeto));
 	    }
 	    */
+	
+
+    @Test
+    void testValidarCurso() {
+        assertTrue(Validacao.validarCurso("Engenharia de Software"));
+        assertFalse(Validacao.validarCurso(""));
+    }
+
+    @Test
+    void testValidarUC() {
+        assertTrue(Validacao.validarUC("Programação Orientada a Objetos"));
+        assertFalse(Validacao.validarUC(""));
+    }
+
+    @Test
+    void testValidarTurno() {
+        assertTrue(Validacao.validarTurno("Manhã"));
+        assertFalse(Validacao.validarTurno(""));
+    }
+
+    @Test
+    void testValidarTurma() {
+        assertTrue(Validacao.validarTurma("A123"));
+        assertFalse(Validacao.validarTurma(""));
+    }
+
+    @Test
+    void testValidarDiadaSemana() {
+        assertTrue(Validacao.validarDiadaSemana("SEG"));
+        assertFalse(Validacao.validarDiadaSemana(""));
+    }
+
+    @Test
+    void testValidarInscritosNoTurno() {
+        assertTrue(Validacao.validarInscritosNoTurno(5));
+        assertFalse(Validacao.validarInscritosNoTurno(0));
+    }
+
+    @Test
+    void testValidarHoraInicioAula() {
+        assertTrue(Validacao.validarHoraInicioAula(LocalTime.of(8, 30, 0)));
+        assertFalse(Validacao.validarHoraInicioAula(null));
+    }
+
+   
+
 	 
 
    private static  final CSVFormat format = CSVFormat.EXCEL
