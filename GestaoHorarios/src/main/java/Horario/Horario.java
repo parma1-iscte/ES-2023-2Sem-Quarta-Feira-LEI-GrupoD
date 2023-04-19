@@ -129,15 +129,15 @@ public class Horario {
     @return uma lista de objetos Aula criados a partir do arquivo CSV
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
     @throws IllegalArgumentException se o arquivo CSV estiver mal estruturado
-	 */
+	*/
 
 	public static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException {
 		List<Aula> lista = new ArrayList<>();
 		CSVParser csvParser = new CSVParser(in, format);
 		Iterator<CSVRecord> iterator = csvParser.iterator();
-		/*if(!Validacao.validarDocumento(csvParser)){
+		if(!Validacao.validarDocumento(csvParser)){
 			throw new IllegalArgumentException("Ficheiro mal estruturado");
-		}*/
+		}
 		iterator.next();
 		while (iterator.hasNext()) {
 			CSVRecord csvRecord = iterator.next();

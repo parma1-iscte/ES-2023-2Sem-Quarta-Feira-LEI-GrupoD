@@ -181,6 +181,13 @@ public class ValidacaoTest {
     .withSkipHeaderRecord(true)
     .withDelimiter(';');
     
+
+    /**
+    *Testa se um arquivo CSV fornecido é válido.
+    *Este teste usa um arquivo CSV válido como entrada e espera que o método de validação retorne true.
+    *@throws RuntimeException se ocorrer uma exceção de E/S durante o processamento do arquivo CSV
+    *@return true se o arquivo CSV for válido, false caso contrário
+    */
     @Test
     public void testValidarCSVCorreto() {
         // Ficheiro valido
@@ -194,6 +201,13 @@ public class ValidacaoTest {
         assertTrue(Validacao.validarDocumento(correto));         
     }
     
+    /**
+*Testa se um arquivo CSV fornecido possui um cabeçalho alterado, ou seja, se alguma coluna do cabeçalho foi renomeada.
+*Este teste usa um arquivo CSV com cabeçalho alterado como entrada e espera que o método de validação retorne false.
+*@throws RuntimeException se ocorrer uma exceção de E/S durante o processamento do arquivo CSV
+*@return true se o arquivo CSV não tiver um cabeçalho alterado, false caso contrário
+*/
+
     @Test
     public void validarCSVComHeaderAlterado() {
         CSVParser headerAlterado = null;
@@ -205,6 +219,13 @@ public class ValidacaoTest {
            }
            assertFalse(Validacao.validarDocumento(headerAlterado));
     }
+
+    /**
+    *Testa se um arquivo CSV fornecido possui um cabeçalho com colunas a mais do que o esperado.
+    *Este teste usa um arquivo CSV com cabeçalho excessivo como entrada e espera que o método de validação retorne false.
+    *@throws RuntimeException se ocorrer uma exceção de E/S durante o processamento do arquivo CSV
+    *@return true se o arquivo CSV tiver um cabeçalho completo, false caso contrário
+    */
     @Test
     public void validarCSVComHeaderComLinhasAMais() {
         CSVParser headerComRowsAmais = null;
@@ -216,9 +237,14 @@ public class ValidacaoTest {
            }
            assertFalse(Validacao.validarDocumento(headerComRowsAmais));
     }
-
+    /**
+*Testa se um arquivo CSV fornecido possui um cabeçalho com colunas a menos do que o esperado.
+*Este teste usa um arquivo CSV com cabeçalho incompleto como entrada e espera que o método de validação retorne false.
+*@throws RuntimeException se ocorrer uma exceção de E/S durante o processamento do arquivo CSV
+*@return true se o arquivo CSV tiver um cabeçalho completo, false caso contrário
+*/
     @Test
-    public void validarCSVComHeaderComLinhasAMenos() {
+    public void validarCSVComHeaderComColunasAMenos() {
         CSVParser headerComRowsAmenos = null;
            try {
                File csvData7 = new File("Conjunto de teste/Header com colunas a menos.csv");
@@ -228,7 +254,12 @@ public class ValidacaoTest {
            }
            assertFalse(Validacao.validarDocumento(headerComRowsAmenos));
     }
-
+/**
+*Testa se um arquivo CSV fornecido possui registros com campos vazios.
+*Este teste usa um arquivo CSV com pelo menos um registro contendo um campo vazio como entrada e espera que o método de validação retorne false.
+*@throws RuntimeException se ocorrer uma exceção de E/S durante o processamento do arquivo CSV
+*@return true se o arquivo CSV não tiver registros com campos vazios, false caso contrário
+*/
 
     @Test
     public void validarCSVComEmptyString() {
@@ -242,6 +273,13 @@ public class ValidacaoTest {
         }
         assertFalse(Validacao.validarDocumento(recordComEmptyString));
     }
+
+    /**
+*Testa se um arquivo CSV fornecido possui registros com campos numéricos negativos.
+*Este teste usa um arquivo CSV com pelo menos um registro contendo um campo numérico negativo como entrada e espera que o método de validação retorne false.
+*@throws RuntimeException se ocorrer uma exceção de E/S durante o processamento do arquivo CSV
+*@return true se o arquivo CSV não tiver registros com campos numéricos negativos, false caso contrário
+*/
     @Test
     public void validarCSVComFieldNegativo() {
         // Record com campo numerico negativo
