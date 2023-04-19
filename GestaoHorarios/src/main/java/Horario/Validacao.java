@@ -28,13 +28,9 @@ public class Validacao {
             "Data da aula", "Lotação da sala", "Sala atribuída à aula");
 
     /**
-     * Esta funcao recebe como parametro um JsonObject e verifica se os seus campos
-     * estao validos
-     * 
-     * @param objeto
-     * @return boolean (se returnar true significa que o objeto tem os campos todos
-     *         validos, ou seja, estao no formato correto, se for false esta
-     *         invalido)
+     * Verifica se o curso informado foi preenchido.
+     * @param curso a ser validado.
+	 * @return true se o curso foi preenchido, false caso contrário.
      * 
      */
     public static boolean validarCurso(String curso) {
@@ -47,6 +43,12 @@ public class Validacao {
         	return true;
    }
    
+    /**
+     * Verifica se a UC informado foi preenchido.
+     * @param UC a ser validada.
+	 * @return true se a UC foi preenchida, false caso contrário.
+     * 
+     */
    public static boolean validarUC(String uc) {
         if(uc.isEmpty()) {
             // throw new RuntimeException("A UC é de preenchimento obrigatório");
@@ -56,6 +58,12 @@ public class Validacao {
         return true;
    }
    
+   /**
+    * Verifica se o turno informado foi preenchido.
+    * @param turno a ser validado.
+	* @return true se o turno foi preenchido, false caso contrário.
+    * 
+    */
    public static boolean validarTurno(String turno) {
        
         		if(turno.isEmpty()) {
@@ -66,6 +74,12 @@ public class Validacao {
         	return true;
    }
    
+   /**
+    * Verifica se a turma informado foi preenchido.
+    * @param turma a ser validada.
+	* @return true se a turma foi preenchida, false caso contrário.
+    * 
+    */
    public static boolean validarTurma(String turma) {
         		if(turma.isEmpty()) {
             // throw new RuntimeException("Cada aula tem de ter uma turma associada e pode
@@ -75,6 +89,13 @@ public class Validacao {
         		}
         		return true;
     }
+   
+   /**
+    * Verifica se o dia da semana foi preenchido.
+    * @param dia da semana a ser validada.
+	* @return true se a dia da semana foi preenchido, false caso contrário.
+    * 
+    */
    
    public static boolean validarDiadaSemana(String diaDaSemana) {
 
@@ -88,6 +109,11 @@ public class Validacao {
         		return true;
         		
     }
+   /**
+   * Verifica se o número de inscritos informado é válido para criar uma aula.
+   * @param inscritosNoTurno número de inscritos para validar.
+   * @return true se o número de inscritos for maior do que zero, false caso contrário.
+   */
    
     public static boolean validarInscritosNoTurno(int inscritosNoTurno) {
 
@@ -101,6 +127,11 @@ public class Validacao {
         return true;
     }
     
+    /**
+     * Verifica se a hora de início da aula informada é válida.
+     * @param hora_inicio hora de início da aula para validar.
+     * @return true se a hora de início da aula for válida, false caso contrário.
+     */
     public static boolean validarHoraInicioAula(LocalTime hora_inicio) {
 
         //String[] hora_inicio_aula = objeto.get("Hora de início da aula").toString().split(":");
@@ -133,6 +164,11 @@ public class Validacao {
             // obrigatório e tem de estar no formato \"(hh:mm:ss)\", por exemplo,
             // \"(12:59:06)\" ");
     
+    /**
+     * Verifica se a hora de fim da aula informada é válida.
+     * @param hora_inicio hora de fima da aula para validar.
+     * @return true se a hora de início da aula for válida, false caso contrário.
+     */
    public static boolean validarHoraFim(LocalTime hora_fim) { 
     if(hora_fim== null || !(hora_fim.getHour()>= 0 && hora_fim.getHour() <=23) ||
 			!(hora_fim.getMinute()>=0 && hora_fim.getMinute()<=59) || !(hora_fim.getSecond()>=0 && hora_fim.getSecond()<=59)	){   
@@ -154,6 +190,13 @@ public class Validacao {
             // obrigatório e tem de estar no formato \"(dia/mes/ano)\", por exemplo,
             // \"(12/12/2023)\" ");
    
+   
+   /** 
+    * Verifica se a data da aula informada é válida.
+    * @param dataAula data da aula para validar.
+	* @return true se a data da aula for válida, false caso contrário.
+    *
+    */
    public static boolean validarDataAula(LocalDate dataAula) {
 	   if(dataAula == null || !(dataAula.getDayOfMonth()>=1 &&dataAula.getDayOfMonth()<=31) || !(dataAula.getMonthValue()>=1 && dataAula.getMonthValue()<=12) || !(dataAula.getYear()>=0)) {
             System.out.println(
@@ -163,7 +206,11 @@ public class Validacao {
 	   return true;
     }
    
-   
+   /**
+    * Verifica se a sala atribuída informada tem o formato correto.
+    * @param salaAtribuida sala atribuída a ser validada.
+    * @return true se a sala atribuída tiver o formato correto, false caso contrário.
+    */
    public static boolean validarSalaAtribuida(String salaAtribuida) {
 //        String[] sala_atribuida = salaAtribuida.split(".");
 //        String edificio_sala = sala_atribuida[0];
@@ -180,6 +227,14 @@ public class Validacao {
         return true;
    }
   
+   /**
+
+   Verifica se a lotação informada é válida.
+   @param lotacao lotação a ser validada.
+   @return true se a lotação for maior ou igual a zero e menor ou igual a 250, false caso contrário.
+   @throws RuntimeException se a lotação for inválida (não é lançado nesta implementação).
+   */
+   
    
    public static boolean validarLotacao(int lotacao) {
    

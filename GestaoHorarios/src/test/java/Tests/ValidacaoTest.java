@@ -80,18 +80,35 @@ public class ValidacaoTest {
 	    }
 	    */
 	
+	/**
 
+	Testa a função de validação de curso.
+	Verifica se a validação é bem-sucedida para um curso válido e se falha para um curso vazio.
+	*/
+	
     @Test
     void testValidarCurso() {
         assertTrue(Validacao.validarCurso("Engenharia de Software"));
         assertFalse(Validacao.validarCurso(""));
     }
+    
+    /**
 
+    Testa a função de validação de unidade curricular.
+    Verifica se a validação é bem-sucedida para uma UC válida e se falha para uma UC vazia.
+    */
+    
     @Test
     void testValidarUC() {
         assertTrue(Validacao.validarUC("Programação Orientada a Objetos"));
         assertFalse(Validacao.validarUC(""));
     }
+    
+    /**
+
+    Testa a função de validação de turno.
+    Verifica se a validação é bem-sucedida para um turno válido e se falha para um turno vazio.
+    */
 
     @Test
     void testValidarTurno() {
@@ -99,24 +116,50 @@ public class ValidacaoTest {
         assertFalse(Validacao.validarTurno(""));
     }
 
+    
+    /**
+
+    Testa a função de validação de turma.
+    Verifica se a validação é bem-sucedida para uma turma válida e se falha para uma turma vazia.
+    */
+    
     @Test
     void testValidarTurma() {
         assertTrue(Validacao.validarTurma("A123"));
         assertFalse(Validacao.validarTurma(""));
     }
+    
+    /**
 
+    Testa a função de validação de dia da semana.
+    Verifica se a validação é bem-sucedida para um dia da semana válido e se falha para um dia da semana vazio.
+    */
+    
     @Test
     void testValidarDiadaSemana() {
         assertTrue(Validacao.validarDiadaSemana("SEG"));
         assertFalse(Validacao.validarDiadaSemana(""));
     }
 
+    /**
+
+    Testa a função de validação de número de inscritos no turno.
+    Verifica se a validação é bem-sucedida para um número válido de inscritos e se falha para um número zero de inscritos.
+    */
+   
+    
     @Test
     void testValidarInscritosNoTurno() {
         assertTrue(Validacao.validarInscritosNoTurno(5));
         assertFalse(Validacao.validarInscritosNoTurno(0));
     }
 
+    /**
+
+    Testa a função de validação de hora de início de aula.
+    Verifica se a validação é bem-sucedida para uma hora de início válida e se falha para uma hora de início nula.
+    */
+    
     @Test
     void testValidarHoraInicioAula() {
         assertTrue(Validacao.validarHoraInicioAula(LocalTime.of(8, 30, 0)));
