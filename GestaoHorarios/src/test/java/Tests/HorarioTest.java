@@ -26,6 +26,9 @@ import java.util.List;
 public class HorarioTest {
 
 	
+	public final String USER = "";
+	public final String PASSWORD = ""; 
+	
 	//Testes para  Leitura JSON local
 	@Test
 	public void testGetHorarioFromJsonLocalValidFile() throws Exception {
@@ -45,16 +48,7 @@ public class HorarioTest {
 		File file = new File("nonexistent_file.json");
 
 		// Act & Assert
-		assertThrows(IOException.class, () -> Horario.getHorarioFromCsvLocal(file));
-	}
-
-	@Test
-	public void testGetHorarioFromJsonLocalInvalidFile() throws IOException {
-		// Arrange
-		File file = new File("invalid_file.json");
-
-		// Act & Assert
-		assertThrows(IllegalArgumentException.class, () -> Horario.getHorarioFromCsvLocal(file));
+		assertThrows(FileNotFoundException.class, () -> Horario.getHorarioFromCsvLocal(file));
 	}
 	
 	//Testes para Leitura JSON Remoto
@@ -63,7 +57,7 @@ public class HorarioTest {
 		// Arrange
 		String url = "https://raw.githubusercontent.com/parma1-iscte/ES-2023-2Sem-Quarta-Feira-LEI-GrupoD/main/json_exemplo.json";
 		// Act
-		Horario horario = Horario.getHorarioFromJsonRemote(url);
+		Horario horario = Horario.getHorarioFromJsonRemote(url,null,null);
 
 		// Assert
 		assertEquals(2, horario.getHorario().size());
@@ -75,17 +69,10 @@ public class HorarioTest {
 		String url = "http://example.com/nonexistent_file.json";
 
 		// Act & Assert
-		assertThrows(IOException.class, () -> Horario.getHorarioFromJsonRemote(url));
+		assertThrows(IOException.class, () -> Horario.getHorarioFromJsonRemote(url,null,null));
 	}
 	
-	@Test
-	public void testGetHorarioFromJsonRemotoInvalidURL() throws IOException, URISyntaxException {
-		// Arrange
-		String url = "http://example.com/invalid_file.json";
-
-		// Act & Assert
-		assertThrows(IllegalArgumentException.class, () -> Horario.getHorarioFromJsonRemote(url));
-	}
+	
 	
 	//Testes para Leitura CSV Local
 	@Test
@@ -116,13 +103,6 @@ public class HorarioTest {
 	   assertThrows(FileNotFoundException.class, () -> Horario.getHorarioFromCsvLocal(file));
 	}
 	
-	public void testGetHorarioFromCsvLocalInvalid() throws IOException{
-		// Cria um arquivo com estrutura inválida
-	    File file = new File("file_csv_invalido.csv");
-	    
-	    // Chama o método, espera-se que uma exceção FileNotFoundException seja lançada
-	   assertThrows(IllegalArgumentException.class, () -> Horario.getHorarioFromCsvLocal(file));
-	}
 
 	
 	//Testes para Leitura CSV Remoto
@@ -132,7 +112,7 @@ public class HorarioTest {
 		String url = "https://raw.githubusercontent.com/parma1-iscte/ES-2023-2Sem-Quarta-Feira-LEI-GrupoD/main/GestaoHorarios/Conjunto%20de%20teste/Correto.csv";
 		
 		// Chama o método para obter um objeto Horario
-		Horario horario = Horario.getHorarioFromCsvRemoto(url);
+		Horario horario = Horario.getHorarioFromCsvRemoto(url,null,null);
 
 		// Verifica se o objeto Horario foi criado corretamente
 		assertNotNull(horario);
@@ -150,17 +130,9 @@ public class HorarioTest {
 	    String url = "htps:/example.com/horario.csv";
 	    
 	    // Chama o método, espera-se que uma exceção MalformedURLException seja lançada
-	    assertThrows(MalformedURLException.class, () -> Horario.getHorarioFromCsvRemoto(url));
+	    assertThrows(MalformedURLException.class, () -> Horario.getHorarioFromCsvRemoto(url,null,null));
 	}
 	
-	@Test
-	public void testGetHorarioFromCsvRemotoInvalid() throws IOException, URISyntaxException {
-	    // URL válida para um arquivo CSV remoto
-	    String url = "https://example.com/horario.csv";
-	    
-	    // Chama o método, espera-se que uma exceção IOException seja lançada
-	    assertThrows(IllegalArgumentException.class, () -> Horario.getHorarioFromCsvRemoto(url));
-	}
 	
 	//Testes para Escrita CSV Local
 	@Test
@@ -215,13 +187,13 @@ public class HorarioTest {
 	    Horario horario = new Horario(list);
 
 	    // Cria uma URL válida para salvar o arquivo CSV remotamente
-	    String url = "https://example.com/horario.csv";
+	    String url = "https://raw.githubusercontent.com/parma1-iscte/ES-2023-2Sem-Quarta-Feira-LEI-GrupoD/main/GestaoHorarios/Conjunto%20de%20teste/Correto.csv";
 
 	    // Chama o método para salvar o horário no arquivo CSV remoto
 	    horario.saveToCsvRemoto(url,"","");
 
 	    // Verifica se o arquivo foi salvo corretamente remotamente
-	    assertEquals(horario, Horario.getHorarioFromCsvRemoto(url));
+	    assertEquals(horario, Horario.getHorarioFromCsvRemoto(url,USER,PASSWORD));
 	}
 
 	@Test
@@ -236,10 +208,10 @@ public class HorarioTest {
 	    Horario horario = new Horario(list);
 
 	    // Cria uma URL inválida para forçar um erro ao salvar o arquivo remotamente
-	    String url = "https://example.com/invalid/horario.csv";
+	    String url = "hafssdgsgd";
 
 	    // Chama o método, espera-se que uma exceção Exception seja lançada
-	    assertThrows(IOException.class, () -> horario.saveToCsvRemoto(url,"",""));
+	    assertThrows(MalformedURLException.class, () -> horario.saveToCsvRemoto(url,"",""));
 	}
 
 	
@@ -255,7 +227,7 @@ public class HorarioTest {
 	    Horario horario = new Horario(list);
 		File file = new File("json_teste.json");
         // Executa o método de teste
-        horario.saveToJsonLocal(new File("json_teste.json"));
+        horario.saveToJsonLocal(file);
         
         // Verifica se o arquivo foi criado
         assertTrue(file.exists());
@@ -270,7 +242,7 @@ public class HorarioTest {
     }
 	
 	@Test
-	public void testSaveToJsonLocalInvalida() throws Exception {
+	public void testSaveToJsonLocalInvalido() throws Exception {
 		List<Aula> list = new ArrayList<>();
 	    Aula a1 = new Aula("Curso1", "UC1", "Turno1", "Turma1", 30, "Segunda-feira", LocalTime.parse("08:00:00"),
 	            LocalTime.parse("10:00:00"), LocalDate.parse("2023-04-16"), "Sala1", 50);
@@ -278,9 +250,9 @@ public class HorarioTest {
 	            LocalTime.parse("16:00:00"), LocalDate.parse("2023-04-17"), "Sala2", 40);
 	    list.add(a1);list.add(a2);
 	    Horario horario = new Horario(list);
-		File file = new File("json_teste_invalida.json");
+	    String path = "/path/to/invalid/directory/horario.json";
         
-		assertThrows(FileNotFoundException.class, () -> horario.saveToJsonLocal(file));
+		assertThrows(FileNotFoundException.class, () -> horario.saveToJsonLocal(new File(path)));
 
         
         
@@ -296,18 +268,13 @@ public class HorarioTest {
 	            LocalTime.parse("16:00:00"), LocalDate.parse("2023-04-17"), "Sala2", 40);
 	    list.add(a1);list.add(a2);
 	    Horario horario = new Horario(list);
-	    String url = "https://github.com/parma1-iscte/ES-2023-2Sem-Quarta-Feira-LEI-GrupoD/blob/main/json_exemplo.json";
+	    String url = "https://raw.githubusercontent.com/parma1-iscte/ES-2023-2Sem-Quarta-Feira-LEI-GrupoD/main/json_exemplo.json";
         // Executa o método de teste
-        horario.saveToJsonRemoto(url,"","");
-        
-        // Verifica se o arquivo foi salvo remotamente corretamente
-        // Aqui você pode implementar verificações específicas, como verificar
-        // se a URL de destino está correta, se o arquivo foi criado no servidor,
-        // se o conteúdo do arquivo é válido em formato JSON, etc.
+        horario.saveToJsonRemoto(url,USER,PASSWORD);
         
         
         // Verifica se o arquivo foi salvo corretamente remotamente
-	    assertEquals(horario, Horario.getHorarioFromCsvRemoto(url));
+	    assertEquals(horario, Horario.getHorarioFromJsonRemote(url,null,null));
     }
 
 

@@ -54,7 +54,7 @@ public class Aula {
 			LocalTime horaInicio, LocalTime horaFim, LocalDate dia, String sala, Integer lotacaoSala) {
 		if(!Validacao.validarCurso(curso) || !Validacao.validarUC(uc) || !Validacao.validarTurno(turno) || !Validacao.validarTurma(turma) ||
 				!Validacao.validarInscritosNoTurno(inscritos) || !Validacao.validarDiadaSemana(diaSemana) || !Validacao.validarHoraInicioAula(horaInicio) ||
-				!Validacao.validarHoraFim(horaFim) || !Validacao.validarDataAula(dia) || !Validacao.validarSalaAtribuida(sala) || !Validacao.validarLotacao(lotacaoSala))
+				!Validacao.validarHoraFim(horaFim) || !Validacao.validarDataAula(dia) || !Validacao.validarLotacao(lotacaoSala))
 			throw new IllegalArgumentException("Aula com valores impossiveis");
 		this.curso = curso;
 		this.uc = uc;

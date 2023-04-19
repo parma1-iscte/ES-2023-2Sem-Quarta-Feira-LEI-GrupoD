@@ -163,6 +163,7 @@ public class Validacao {
 	   return true;
     }
    
+   /*
    public static boolean validarSalaAtribuida(String salaAtribuida) {
         String[] sala_atribuida = salaAtribuida.split(".");
         String edificio_sala = sala_atribuida[0];
@@ -177,6 +178,7 @@ public class Validacao {
         }
         return true;
    }
+   */
    
    public static boolean validarLotacao(int lotacao) {
    

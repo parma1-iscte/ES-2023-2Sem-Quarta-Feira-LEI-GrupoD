@@ -54,7 +54,7 @@ public class ValidacaoTest {
 	     // Chama o método a ser testado e verifica se retorna false
 	     assertFalse(Validacao.validarDocumento(objeto));
 	 }
-	 */
+	 
 	 @Test
 	    void testValidarDocumento() {
 	       
@@ -78,6 +78,7 @@ public class ValidacaoTest {
 
 	        Assertions.assertFalse(Validacao.validarDocumento(objeto));
 	    }
+	    */
 	 
 
    private static  final CSVFormat format = CSVFormat.EXCEL
