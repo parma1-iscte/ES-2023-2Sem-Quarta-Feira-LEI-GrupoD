@@ -14,7 +14,7 @@ import java.io.*;
 /**
  * 
  * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
- * Versão 1.0
+ * Versão 2.0
  */
 
 public class Horario {
@@ -43,16 +43,43 @@ public class Horario {
 	}
 
 
+	/**
+
+    Retorna um objeto Horario a partir de um arquivo JSON localizado em um caminho remoto, usando o usuário e a senha fornecidos para autenticação.
+    @param path o caminho remoto para o arquivo JSON
+    @param user o nome de usuário a ser usado para autenticação
+    @param password a senha a ser usada para autenticação
+    @return um objeto Horario que representa o conteúdo do arquivo JSON
+    @throws IOException se ocorrer um erro ao ler o arquivo JSON ou ao conectar ao servidor remoto
+	 */
 
 	public static Horario getHorarioFromJsonRemote(String path, String user, String password) throws IOException {
 		BufferedReader br = getWebContent(path, user, password);
 		return new Horario(readFileJsonWithBufferedReader(br));
 	}
 
+	/**
+
+    Retorna um objeto Horario a partir de um arquivo JSON local.
+    @param file o arquivo JSON a ser lido
+    @return um objeto Horario que representa o conteúdo do arquivo JSON
+    @throws Exception se ocorrer um erro ao ler o arquivo JSON
+	 */
+
 	public static Horario getHorarioFromJsonLocal(File file) throws Exception {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		return new Horario(readFileJsonWithBufferedReader(br));
 	}
+
+	/**
+
+    Retorna um objeto BufferedReader que contém o conteúdo da página web localizada em um caminho remoto, usando o usuário e a senha fornecidos para autenticação
+	@param path o caminho remoto para a página web
+	@param user o nome de usuário a ser usado para autenticação
+	@param password a senha a ser usada para autenticação
+	@return um objeto BufferedReader contendo o conteúdo da página web
+	@throws IOException se ocorrer um erro ao conectar à página web ou ao ler o seu conteúdo
+	 */
 
 	public static BufferedReader getWebContent(String path, String user, String password) throws IOException {
 		URL url = new URL(path);
@@ -136,6 +163,13 @@ public class Horario {
 		return lista;
 	}
 
+	/**
+
+    Salva o objeto Horario em um arquivo CSV local usando o arquivo fornecido.
+    @param file o arquivo local onde o objeto Horario será salvo em formato CSV
+    @throws Exception se ocorrer um erro ao escrever o objeto Horario em formato CSV ou ao salvar o arquivo localmente
+	 */
+
 	public void saveToCsvLocal(File file) throws Exception {
 		PrintWriter writer = new PrintWriter(file);
 		CSVPrinter csvPrinter = new CSVPrinter(writer, format);
@@ -143,6 +177,15 @@ public class Horario {
 		csvPrinter.close();
 		writer.close();
 	}
+
+	/**
+
+    Salva o objeto Horario em um arquivo CSV remoto usando o caminho, o nome de usuário e a senha fornecidos para autenticação.
+    @param path o caminho remoto para o arquivo CSV
+    @param user o nome de usuário a ser usado para autenticação
+    @param password a senha a ser usada para autenticação
+    @throws Exception se ocorrer um erro ao escrever o objeto Horario em formato CSV ou ao enviá-lo para o servidor remoto
+	 */
 
 	public void saveToCsvRemoto(String path, String user, String password) throws Exception{
 		URL url = new URL(path);
@@ -188,6 +231,15 @@ public class Horario {
 		fw.close();
 	}
 
+	/**
+
+    Salva o objeto Horario em um arquivo JSON remoto usando o caminho, o nome de usuário e a senha fornecidos para autenticação.
+    @param path o caminho remoto para o arquivo JSON
+    @param user o nome de usuário a ser usado para autenticação
+    @param password a senha a ser usada para autenticação
+    @throws Exception se ocorrer um erro ao escrever o objeto Horario em formato JSON ou ao enviá-lo para o servidor remoto
+	 */
+
 	public void saveToJsonRemoto(String path, String user, String password) throws Exception {
 		URL url = new URL(path);
 		HttpURLConnection conexao = connectToPage(url, user, password);
@@ -200,6 +252,16 @@ public class Horario {
 		int resposta = conexao.getResponseCode();
 		System.out.println("Resposta do servidor: " + resposta);
 	}
+
+	/**
+
+    Cria uma conexão HttpURLConnection com uma página web usando a URL fornecida e as credenciais de autenticação especificadas.
+    @param url a URL da página web
+    @param user o nome de usuário a ser usado para autenticação (pode ser nulo se a página não requer autenticação)
+    @param password a senha a ser usada para autenticação (pode ser nula se a página não requer autenticação)
+    @return uma conexão HttpURLConnection configurada para acessar a página web com as credenciais de autenticação fornecidas
+    @throws IOException se ocorrer um erro ao conectar à página web
+	 */
 
 	public static HttpURLConnection connectToPage(URL url, String user, String password) throws IOException {
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
