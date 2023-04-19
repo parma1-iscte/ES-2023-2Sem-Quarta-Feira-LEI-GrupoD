@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"Horario","l":"Aula"},{"p":"Horario","l":"Horario"},{"p":"Horario","l":"Validacao"}];updateSearchResults();
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"Horario","l":"Aula"},{"p":"Tests","l":"AulaTest"},{"p":"Horario","l":"Horario"},{"p":"Tests","l":"HorarioTest"},{"p":"Horario","l":"LocalDateTypeAdapter"},{"p":"Horario","l":"LocalTimeTypeAdapter"},{"p":"Horario","l":"Validacao"},{"p":"Tests","l":"ValidacaoTest"}];updateSearchResults();
