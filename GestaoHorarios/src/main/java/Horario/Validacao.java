@@ -248,7 +248,11 @@ public class Validacao {
    	}
 
     /**
+<<<<<<< HEAD
     *Método responsável por validar um arquivo CSV contendo informações de documentos, verificando se possui todas as colunas requeridas e não mais, se todos os campos são não nulos e não vazios, e se os campos de valores inteiros são maiores ou iguais a zero.
+=======
+    *Método responsável por validar um arquivo CSV contendo informações de documentos, verificando se possui todas as colunas requeridas, se todos os campos são não nulos e não vazios, e se os campos de valores inteiros são maiores ou iguais a zero.
+>>>>>>> branch 'main' of https://github.com/parma1-iscte/ES-2023-2Sem-Quarta-Feira-LEI-GrupoD.git
     *@param parser O objeto CSVParser contendo as informações do arquivo CSV a ser validado.
     *@return true se o arquivo CSV é válido, false caso contrário.
     */
@@ -256,6 +260,7 @@ public class Validacao {
     public static boolean validarDocumento(CSVParser parser) {
         if (!(parser.getHeaderNames().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(parser.getHeaderNames())))
             return false;
+
 
         List<CSVRecord> list = parser.getRecords();
         for (CSVRecord record : list) {
@@ -275,12 +280,15 @@ public class Validacao {
         }
         return true;
     }
-        /**
-    *Verifica se todos os campos do registro CSV passado como parâmetro não estão vazios.
+
+    /**
+    *Verifica se todos os campos do registro CSV passado como parâmetro não são vazios.
     *@param record O registro CSV a ser verificado.
     *@return true se todos os campos não forem vazios, false caso contrário.
     */
+
     private static boolean areAllFieldsNotEmptyStrings(CSVRecord record) {
+
         return !record.get("Curso").isEmpty() &&
                 !record.get("Unidade Curricular").isEmpty() &&
                 !record.get("Turno").isEmpty() && !record.get("Turma").isEmpty() &&
@@ -289,7 +297,9 @@ public class Validacao {
                 && !record.get("Hora fim da aula").isEmpty() && !record.get("Data da aula").isEmpty() &&
                 !record.get("Lotação da sala").isEmpty() && !record.get("Sala atribuída à aula").isEmpty();
     }
+
      /**
+    /**
     *Verifica se todos os campos do registro CSV passado como parâmetro não são nulos.
     *@param record O registro CSV a ser verificado.
     *@return true se todos os campos não forem nulos, false caso contrário.
