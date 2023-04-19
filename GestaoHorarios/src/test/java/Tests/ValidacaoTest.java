@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.*;
 
 import java.nio.charset.Charset;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.io.IOException;
 import org.apache.commons.csv.*;
@@ -166,12 +167,38 @@ public class ValidacaoTest {
         assertFalse(Validacao.validarHoraInicioAula(null));
     }
     
+    /**
+
+    Testa a função de validação de hora de fim de aula.
+    Verifica se a validação é bem-sucedida para uma hora de fim válida e se falha para uma hora de fim nula.
+    */
+
     @Test
     void testValidarHoraFimAula() {
-        // o teste depende do valor do campo "Hora fim da aula"
+    	assertTrue(Validacao.validarHoraFim(LocalTime.of(8, 30, 0)));
+        assertFalse(Validacao.validarHoraFim(null));
     }
 
-   
+    @Test
+	void testValidarDataAula() {
+		LocalDate dataAulaValida = LocalDate.of(2023, 4, 19);
+		Validacao validarDataAula;
+		assertTrue(Validacao.validarDataAula(dataAulaValida));
+		
+		LocalDate dataAulaInvalida1 = null;
+		assertFalse(Validacao.validarDataAula(dataAulaInvalida1));
+		
+		LocalDate dataAulaInvalida2 = LocalDate.of(2023, 4, 32);
+		assertFalse(Validacao.validarDataAula(dataAulaInvalida2));
+		
+		LocalDate dataAulaInvalida3 = LocalDate.of(2023, 13, 19);
+		assertFalse(Validacao.validarDataAula(dataAulaInvalida3));
+		
+		LocalDate dataAulaInvalida4 = LocalDate.of(-1, 4, 19);
+		assertFalse(Validacao.validarDataAula(dataAulaInvalida4));
+	}
+
+
 
 	 
 
