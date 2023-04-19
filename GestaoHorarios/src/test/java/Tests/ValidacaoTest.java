@@ -122,6 +122,11 @@ public class ValidacaoTest {
         assertTrue(Validacao.validarHoraInicioAula(LocalTime.of(8, 30, 0)));
         assertFalse(Validacao.validarHoraInicioAula(null));
     }
+    
+    @Test
+    void testValidarHoraFimAula() {
+        // o teste depende do valor do campo "Hora fim da aula"
+    }
 
    
 
