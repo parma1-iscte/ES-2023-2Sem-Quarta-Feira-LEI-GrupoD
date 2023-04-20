@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.*;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.io.IOException;
@@ -220,8 +221,8 @@ public class ValidacaoTest {
         // Ficheiro valido
         CSVParser correto = null;
         try {
-            File csvData = new File("Conjunto de teste/Correto.csv");
-            correto = CSVParser.parse(csvData, Charset.defaultCharset(), format);
+            File csvData = new File("C:\\Users\\pamen\\ES-2023-2Sem-Quarta-Feira-LEI-GrupoD-9\\GestaoHorarios\\Conjunto de teste\\Correto.csv");
+            correto = CSVParser.parse(csvData, StandardCharsets.UTF_8, format);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -240,7 +241,7 @@ public class ValidacaoTest {
         CSVParser headerAlterado = null;
            try {
                File csvData5 = new File("Conjunto de teste/Header com colunas a alteradas.csv");
-               headerAlterado = CSVParser.parse(csvData5, Charset.defaultCharset(), format);
+               headerAlterado = CSVParser.parse(csvData5, StandardCharsets.UTF_8, format);
            } catch (IOException e) {
                throw new RuntimeException(e);
            }
@@ -258,7 +259,7 @@ public class ValidacaoTest {
         CSVParser headerComRowsAmais = null;
            try {
                File csvData6 = new File("Conjunto de teste/Header com colunas a mais.csv");
-               headerComRowsAmais = CSVParser.parse(csvData6, Charset.defaultCharset(), format);
+               headerComRowsAmais = CSVParser.parse(csvData6, StandardCharsets.UTF_8, format);
            } catch (IOException e) {
                throw new RuntimeException(e);
            }
@@ -275,7 +276,7 @@ public class ValidacaoTest {
         CSVParser headerComRowsAmenos = null;
            try {
                File csvData7 = new File("Conjunto de teste/Header com colunas a menos.csv");
-               headerComRowsAmenos = CSVParser.parse(csvData7, Charset.defaultCharset(), format);
+               headerComRowsAmenos = CSVParser.parse(csvData7, StandardCharsets.UTF_8, format);
            } catch (IOException e) {
                throw new RuntimeException(e);
            }
@@ -294,7 +295,7 @@ public class ValidacaoTest {
          CSVParser recordComEmptyString = null;
         try {
             File csvData3 = new File("Conjunto de teste/Record com um campo com empty String.csv");
-            recordComEmptyString = CSVParser.parse(csvData3, Charset.defaultCharset(), format);
+            recordComEmptyString = CSVParser.parse(csvData3, StandardCharsets.UTF_8, format);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -313,7 +314,7 @@ public class ValidacaoTest {
            CSVParser recordComNumNeg = null;
            try {
                File csvData4 = new File("Conjunto de teste/Record com campo numerico negativo.csv");
-               recordComNumNeg = CSVParser.parse(csvData4, Charset.defaultCharset(), format);
+               recordComNumNeg = CSVParser.parse(csvData4, StandardCharsets.UTF_8, format);
            } catch (IOException e) {
                throw new RuntimeException(e);
            }

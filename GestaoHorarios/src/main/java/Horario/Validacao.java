@@ -248,11 +248,7 @@ public class Validacao {
    	}
 
     /**
-<<<<<<< HEAD
     *Método responsável por validar um arquivo CSV contendo informações de documentos, verificando se possui todas as colunas requeridas e não mais, se todos os campos são não nulos e não vazios, e se os campos de valores inteiros são maiores ou iguais a zero.
-=======
-    *Método responsável por validar um arquivo CSV contendo informações de documentos, verificando se possui todas as colunas requeridas, se todos os campos são não nulos e não vazios, e se os campos de valores inteiros são maiores ou iguais a zero.
->>>>>>> branch 'main' of https://github.com/parma1-iscte/ES-2023-2Sem-Quarta-Feira-LEI-GrupoD.git
     *@param parser O objeto CSVParser contendo as informações do arquivo CSV a ser validado.
     *@return true se o arquivo CSV é válido, false caso contrário.
     */

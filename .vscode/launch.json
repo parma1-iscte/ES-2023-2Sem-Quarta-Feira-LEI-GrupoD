@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Horario",
+            "request": "launch",
+            "mainClass": "Horario.Horario",
+            "projectName": "GestaoHorarios"
+        },
+        {
+            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "Horario.Main",

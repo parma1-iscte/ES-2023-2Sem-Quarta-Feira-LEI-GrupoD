@@ -2,7 +2,9 @@ package Horario;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.net.*;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+
 import java.util.*;
 
 import org.apache.commons.csv.*;
@@ -19,11 +21,13 @@ import java.io.*;
 
 public class Horario {
 
-
+	public Horario(){}
 	private List<Aula> horario;
-	static final private CSVFormat format = CSVFormat.DEFAULT.withDelimiter(';').withHeader("Curso", "Unidade Curricular", "Turno", "Turma",
-			"Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atribuída à aula", "Lotação da sala");
 
+	static final private CSVFormat format =CSVFormat.EXCEL
+    .withHeader() // This causes the parser to read the first record and use its values as column names
+    .withSkipHeaderRecord(true)
+    .withDelimiter(';');
 	private static final Gson gson = new GsonBuilder()
 			.registerTypeAdapter(LocalTime.class, new LocalTimeTypeAdapter())
 			.registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
@@ -37,6 +41,8 @@ public class Horario {
 	public Horario(List<Aula> horario) {
 		this.horario = horario;
 	}
+
+	
 
 	public List<Aula> getHorario() {
 		return horario;
@@ -113,9 +119,20 @@ public class Horario {
 
 	public static Horario getHorarioFromCsvRemoto(String path, String user, String password) throws IOException {
 		BufferedReader br = getWebContent(path, user, password);
-		return new Horario(readFileCsvWithBufferedReader(br));
+		CSVFormat format = CSVFormat.EXCEL
+    	.withHeader() // This causes the parser to read the first record and use its values as column names
+    	.withSkipHeaderRecord(true)
+    	.withDelimiter(';');
+		CSVParser correto = null;
+        try {
+            File csvData = new File("Conjunto de teste/Correto.csv");
+            correto = CSVParser.parse(csvData,StandardCharsets.UTF_8, format);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+		return new Horario(new ArrayList<Aula>(0));
 	}
-
+	
 	public static Horario getHorarioFromCsvLocal(File file) throws Exception {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		return new Horario(readFileCsvWithBufferedReader(br));
@@ -131,6 +148,21 @@ public class Horario {
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
     @throws IllegalArgumentException se o arquivo CSV estiver mal estruturado
 	*/
+	public static void main(String[] args) {
+		try {
+			Horario h = Horario.getHorarioFromCsvLocal(
+				"C:\\Users\\pamen\\ES-2023-2Sem-Quarta-Feira-LEI-GrupoD-9\\GestaoHorarios\\Conjunto de teste\\Correto.csv");
+				for (Aula a : h.getHorario()) {
+					System.out.println(a);
+				}
+				System.out.println("End");
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+           
+	}
 
 	public static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException {
 		List<Aula> lista = new ArrayList<>();
