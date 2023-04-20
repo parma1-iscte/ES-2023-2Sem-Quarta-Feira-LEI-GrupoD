@@ -56,6 +56,7 @@ public class Horario {
 	public static Horario getHorarioFromJsonRemote(String path, String user, String password) throws IOException {
 		BufferedReader br = getWebContent(path, user, password);
 		return new Horario(readFileJsonWithBufferedReader(br));
+		
 	}
 
 	/**
