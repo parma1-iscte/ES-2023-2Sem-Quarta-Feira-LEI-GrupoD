@@ -55,6 +55,10 @@ public class Main {
                             try {
                                 Horario h =  Horario.getHorarioFromCsvRemoto(pathOndeFichEsta.getText(), null, null);
                                 File toFile = new File(pathOndeGuardar.getText()); 
+                                if (toFile.exists()) {
+                                    toFile.delete();
+                                }
+                                toFile.createNewFile();
                                h.saveToCsvLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
@@ -71,7 +75,11 @@ public class Main {
                             try {
                                 Horario h =  Horario.getHorarioFromCsvRemoto(pathOndeFichEsta.getText(), null, null);
                                 File toFile = new File(pathOndeGuardar.getText()); 
-                               h.saveToJsonLocal(toFile);
+                                if (toFile.exists()) {
+                                    toFile.delete();
+                                }
+                                toFile.createNewFile();                              
+                                 h.saveToJsonLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
                                 // TODO Auto-generated catch block
@@ -119,7 +127,10 @@ public class Main {
                                 File localCSV = new File("pathOndeFichEsta.getText()");
                                 Horario h =  Horario.getHorarioFromCsvLocal(localCSV);
                                 File toFile = new File(pathOndeGuardar.getText()); 
-                                h.saveToCsvLocal(toFile);
+                                if (toFile.exists()) {
+                                    toFile.delete();
+                                }
+                                toFile.createNewFile();                                h.saveToCsvLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
                                 // TODO Auto-generated catch block
@@ -134,7 +145,12 @@ public class Main {
                         public void actionPerformed(ActionEvent e) {
                             try {
                                 File localCSV = new File("pathOndeFichEsta.getText()");
-                                Horario h =  Horario.getHorarioFromCsvLocal(localCSV);                                File toFile = new File(pathOndeGuardar.getText()); 
+                                Horario h =  Horario.getHorarioFromCsvLocal(localCSV);                               
+                                File toFile = new File(pathOndeGuardar.getText()); 
+                                if (toFile.exists()) {
+                                    toFile.delete();
+                                }
+                                toFile.createNewFile();
                                h.saveToJsonLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
@@ -183,6 +199,11 @@ public class Main {
                             try {
                                 Horario h =  Horario.getHorarioFromJsonRemote(pathOndeFichEsta.getText(), null, null);
                                 File toFile = new File(pathOndeGuardar.getText()); 
+                                if (toFile.exists()) {
+                                    toFile.delete();
+                                }
+                                toFile.createNewFile();
+
                                h.saveToCsvLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
@@ -199,6 +220,11 @@ public class Main {
                             try {
                                 Horario h =  Horario.getHorarioFromJsonRemote(pathOndeFichEsta.getText(), null, null);
                                 File toFile = new File(pathOndeGuardar.getText()); 
+                                if (toFile.exists()) {
+                                    toFile.delete();
+                                }
+                                toFile.createNewFile(); 
+
                                h.saveToJsonLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {

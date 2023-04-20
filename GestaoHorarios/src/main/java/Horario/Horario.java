@@ -110,7 +110,6 @@ public class Horario {
 	 */
 	private static List<Aula> readFileJsonWithBufferedReader(BufferedReader br){
 		Aula[] aulas = gson.fromJson(br, Aula[].class);
-
 		return Arrays.asList(aulas);
 	}
 
@@ -134,7 +133,7 @@ public class Horario {
     	.withDelimiter(';');
 		CSVParser correto = null;
         try {
-            File csvData = new File("Conjunto de teste/Correto.csv");
+            File csvData = new File(path);
             correto = CSVParser.parse(csvData,StandardCharsets.UTF_8, format);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -162,13 +161,13 @@ public class Horario {
 	public static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException {
 		List<Aula> lista = new ArrayList<>();
 		CSVParser csvParser = new CSVParser(in, format);
-		Iterator<CSVRecord> iterator = csvParser.iterator();
+        List<CSVRecord> list = csvParser.getRecords();
 		if(!Validacao.validarDocumento(csvParser)){
 			throw new IllegalArgumentException("Ficheiro mal estruturado");
 		}
-		while (iterator.hasNext()) {
+		for (CSVRecord csvRecord : list) {
 			System.out.print("loop");
-			CSVRecord csvRecord = iterator.next();
+	
 
 			String curso = csvRecord.get("Curso");
 			String uc = csvRecord.get("Unidade Curricular");

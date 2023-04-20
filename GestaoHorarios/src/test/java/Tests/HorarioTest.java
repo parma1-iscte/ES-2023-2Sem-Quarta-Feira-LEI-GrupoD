@@ -349,3 +349,4 @@ public class HorarioTest {
 		assertEquals(horario, Horario.getHorarioFromJsonRemote(url,null,null));
 	}
 }
+
