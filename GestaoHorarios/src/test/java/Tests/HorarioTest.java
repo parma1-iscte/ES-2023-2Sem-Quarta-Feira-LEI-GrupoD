@@ -345,7 +345,6 @@ public class HorarioTest {
 		// Executa o método de teste
 		horario.saveToJsonRemoto(url,USER,PASSWORD);
 
-
 		// Verifica se o arquivo foi salvo corretamente remotamente
 		assertEquals(horario, Horario.getHorarioFromJsonRemote(url,null,null));
 	}
