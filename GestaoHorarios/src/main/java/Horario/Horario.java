@@ -127,17 +127,6 @@ public class Horario {
 
 	public static Horario getHorarioFromCsvRemoto(String path, String user, String password) throws IOException {
 		BufferedReader br = getWebContent(path, user, password);
-		CSVFormat format = CSVFormat.EXCEL
-    	.withHeader() // This causes the parser to read the first record and use its values as column names
-    	.withSkipHeaderRecord(true)
-    	.withDelimiter(';');
-		CSVParser correto = null;
-        try {
-            File csvData = new File(path);
-            correto = CSVParser.parse(csvData,StandardCharsets.UTF_8, format);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 		return new Horario(readFileCsvWithBufferedReader(br));
 	}
 	
