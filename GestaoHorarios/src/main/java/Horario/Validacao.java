@@ -118,8 +118,8 @@ public class Validacao {
     public static boolean validarInscritosNoTurno(int inscritosNoTurno) {
 
         if (inscritosNoTurno <= 0) { // podemos escolher o nº mínimo de
-                                                                                  // alunos que é necessário para criar
-                                                                                  // a aula???
+            // alunos que é necessário para criar
+            // a aula???
             // throw new RuntimeException("Nº de inscritos inválido");
             System.out.println("Nº de inscritos inválido");
             return false;

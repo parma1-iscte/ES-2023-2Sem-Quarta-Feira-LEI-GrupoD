@@ -166,11 +166,10 @@ public class Horario {
 		if(!Validacao.validarDocumento(csvParser)){
 			throw new IllegalArgumentException("Ficheiro mal estruturado");
 		}
-		iterator.next();
 		while (iterator.hasNext()) {
+			System.out.print("loop");
 			CSVRecord csvRecord = iterator.next();
 
-			System.out.println(csvRecord.toString());
 			String curso = csvRecord.get("Curso");
 			String uc = csvRecord.get("Unidade Curricular");
 			String turno = csvRecord.get("Turno");
@@ -183,9 +182,8 @@ public class Horario {
 			String sala = csvRecord.get("Sala atribuída à aula");
 			Integer lotacaoSala = Integer.parseInt(csvRecord.get("Lotação da sala"));
 
-			Aula x = new Aula(curso, uc, turno, turma, inscritos, diaSemana, horaInicio, horaFim, dia, sala,
-					lotacaoSala);
-			lista.add(x);
+			lista.add(new Aula(curso, uc, turno, turma, inscritos, diaSemana, horaInicio, horaFim, dia, sala,
+			lotacaoSala));
 		}
 
 		return lista;
