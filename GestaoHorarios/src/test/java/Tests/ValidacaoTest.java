@@ -106,11 +106,9 @@ public class ValidacaoTest {
     }
     
     /**
-
     Testa a função de validação de turno.
     Verifica se a validação é bem-sucedida para um turno válido e se falha para um turno vazio.
     */
-
     @Test
     void testValidarTurno() {
         assertTrue(Validacao.validarTurno("Manhã"));
@@ -119,7 +117,6 @@ public class ValidacaoTest {
 
     
     /**
-
     Testa a função de validação de turma.
     Verifica se a validação é bem-sucedida para uma turma válida e se falha para uma turma vazia.
     */

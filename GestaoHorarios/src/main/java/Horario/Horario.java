@@ -24,7 +24,7 @@ public class Horario {
 	public Horario(){}
 	private List<Aula> horario;
 
-	static final private CSVFormat format =CSVFormat.EXCEL
+	static final private CSVFormat format = CSVFormat.EXCEL
     .withHeader() // This causes the parser to read the first record and use its values as column names
     .withSkipHeaderRecord(true)
     .withDelimiter(';');
@@ -98,7 +98,6 @@ public class Horario {
 		while(in.hasNextLine())
 			s.append(in.nextLine() + "\n");
 		in.close();
-
 		return new BufferedReader(new StringReader(s.toString()));
 	}
 
@@ -148,21 +147,7 @@ public class Horario {
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
     @throws IllegalArgumentException se o arquivo CSV estiver mal estruturado
 	*/
-	public static void main(String[] args) {
-		try {
-			Horario h = Horario.getHorarioFromCsvLocal(
-				"C:\\Users\\pamen\\ES-2023-2Sem-Quarta-Feira-LEI-GrupoD-9\\GestaoHorarios\\Conjunto de teste\\Correto.csv");
-				for (Aula a : h.getHorario()) {
-					System.out.println(a);
-				}
-				System.out.println("End");
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-           
-	}
+	
 
 	public static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException {
 		List<Aula> lista = new ArrayList<>();

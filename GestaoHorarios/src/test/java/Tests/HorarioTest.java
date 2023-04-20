@@ -54,9 +54,9 @@ public class HorarioTest {
 	@Test
 	public void testGetHorarioFromJsonLocalNonexistentFile() throws IOException {
 		// Arrange
-
+		File f = new File("nonexistent_file.json");
 		// Act & Assert
-		assertThrows(FileNotFoundException.class, () -> Horario.getHorarioFromCsvLocal("nonexistent_file.json"));
+		assertThrows(FileNotFoundException.class, () -> Horario.getHorarioFromCsvLocal(f));
 	}
 
 	//Testes para Leitura JSON Remoto
@@ -78,7 +78,6 @@ public class HorarioTest {
 	}
 
 	/**
-
     Testa o método getHorarioFromJsonRemote() da classe Horario, passando uma URL inexistente como argumento.
     Espera-se que uma exceção IOException seja lançada.
     @throws IOException se ocorrer um erro de I/O ao tentar abrir a URL
@@ -107,9 +106,10 @@ public class HorarioTest {
 	public void testGetHorarioFromCsvLocal() throws Exception {
 		// Cria um arquivo temporário para teste
 		String path = "csv_teste.csv";
+
+		File file = new File("C:\\Users\\pamen\\ES-2023-2Sem-Quarta-Feira-LEI-GrupoD-9\\GestaoHorarios\\Conjunto de teste\\Correto.csv");
 		// Chama o método para obter um objeto Horario
-		Horario horario = Horario.getHorarioFromCsvLocal(
-"C:\\Users\\pamen\\ES-2023-2Sem-Quarta-Feira-LEI-GrupoD-9\\GestaoHorarios\\Conjunto de teste\\Correto.csv");
+		Horario horario = Horario.getHorarioFromCsvLocal(file);
 
 		// Verifica se o objeto Horario foi criado corretamente
 		assertNotNull(horario);
@@ -129,10 +129,10 @@ public class HorarioTest {
 
 	public void testGetHorarioFromCsvLocalFileNotFound() throws IOException {
 		// Cria um arquivo fictício que não existe
-
+		File f = new File("arquivo_nao_existente.csv");
 
 		// Chama o método, espera-se que uma exceção FileNotFoundException seja lançada
-		assertThrows(FileNotFoundException.class, () -> Horario.getHorarioFromCsvLocal("arquivo_nao_existente.csv"));
+		assertThrows(FileNotFoundException.class, () -> Horario.getHorarioFromCsvLocal(f));
 	}
 
 
@@ -348,10 +348,4 @@ public class HorarioTest {
 		// Verifica se o arquivo foi salvo corretamente remotamente
 		assertEquals(horario, Horario.getHorarioFromJsonRemote(url,null,null));
 	}
-
-
-
-
-
-
 }
