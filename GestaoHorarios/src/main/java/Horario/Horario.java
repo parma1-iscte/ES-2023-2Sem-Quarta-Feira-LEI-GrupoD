@@ -114,7 +114,17 @@ public class Horario {
 		return Arrays.asList(aulas);
 	}
 
+	public static void main(String[] args) {
+		String url = "https://raw.githubusercontent.com/parma1-iscte/ES-2023-2Sem-Quarta-Feira-LEI-GrupoD/main/GestaoHorarios/Conjunto%20de%20teste/Correto.csv";
 
+		// Chama o método para obter um objeto Horario
+		try {
+			Horario horario = Horario.getHorarioFromCsvRemoto(url,null,null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public static Horario getHorarioFromCsvRemoto(String path, String user, String password) throws IOException {
 		BufferedReader br = getWebContent(path, user, password);
@@ -129,7 +139,7 @@ public class Horario {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-		return new Horario(new ArrayList<Aula>(0));
+		return new Horario(readFileCsvWithBufferedReader(br));
 	}
 	
 	public static Horario getHorarioFromCsvLocal(File file) throws Exception {

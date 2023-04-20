@@ -47,12 +47,14 @@ public class Main {
 
                     JButton guardarJSON = new JButton("Guardar em JSON", null);
                     JButton guardarCSV = new JButton("Guardar em CSV", null);
-                    try {
-                       final Horario h =  Horario.getHorarioFromCsvRemoto(pathOndeFichEsta.getText(), null, null);
-                        File toFile = new File(pathOndeGuardar.getText());
+
+                    
+                   
                     guardarCSV.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
+                                Horario h =  Horario.getHorarioFromCsvRemoto(pathOndeFichEsta.getText(), null, null);
+                                File toFile = new File(pathOndeGuardar.getText()); 
                                h.saveToCsvLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
@@ -67,6 +69,8 @@ public class Main {
                     guardarJSON.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
+                                Horario h =  Horario.getHorarioFromCsvRemoto(pathOndeFichEsta.getText(), null, null);
+                                File toFile = new File(pathOndeGuardar.getText()); 
                                h.saveToJsonLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
@@ -78,16 +82,13 @@ public class Main {
                             }
                         }
                     });
-                    } catch (IOException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
+                    
                    
                     pathOndeFichEsta.setBounds(50, 150, 150, 20);
                     pathOndeGuardar.setBounds(50, 200, 150, 20);
 
-                    guardarCSV.setBounds(50, 250, 50, 20);
-                    guardarJSON.setBounds(50, 300, 50, 20);
+                    guardarCSV.setBounds(50, 250, 150, 20);
+                    guardarJSON.setBounds(50, 300, 150, 20);
 
 
                     csvRemotoFrame.add(pathOndeFichEsta);
@@ -105,19 +106,20 @@ public class Main {
 
             getHorarioFromCsvLocal.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    JFrame csvLocalFrame = new JFrame("Upload de ficheiro remoto", null);
+                    JFrame csvLocalFrame = new JFrame("Upload de ficheiro local", null);
                     csvLocalFrame.setJMenuBar(factory());
                     final JTextField pathOndeFichEsta = new JTextField();
                     final JTextField pathOndeGuardar = new JTextField();
                     JButton guardarJSON = new JButton("Guardar em JSON", null);
                     JButton guardarCSV = new JButton("Guardar em CSV", null);
-                    try {
-                       final Horario h =  Horario.getHorarioFromCsvRemoto(pathOndeFichEsta.getText(), null, null);
-                        File toFile = new File(pathOndeGuardar.getText());
+                       
                     guardarCSV.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
-                               h.saveToCsvLocal(toFile);
+                                File localCSV = new File("pathOndeFichEsta.getText()");
+                                Horario h =  Horario.getHorarioFromCsvLocal(localCSV);
+                                File toFile = new File(pathOndeGuardar.getText()); 
+                                h.saveToCsvLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
                                 // TODO Auto-generated catch block
@@ -131,6 +133,8 @@ public class Main {
                     guardarJSON.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
+                                File localCSV = new File("pathOndeFichEsta.getText()");
+                                Horario h =  Horario.getHorarioFromCsvLocal(localCSV);                                File toFile = new File(pathOndeGuardar.getText()); 
                                h.saveToJsonLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
@@ -142,16 +146,13 @@ public class Main {
                             }
                         }
                     });
-                    } catch (IOException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
+                    
                    
                     pathOndeFichEsta.setBounds(50, 150, 150, 20);
                     pathOndeGuardar.setBounds(50, 200, 150, 20);
 
-                    guardarCSV.setBounds(50, 250, 50, 20);
-                    guardarJSON.setBounds(50, 300, 50, 20);
+                    guardarCSV.setBounds(50, 250, 150, 20);
+                    guardarJSON.setBounds(50, 300, 150, 20);
 
 
                     csvLocalFrame.add(guardarCSV);
@@ -176,12 +177,12 @@ public class Main {
                     final JTextField pathOndeGuardar = new JTextField();
                     JButton guardarJSON = new JButton("Guardar em JSON", null);
                     JButton guardarCSV = new JButton("Guardar em CSV", null);
-                    try {
-                       final Horario h =  Horario.getHorarioFromCsvRemoto(pathOndeFichEsta.getText(), null, null);
-                        File toFile = new File(pathOndeGuardar.getText());
+                      
                     guardarCSV.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
+                                Horario h =  Horario.getHorarioFromJsonRemote(pathOndeFichEsta.getText(), null, null);
+                                File toFile = new File(pathOndeGuardar.getText()); 
                                h.saveToCsvLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
@@ -196,6 +197,8 @@ public class Main {
                     guardarJSON.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
+                                Horario h =  Horario.getHorarioFromJsonRemote(pathOndeFichEsta.getText(), null, null);
+                                File toFile = new File(pathOndeGuardar.getText()); 
                                h.saveToJsonLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
@@ -207,16 +210,13 @@ public class Main {
                             }
                         }
                     });
-                    } catch (IOException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
+                    
                    
                     pathOndeFichEsta.setBounds(50, 150, 150, 20);
                     pathOndeGuardar.setBounds(50, 200, 150, 20);
 
-                    guardarCSV.setBounds(50, 250, 50, 20);
-                    guardarJSON.setBounds(50, 300, 50, 20);
+                    guardarCSV.setBounds(50, 250, 150, 20);
+                    guardarJSON.setBounds(50, 300, 150, 20);
 
 
                     jsonRemotoFrame.add(guardarCSV);
@@ -240,12 +240,13 @@ public class Main {
 
                     JButton guardarJSON = new JButton("Guardar em JSON", null);
                     JButton guardarCSV = new JButton("Guardar em CSV", null);
-                    try {
-                       final Horario h =  Horario.getHorarioFromCsvRemoto(pathOndeFichEsta.getText(), null, null);
-                        File toFile = new File(pathOndeGuardar.getText());
+                      
                     guardarCSV.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
+                                File localJSON = new File(pathOndeFichEsta.getText());
+                                Horario h =  Horario.getHorarioFromJsonLocal(localJSON);
+                                File toFile = new File(pathOndeGuardar.getText()); 
                                h.saveToCsvLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
@@ -260,6 +261,9 @@ public class Main {
                     guardarJSON.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
+                                File localJSON = new File(pathOndeFichEsta.getText());
+                                Horario h =  Horario.getHorarioFromJsonLocal(localJSON);
+                                File toFile = new File(pathOndeGuardar.getText()); 
                                h.saveToJsonLocal(toFile);
                                //System.out.println(h.toString());
                             } catch (IOException e1) {
@@ -271,16 +275,13 @@ public class Main {
                             }
                         }
                     });
-                    } catch (IOException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
+                   
                    
                     pathOndeFichEsta.setBounds(50, 150, 150, 20);
                     pathOndeGuardar.setBounds(50, 200, 150, 20);
 
-                    guardarCSV.setBounds(50, 250, 50, 20);
-                    guardarJSON.setBounds(50, 300, 50, 20);
+                    guardarCSV.setBounds(50, 250, 150, 20);
+                    guardarJSON.setBounds(50, 300, 150, 20);
 
 
                     JsonLocalFrame.add(guardarCSV);
