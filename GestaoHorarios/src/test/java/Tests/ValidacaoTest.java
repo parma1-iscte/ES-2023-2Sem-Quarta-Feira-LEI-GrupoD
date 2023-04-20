@@ -95,7 +95,6 @@ public class ValidacaoTest {
     }
     
     /**
-
     Testa a função de validação de unidade curricular.
     Verifica se a validação é bem-sucedida para uma UC válida e se falha para uma UC vazia.
     */
