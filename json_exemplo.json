@@ -1,28 +1,41 @@
 [
   {
-    "Curso": "Curso1",
-    "Unidade Curricular": "UC1",
-    "Turno": "Turno1",
-    "Turma": "Turma1",
+    "Curso": "ME",
+    "Unidade Curricular": "Teoria dos Jogos e dos Contratos",
+    "Turno": "01789TP01",
+    "Turma": "MEA1",
     "Inscritos no Turno": 30,
-    "Dia da semana": "Segunda-feira",
-    "Hora in]icio da aula": "08:00:00",
-    "Hora fim da aula": "10:00:00",
-    "Data da aula": "2023-04-16",
-    "Sala atribuída à aula": "Sala1",
-    "Lotação da aula": 50
+    "Dia da semana": "Sex",
+    "Hora in]icio da aula": "13:00:00",
+    "Hora fim da aula": "14:30:00",
+    "Data da aula": "02/12/2022",
+    "Sala atribuída à aula": "AA2.25",
+    "Lotação da aula": 34
   },
   {
-    "Curso": "Curso2",
-    "Unidade Curricular": "UC2",
-    "Turno": "Turno2",
-    "Turma": "Turma2",
-    "Inscritos no Turno": 25,
-    "Dia da semana": "Terça-feira",
-    "Hora in]icio da aula": "14:00:00",
-    "Hora fim da aula": "16:00:00",
-    "Data da aula": "2023-04-17",
-    "Sala atribuída à aula": "Sala2",
-    "Lotação da aula": 40
+    "Curso": "ME",
+    "Unidade Curricular": "Teoria dos Jogos e dos Contratos",
+    "Turno": "01789TP01",
+    "Turma": "MEA1",
+    "Inscritos no Turno": 30,
+    "Dia da semana": "Qua",
+    "Hora in]icio da aula": "13:00:00",
+    "Hora fim da aula": "14:30:00",
+    "Data da aula": "23/11/2022",
+    "Sala atribuída à aula": "AA2.25",
+    "Lotação da aula": 34
+  },
+  {
+    "Curso": "ME",
+    "Unidade Curricular": "Teoria dos Jogos e dos Contratos",
+    "Turno": "01789TP01",
+    "Turma": "MEA1",
+    "Inscritos no Turno": 30,
+    "Dia da semana": "Qua",
+    "Hora in]icio da aula": "13:00:00",
+    "Hora fim da aula": "14:30:00",
+    "Data da aula": "16/11/2022",
+    "Sala atribuída à aula": "AA2.25",
+    "Lotação da aula": 34
   }
 ]
