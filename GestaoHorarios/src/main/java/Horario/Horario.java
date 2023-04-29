@@ -1,15 +1,21 @@
 package Horario;
 import java.time.*;
+
 import java.time.format.DateTimeFormatter;
 import java.net.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-
 import java.util.*;
-
 import org.apache.commons.csv.*;
 import org.apache.commons.csv.CSVFormat;
 import com.google.gson.*;
+
+import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.Component;
+import net.fortuna.ical4j.model.Parameter;
+import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.component.VEvent;
 
 import java.io.*;
 
@@ -21,28 +27,25 @@ import java.io.*;
 
 public class Horario {
 
-	public Horario(){}
 	private List<Aula> horario;
 
 	static final private CSVFormat format = CSVFormat.EXCEL
-    .withHeader() // This causes the parser to read the first record and use its values as column names
-    .withSkipHeaderRecord(true)
-    .withDelimiter(';');
+			.withHeader() // This causes the parser to read the first record and use its values as column names
+			.withSkipHeaderRecord(true)
+			.withDelimiter(';');
+
 	private static final Gson gson = new GsonBuilder()
 			.registerTypeAdapter(LocalTime.class, new LocalTimeTypeAdapter())
 			.registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
 			.setPrettyPrinting()
 			.create();
 
-	private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
 
 	public Horario(List<Aula> horario) {
 		this.horario = horario;
 	}
 
-	
+
 
 	public List<Aula> getHorario() {
 		return horario;
@@ -62,7 +65,7 @@ public class Horario {
 	public static Horario getHorarioFromJsonRemote(String path, String user, String password) throws IOException {
 		BufferedReader br = getWebContent(path, user, password);
 		return new Horario(readFileJsonWithBufferedReader(br));
-		
+
 	}
 
 	/**
@@ -74,9 +77,10 @@ public class Horario {
 	 */
 
 	public static Horario getHorarioFromJsonLocal(File file) throws Exception {
-		BufferedReader br = new BufferedReader(new FileReader(file));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 		return new Horario(readFileJsonWithBufferedReader(br));
 	}
+
 
 	/**
 
@@ -92,14 +96,10 @@ public class Horario {
 		URL url = new URL(path);
 		HttpURLConnection con = connectToPage(url, user, password);
 		con.setRequestMethod("GET");
-		Scanner in = new Scanner(con.getInputStream());
-		StringBuilder s = new StringBuilder();
-
-		while(in.hasNextLine())
-			s.append(in.nextLine() + "\n");
-		in.close();
-		return new BufferedReader(new StringReader(s.toString()));
+		BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+		return br;
 	}
+
 
 
 	/**
@@ -113,25 +113,14 @@ public class Horario {
 		return Arrays.asList(aulas);
 	}
 
-	public static void main(String[] args) {
-		String url = "https://raw.githubusercontent.com/parma1-iscte/ES-2023-2Sem-Quarta-Feira-LEI-GrupoD/main/GestaoHorarios/Conjunto%20de%20teste/Correto.csv";
-
-		// Chama o método para obter um objeto Horario
-		try {
-			Horario horario = Horario.getHorarioFromCsvRemoto(url,null,null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	public static Horario getHorarioFromCsvRemoto(String path, String user, String password) throws IOException {
 		BufferedReader br = getWebContent(path, user, password);
 		return new Horario(readFileCsvWithBufferedReader(br));
 	}
-	
+
 	public static Horario getHorarioFromCsvLocal(File file) throws Exception {
-		BufferedReader br = new BufferedReader(new FileReader(file));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 		return new Horario(readFileCsvWithBufferedReader(br));
 	}
 
@@ -144,34 +133,36 @@ public class Horario {
     @return uma lista de objetos Aula criados a partir do arquivo CSV
     @throws IOException se ocorrer um erro de I/O ao ler o arquivo
     @throws IllegalArgumentException se o arquivo CSV estiver mal estruturado
-	*/
-	
+	 */
+
 
 	public static List<Aula> readFileCsvWithBufferedReader(BufferedReader in) throws IOException {
 		List<Aula> lista = new ArrayList<>();
 		CSVParser csvParser = new CSVParser(in, format);
-        List<CSVRecord> list = csvParser.getRecords();
+		List<CSVRecord> list = csvParser.getRecords();
 		if(!Validacao.validarDocumento(csvParser)){
 			throw new IllegalArgumentException("Ficheiro mal estruturado");
 		}
 		for (CSVRecord csvRecord : list) {
-			System.out.print("loop");
-	
-
 			String curso = csvRecord.get("Curso");
 			String uc = csvRecord.get("Unidade Curricular");
 			String turno = csvRecord.get("Turno");
 			String turma = csvRecord.get("Turma");
 			Integer inscritos = Integer.parseInt(csvRecord.get("Inscritos no turno"));
 			String diaSemana = csvRecord.get("Dia da semana");
-			LocalTime horaInicio = LocalTime.parse(csvRecord.get("Hora início da aula"), timeFormatter);
-			LocalTime horaFim = LocalTime.parse(csvRecord.get("Hora fim da aula"), timeFormatter);
-			LocalDate dia = LocalDate.parse(csvRecord.get("Data da aula"), dateFormatter);
+			LocalTime horaInicio = LocalTime.parse(csvRecord.get("Hora início da aula"));
+			LocalTime horaFim = LocalTime.parse(csvRecord.get("Hora fim da aula"));
+			LocalDate dia;
+			try {
+				 dia = LocalDate.parse(csvRecord.get("Data da aula"),DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+			}catch(Exception e) {
+				dia = LocalDate.parse(csvRecord.get("Data da aula"));
+			}
 			String sala = csvRecord.get("Sala atribuída à aula");
 			Integer lotacaoSala = Integer.parseInt(csvRecord.get("Lotação da sala"));
 
 			lista.add(new Aula(curso, uc, turno, turma, inscritos, diaSemana, horaInicio, horaFim, dia, sala,
-			lotacaoSala));
+					lotacaoSala));
 		}
 
 		return lista;
@@ -185,7 +176,7 @@ public class Horario {
 	 */
 
 	public void saveToCsvLocal(File file) throws Exception {
-		PrintWriter writer = new PrintWriter(file);
+		PrintWriter writer = new PrintWriter(file, StandardCharsets.UTF_8);
 		CSVPrinter csvPrinter = new CSVPrinter(writer, format);
 		writeHorarioWithCSVPrinter(csvPrinter);
 		csvPrinter.close();
@@ -221,6 +212,10 @@ public class Horario {
 	 * @throws IOException se ocorrer um erro de entrada/saída ao escrever os dados
 	 */
 	private void writeHorarioWithCSVPrinter(CSVPrinter csvPrinter) throws IOException {
+		csvPrinter.printRecord("Curso",
+				"Unidade Curricular", "Turno", "Turma", "Inscritos no turno", "Dia da semana", "Hora início da aula",
+				"Hora fim da aula",
+				"Data da aula", "Sala atribuída à aula","Lotação da sala");
 		for (Aula aula: horario) {
 			csvPrinter.printRecord(
 					aula.getCurso(),
@@ -229,9 +224,9 @@ public class Horario {
 					aula.getTurma(),
 					aula.getInscritos(),
 					aula.getDiaSemana(),
-					aula.getHoraInicio().format(timeFormatter).toString(),
-					aula.getHoraFim().format(timeFormatter).toString(),
-					aula.getDia().format(dateFormatter).toString(),
+					aula.getHoraInicio(),
+					aula.getHoraFim(),
+					aula.getDia(),
 					aula.getSala(),
 					aula.getLotacaoSala());
 		}
@@ -239,7 +234,7 @@ public class Horario {
 
 
 	public void saveToJsonLocal(File file) throws Exception{
-		FileWriter fw = new FileWriter(file);
+		FileWriter fw = new FileWriter(file,StandardCharsets.UTF_8);
 		gson.toJson(horario,fw);
 		fw.flush();
 		fw.close();
@@ -288,10 +283,113 @@ public class Horario {
 		}
 		return con;
 	}
+	
+	// Fazer JavaDoc (Nicholas)
+	
+	public static Horario getHorarioFromFenix(String webCal) throws IOException, ParserException {
+        List<Aula> aulas = new ArrayList<>();
+        CalendarBuilder builder = new CalendarBuilder();
+        String uri = webCal.replace("webcal://", "https://");
+        URL url = new URL(uri);
+        Calendar calendar = builder.build(url.openStream());
 
+        for(Object obj : calendar.getComponents(Component.VEVENT)){
+            VEvent event = (VEvent) obj;
+            if(event.getDescription().getValue().split("\n").length == 15) {
+                String curso = "Desconhecido";
+                String uc = event.getSummary().getValue().split("-")[0];
+                String turno = event.getDescription().getValue().split("\n")[3].split(":")[1];
+                String turma = "Desconhecida";
+                Integer inscritos = 0;
+                LocalDate dia = event.getStartDate().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalTime horaInicio = event.getStartDate().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+                LocalTime horaFim = event.getEndDate().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+                String diaSemana = dia.getDayOfWeek().toString();
+                String sala = event.getLocation().getValue().split(",")[0];
+                Integer lotacaoSala = 0;
+                aulas.add(new Aula( curso,  uc, turno, turma, inscritos, diaSemana, horaInicio, horaFim, dia, sala, lotacaoSala));
 
+            }
+        }
 
+        return new Horario(aulas);
+    }
+	
+	// Fazer JavaDoc (Nicholas)
+	
+	public List<String> getUcList(){
+        List<String> ucs = new ArrayList<>();
+        for(Aula aula : horario)
+            if(!ucs.contains(aula.getUc()))
+                ucs.add(aula.getUc());
+        return ucs;
+    }
+	
+	public Horario getHorarioFromUcList(List<String> ucs) {
+		List<Aula> aulas = new ArrayList<>();
+		for(Aula aula : horario)
+			if(ucs.contains(aula.getUc()))
+				aulas.add(aula);
+		return new Horario(aulas);
+	}
+	
+	public static Horario getHorarioFromFile(String path, String user, String password) throws Exception {
+		if(path.startsWith("webcal"))
+			return getHorarioFromFenix(path);
+		else if(path.startsWith("http"))
+			return getHorarioFromRemoteFile(path,user,password);
+		else
+			return getHorarioFromLocalFile(path);
+	}
 
+	public static Horario getHorarioFromLocalFile(String path) throws Exception {
+		if(path.endsWith(".json"))
+			return getHorarioFromJsonLocal(new File(path));
+		else if(path.endsWith(".csv"))
+			return getHorarioFromCsvLocal(new File(path));
+		else 
+			throw new IllegalArgumentException("Ficheiro não suportado"); 
+	}
+
+	public static Horario getHorarioFromRemoteFile(String path, String user, String password) throws IOException {
+		if(user != null)
+			if(user.isBlank() || user.isEmpty()) user = null;
+		if(password != null)
+			if(password.isBlank() || password.isEmpty()) password = null;
+		if(path.endsWith(".json"))
+			return getHorarioFromJsonRemote(path,user,password);
+		else if(path.endsWith(".csv"))
+			return getHorarioFromCsvRemoto(path,user,password);
+		else
+			throw new IllegalArgumentException("Ficheiro não suportado"); 
+	}
+	
+	public void saveHorarioInFile(String path, String user, String password) throws Exception {
+		if(path.startsWith("http"))
+			saveHorarioInRemoteFile(path,user,password);
+		else
+			saveHorarioInLocalFile(path);
+	}
+
+	public void saveHorarioInLocalFile(String path) throws Exception {
+		if(path.endsWith(".json"))
+			saveToJsonLocal(new File(path));
+		else if(path.endsWith(".csv"))
+			saveToCsvLocal(new File(path));
+		else
+			throw new Exception();
+	}
+
+	public void saveHorarioInRemoteFile(String path, String user, String password) throws Exception {
+		if(user != null)
+			if(user.isBlank() || user.isEmpty()) user = null;
+		if(password != null)
+			if(password.isBlank() || password.isEmpty()) password = null;
+		if(path.endsWith(".json"))
+			saveToJsonRemoto(path,user,password);
+		else if(path.endsWith(".csv"))
+			saveToCsvRemoto(path,user,password);
+		else
+			throw new Exception();
+	}
 }
-
-

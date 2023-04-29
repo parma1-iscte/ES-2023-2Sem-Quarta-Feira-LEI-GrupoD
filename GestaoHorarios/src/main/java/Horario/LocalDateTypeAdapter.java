@@ -9,7 +9,7 @@ import com.google.gson.stream.JsonWriter;
 
 public class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Override
     public void write(JsonWriter out, LocalDate value) throws IOException {

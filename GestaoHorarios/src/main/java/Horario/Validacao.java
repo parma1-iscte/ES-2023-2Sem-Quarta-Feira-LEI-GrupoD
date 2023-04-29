@@ -2,16 +2,11 @@ package Horario;
 
 import java.io.*;
 import java.util.List;
-
 import java.nio.charset.Charset;
-
-
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 import java.io.IOException;
 import org.apache.commons.csv.*;
-
 import com.google.gson.JsonObject;
 
 /**
@@ -117,7 +112,7 @@ public class Validacao {
    
     public static boolean validarInscritosNoTurno(int inscritosNoTurno) {
 
-        if (inscritosNoTurno <= 0) { // podemos escolher o nº mínimo de
+        if (inscritosNoTurno < 0) { // podemos escolher o nº mínimo de
             // alunos que é necessário para criar
             // a aula???
             // throw new RuntimeException("Nº de inscritos inválido");
