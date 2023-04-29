@@ -11,5 +11,4 @@ Por lapso, alguns dos commits foram feitos com a minha conta pessoal e não a do
 porque tenho ambas as contas guardas no IntelliJ. (Pedro Mendonça)<br />
 
 Identificação e descrição de erros e funcionalidades não implementadas ou incompletas:
-- SonarCloud
-- Escrever em ficheiros remotos
+- Colocar no fim se eventualmente faltar algo na entrega
