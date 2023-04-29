@@ -284,6 +284,8 @@ public class Horario {
 		return con;
 	}
 	
+	// Fazer JavaDoc (Nicholas)
+	
 	public static Horario getHorarioFromFenix(String webCal) throws IOException, ParserException {
         List<Aula> aulas = new ArrayList<>();
         CalendarBuilder builder = new CalendarBuilder();
