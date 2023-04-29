@@ -324,4 +324,12 @@ public class Horario {
                 ucs.add(aula.getUc());
         return ucs;
     }
+	
+	public Horario getHorarioFromUcList(List<String> ucs) {
+		List<Aula> aulas = new ArrayList<>();
+		for(Aula aula : horario)
+			if(ucs.contains(aula.getUc()))
+				aulas.add(aula);
+		return new Horario(aulas);
+	}
 }
