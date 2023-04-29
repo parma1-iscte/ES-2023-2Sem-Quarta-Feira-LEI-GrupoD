@@ -332,4 +332,64 @@ public class Horario {
 				aulas.add(aula);
 		return new Horario(aulas);
 	}
+	
+	public static Horario getHorarioFromFile(String path, String user, String password) throws Exception {
+		if(path.startsWith("webcal"))
+			return getHorarioFromFenix(path);
+		else if(path.startsWith("http"))
+			return getHorarioFromRemoteFile(path,user,password);
+		else
+			return getHorarioFromLocalFile(path);
+	}
+
+	public static Horario getHorarioFromLocalFile(String path) throws Exception {
+		if(path.endsWith(".json"))
+			return getHorarioFromJsonLocal(new File(path));
+		else if(path.endsWith(".csv"))
+			return getHorarioFromCsvLocal(new File(path));
+		else 
+			throw new IllegalArgumentException("Ficheiro não suportado"); 
+	}
+
+	public static Horario getHorarioFromRemoteFile(String path, String user, String password) throws IOException {
+		if(user != null)
+			if(user.isBlank() || user.isEmpty()) user = null;
+		if(password != null)
+			if(password.isBlank() || password.isEmpty()) password = null;
+		if(path.endsWith(".json"))
+			return getHorarioFromJsonRemote(path,user,password);
+		else if(path.endsWith(".csv"))
+			return getHorarioFromCsvRemoto(path,user,password);
+		else
+			throw new IllegalArgumentException("Ficheiro não suportado"); 
+	}
+	
+	public void saveHorarioInFile(String path, String user, String password) throws Exception {
+		if(path.startsWith("http"))
+			saveHorarioInRemoteFile(path,user,password);
+		else
+			saveHorarioInLocalFile(path);
+	}
+
+	public void saveHorarioInLocalFile(String path) throws Exception {
+		if(path.endsWith(".json"))
+			saveToJsonLocal(new File(path));
+		else if(path.endsWith(".csv"))
+			saveToCsvLocal(new File(path));
+		else
+			throw new Exception();
+	}
+
+	public void saveHorarioInRemoteFile(String path, String user, String password) throws Exception {
+		if(user != null)
+			if(user.isBlank() || user.isEmpty()) user = null;
+		if(password != null)
+			if(password.isBlank() || password.isEmpty()) password = null;
+		if(path.endsWith(".json"))
+			saveToJsonRemoto(path,user,password);
+		else if(path.endsWith(".csv"))
+			saveToCsvRemoto(path,user,password);
+		else
+			throw new Exception();
+	}
 }
