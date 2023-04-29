@@ -314,4 +314,14 @@ public class Horario {
 
         return new Horario(aulas);
     }
+	
+	// Fazer JavaDoc (Nicholas)
+	
+	public List<String> getUcList(){
+        List<String> ucs = new ArrayList<>();
+        for(Aula aula : horario)
+            if(!ucs.contains(aula.getUc()))
+                ucs.add(aula.getUc());
+        return ucs;
+    }
 }
