@@ -283,4 +283,33 @@ public class Horario {
 		}
 		return con;
 	}
+	
+	public static Horario getHorarioFromFenix(String webCal) throws IOException, ParserException {
+        List<Aula> aulas = new ArrayList<>();
+        CalendarBuilder builder = new CalendarBuilder();
+        String uri = webCal.replace("webcal://", "https://");
+        URL url = new URL(uri);
+        Calendar calendar = builder.build(url.openStream());
+
+        for(Object obj : calendar.getComponents(Component.VEVENT)){
+            VEvent event = (VEvent) obj;
+            if(event.getDescription().getValue().split("\n").length == 15) {
+                String curso = "Desconhecido";
+                String uc = event.getSummary().getValue().split("-")[0];
+                String turno = event.getDescription().getValue().split("\n")[3].split(":")[1];
+                String turma = "Desconhecida";
+                Integer inscritos = 0;
+                LocalDate dia = event.getStartDate().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalTime horaInicio = event.getStartDate().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+                LocalTime horaFim = event.getEndDate().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+                String diaSemana = dia.getDayOfWeek().toString();
+                String sala = event.getLocation().getValue().split(",")[0];
+                Integer lotacaoSala = 0;
+                aulas.add(new Aula( curso,  uc, turno, turma, inscritos, diaSemana, horaInicio, horaFim, dia, sala, lotacaoSala));
+
+            }
+        }
+
+        return new Horario(aulas);
+    }
 }
