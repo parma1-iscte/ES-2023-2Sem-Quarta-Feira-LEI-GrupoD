@@ -22,7 +22,7 @@ import java.io.*;
 /**
  * 
  * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
- * Versão 2.0
+ * Versão 3.0
  */
 
 public class Horario {
