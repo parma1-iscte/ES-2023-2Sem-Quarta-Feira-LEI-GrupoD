@@ -263,7 +263,6 @@ public class Horario {
 	}
 
 	/**
-
     Cria uma conexão HttpURLConnection com uma página web usando a URL fornecida e as credenciais de autenticação especificadas.
     @param url a URL da página web
     @param user o nome de usuário a ser usado para autenticação (pode ser nulo se a página não requer autenticação)
@@ -321,7 +320,10 @@ public class Horario {
         return new Horario(aulas);
     }
 	
-	// Fazer JavaDoc (Nicholas)
+	/**
+    Retorna uma lista de todas as unidades curriculares (UCs) presentes no horário.
+    @return uma lista de Strings contendo o nome de todas as UCs presentes no horário.
+    */
 	
 	public List<String> getUcList(){
         List<String> ucs = new ArrayList<>();
