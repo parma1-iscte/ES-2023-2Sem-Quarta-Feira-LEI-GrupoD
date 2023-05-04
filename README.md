@@ -10,5 +10,7 @@ Pedro Mendonça Nº 99024 Username de uma conta parma1-iscte e da outra L0rd0fPy
 Por lapso, alguns dos commits foram feitos com a minha conta pessoal e não a do iscte, <br />
 porque tenho ambas as contas guardas no IntelliJ. (Pedro Mendonça)<br />
 
-Identificação e descrição de erros e funcionalidades não implementadas ou incompletas:
-- Colocar no fim se eventualmente faltar algo na entrega
+Nota Importante:
+O burndown chart não ficou muito bem representado devido a problemas do próprio powerup do trello e ser versão não paga
+(No dia 03/04/23 foi questionado ao prof. José Reis isto e ficou resolvido mas infelizmente o próprio powerup (Burndown chart)
+assume que foi tudo feito no mesmo dia ficando um gráfico pouco representativo...)
