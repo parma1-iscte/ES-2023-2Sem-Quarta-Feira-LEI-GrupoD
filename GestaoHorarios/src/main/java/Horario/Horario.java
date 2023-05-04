@@ -284,7 +284,13 @@ public class Horario {
 		return con;
 	}
 	
-	// Fazer JavaDoc (Nicholas)
+	/**
+    Analisa uma URL webcal e extrai informações sobre as aulas agendadas usando o formato iCalendar.
+    @param webCal a URL webcal a ser analisada
+    @return um objeto Horario contendo as informações das aulas extraídas do calendário
+    @throws IOException se houver um erro de entrada/saída ao abrir a conexão com a URL
+    @throws ParserException se houver um erro ao analisar o calendário iCalendar
+    */
 	
 	public static Horario getHorarioFromFenix(String webCal) throws IOException, ParserException {
         List<Aula> aulas = new ArrayList<>();
