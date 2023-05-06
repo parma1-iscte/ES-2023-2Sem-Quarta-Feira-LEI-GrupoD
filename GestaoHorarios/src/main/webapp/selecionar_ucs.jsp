@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<h1>Selecione as Unidades Curriculares</h1>
+
 	<% 
 		String errorMessage = (String) request.getSession().getAttribute("error_message");
 		if(errorMessage != null){
@@ -29,10 +29,14 @@
     		return;
 		}
 	%>
-	<form action="processar_horario_ucs.jsp" method="post">
+	<form id="selecionar-ucs" action="processar_horario_ucs.jsp" method="post">
+		<h1>Selecione as Unidades Curriculares</h1>
+		<br />
 		<% for (int i = 0; i < ucs.size(); i++) { %>
+			
 			<input type="checkbox" name="uc" id="uc_<%=i%>" value="<%=ucs.get(i)%>">
-			<label for="uc_<%=i%>"><%=ucs.get(i)%></label><br>
+			<label for="uc_<%=i%>"><%=ucs.get(i)%></label>
+			<br /> 
 		<% } %>
 		<input type="submit" value="Enviar">
 	</form>

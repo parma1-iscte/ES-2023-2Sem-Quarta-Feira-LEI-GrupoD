@@ -7,8 +7,10 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<h1>Guardar Horário</h1>
+	
 	<form action="guardar_horario.jsp" method="post">
+		<h1>Guardar Horário</h1>
+		<br />
 		<label>Caminho do ficheiro:</label><input type="text" name="path"/>
 		<br>
 		<input type="submit" value="Guardar Horário">

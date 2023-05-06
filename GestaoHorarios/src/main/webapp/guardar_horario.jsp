@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<h1>Horário Guardado com Sucesso</h1>
+
 	<% 
 		Horario horario = (Horario) request.getSession().getAttribute("horario");
 		if(horario != null){
@@ -32,11 +32,11 @@
     		return;
 		}
 	%>
-	<form action="processar_horario.jsp">
-		<input type="submit" value="Voltar Página Horário">
-	</form>
-	<form action="index.jsp">
-		<input type="submit" value="Voltar Página Inicial">
+	<form>
+		<h1>Horário Guardado com Sucesso</h1>
+		<br />
+		<input type="submit" value="Voltar Página Horário" formaction:"processar_horario.jsp" />
+		<input type="submit" value="Voltar Página Inicial" formaction:"index.jsp" />
 	</form>
 </body>
 </html>

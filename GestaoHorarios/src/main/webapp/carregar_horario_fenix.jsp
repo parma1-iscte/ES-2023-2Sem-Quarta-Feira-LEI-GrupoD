@@ -7,13 +7,14 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<h1>Carregar Horário</h1>
+
 	<%
 		Horario horario = (Horario) request.getSession().getAttribute("horario");
 		if(horario != null)
 			request.getSession().removeAttribute("horario");
 	%>
 	<form action="processar_horario.jsp" method="post">
+		<h1>Carregar Horário</h1><br />
 		<label>Webcal:</label><input type="text" name="path"/>
 		<br>
 		<input type="submit" value="Carregar Horário">

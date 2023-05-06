@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<h1>Horário Carregado</h1>
 	<% 
 		String errorMessage = (String) request.getSession().getAttribute("error_message");
 		if(errorMessage != null){
@@ -34,20 +33,14 @@
 			}
 		}
 	%>
-	<form action="visualizar_horario.jsp">
-		<input type="submit" value="Visualizar Horário">
-	</form>
-	<form action="guardar_horario_local.jsp">
-		<input type="submit" value="Guardar Horário Localmente">
-	</form>
-	<form action="guardar_horario_remoto.jsp">
-		<input type="submit" value="Guardar Horário Remotamente">
-	</form>
-	<form action="selecionar_ucs.jsp">
-		<input type="submit" value="Criar Novo Horário - Lista de Ucs">
-	</form>
-	<form action="index.jsp">
-		<input type="submit" value="Voltar Página Inicial">
+	<form>
+		<h1>Horário Carregado</h1>
+		<br />
+		<input type="submit" value="Visualizar Horário" formaction="visualizar_horario.jsp" />
+		<input type="submit" value="Guardar Horário Localmente" formaction="guardar_horario_local.jsp" />
+		<input type="submit" value="Guardar Horário Remotamente" formaction="guardar_horario_remoto.jsp" />
+		<input type="submit" value="Criar Novo Horário - Lista de Ucs" formaction="selecionar_ucs.jsp" />
+		<input type="submit" value="Voltar Página Inicial" formaction="index.jsp" />
 	</form>
 </body>
 </html>
