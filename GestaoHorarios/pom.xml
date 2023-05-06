@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>pt.iscte-iul.ista</groupId>
-  <artifactId>ProjetoTeste</artifactId>
+  <artifactId>GestaoHorarios</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
 
