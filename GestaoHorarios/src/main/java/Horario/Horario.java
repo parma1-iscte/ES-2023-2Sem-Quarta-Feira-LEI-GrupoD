@@ -333,6 +333,14 @@ public class Horario {
         return ucs;
     }
 	
+	/**
+    Retorna um objeto Horario contendo todas as Aulas correspondentes às Unidades Curriculares
+    especificadas na lista de Strings fornecida.
+    @param ucs uma lista de Strings contendo os nomes das Unidades Curriculares desejadas.
+    @return um objeto Horario contendo todas as Aulas correspondentes às Unidades Curriculares
+    especificadas na lista de Strings fornecida.
+    */
+	
 	public Horario getHorarioFromUcList(List<String> ucs) {
 		List<Aula> aulas = new ArrayList<>();
 		for(Aula aula : horario)
@@ -340,6 +348,7 @@ public class Horario {
 				aulas.add(aula);
 		return new Horario(aulas);
 	}
+	
 	
 	public static Horario getHorarioFromFile(String path, String user, String password) throws Exception {
 		if(path.startsWith("webcal"))
