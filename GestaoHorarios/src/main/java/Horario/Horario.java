@@ -349,6 +349,14 @@ public class Horario {
 		return new Horario(aulas);
 	}
 	
+	/**
+	Retorna o Horario obtido ou lança uma exceção em caso de erro
+	@param path uma string contendo o caminho para o arquivo desejado.
+	@param user uma string contendo o nome de usuário, caso seja necessário para acessar o arquivo.
+	@param password uma string contendo a senha de usuário, caso seja necessário para acessar o arquivo.
+	@return um objeto Horario contendo as Aulas presentes no arquivo especificado.
+	@throws Exception caso ocorra algum erro ao obter o Horario a partir do arquivo.
+	*/
 	
 	public static Horario getHorarioFromFile(String path, String user, String password) throws Exception {
 		if(path.startsWith("webcal"))
@@ -359,6 +367,13 @@ public class Horario {
 			return getHorarioFromLocalFile(path);
 	}
 
+	/**
+    Retorna um objeto Horario a partir de um arquivo local, cujo caminho é especificado pela string "path"
+    @return um objeto Horario contendo as Aulas presentes no arquivo especificado.
+    @throws Exception caso ocorra algum erro ao obter o Horario a partir do arquivo.
+    @throws IllegalArgumentException caso a extensão do arquivo não seja suportada.
+    */
+	
 	public static Horario getHorarioFromLocalFile(String path) throws Exception {
 		if(path.endsWith(".json"))
 			return getHorarioFromJsonLocal(new File(path));
@@ -368,6 +383,18 @@ public class Horario {
 			throw new IllegalArgumentException("Ficheiro não suportado"); 
 	}
 
+	/**
+
+    Retorna um objeto Horario a partir de um arquivo remoto, cujo caminho é especificado pela string "path".
+    O método determina o tipo de arquivo a partir da extensão e chama um método específico para obter o Horario
+    @param path uma string contendo o caminho para o arquivo desejado.
+    @param user uma string contendo o nome de usuário, caso seja necessário para acessar o arquivo.
+    @param password uma string contendo a senha de usuário, caso seja necessário para acessar o arquivo.
+    @return um objeto Horario contendo as Aulas presentes no arquivo especificado.
+    @throws IOException caso ocorra um erro de entrada/saída ao obter o Horario a partir do arquivo.
+    @throws IllegalArgumentException caso a extensão do arquivo não seja suportada.
+    */
+	
 	public static Horario getHorarioFromRemoteFile(String path, String user, String password) throws IOException {
 		if(user != null)
 			if(user.isBlank() || user.isEmpty()) user = null;
@@ -381,6 +408,14 @@ public class Horario {
 			throw new IllegalArgumentException("Ficheiro não suportado"); 
 	}
 	
+	/**
+    O método determina o tipo de arquivo a partir da extensão e chama um método específico para salvar o Horario.
+    @param path uma string contendo o caminho para o arquivo no qual o Horario deve ser salvo.
+    @param user uma string contendo o nome de usuário para autenticação no caso de um arquivo remoto. Pode ser nulo.
+    @param password uma string contendo a senha para autenticação no caso de um arquivo remoto. Pode ser nulo.
+    @throws Exception caso ocorra algum erro ao salvar o Horario no arquivo ou a extensão do arquivo não seja suportada.
+    */
+	
 	public void saveHorarioInFile(String path, String user, String password) throws Exception {
 		if(path.startsWith("http"))
 			saveHorarioInRemoteFile(path,user,password);
@@ -388,6 +423,12 @@ public class Horario {
 			saveHorarioInLocalFile(path);
 	}
 
+	/**
+    O método determina o tipo de arquivo a partir da extensão e chama um método específico para salvar o Horario.  
+    @param path uma string contendo o caminho para o arquivo no qual o Horario deve ser salvo.
+    @throws Exception caso ocorra algum erro ao salvar o Horario no arquivo local ou a extensão do arquivo não seja suportada.
+    */
+	
 	public void saveHorarioInLocalFile(String path) throws Exception {
 		if(path.endsWith(".json"))
 			saveToJsonLocal(new File(path));
@@ -397,6 +438,13 @@ public class Horario {
 			throw new Exception();
 	}
 
+	/**
+    @param path uma string contendo o caminho para o arquivo no qual o Horario deve ser salvo.
+    @param user uma string contendo o nome de usuário, caso seja necessário para acessar o arquivo remoto.
+    @param password uma string contendo a senha de usuário, caso seja necessário para acessar o arquivo remoto.
+    @throws Exception caso ocorra algum erro ao salvar o Horario no arquivo remoto ou a extensão do arquivo não seja suportada.
+    */
+	
 	public void saveHorarioInRemoteFile(String path, String user, String password) throws Exception {
 		if(user != null)
 			if(user.isBlank() || user.isEmpty()) user = null;
