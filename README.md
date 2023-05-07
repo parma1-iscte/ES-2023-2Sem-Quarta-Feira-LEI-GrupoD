@@ -15,6 +15,9 @@ O burndown chart não ficou muito bem representado devido a problemas do própri
 (No dia 03/04/23 foi questionado ao prof. José Reis isto e ficou resolvido mas infelizmente o próprio powerup (Burndown chart)
 assume que foi tudo feito no mesmo dia ficando um gráfico pouco representativo...)
 
+Funcionalidades não implementadas no projecto:
+- Escrita de ficheiros remotos
+
 Explicação das funcionalidades: O nosso projeto permite aos utilizadores:
 
 1 - Carregamento e conversão de horários, o utilizador pode carregar um horário em formato CSV ou JSON e convertê-lo para o outro formato. 
@@ -27,7 +30,7 @@ Explicação das funcionalidades: O nosso projeto permite aos utilizadores:
 
 5 - Escolher livremente um (sub)conjunto de Unidades Curriculares existentes num horário já carregado para a aplicação e associar este (sub)conjunto de UCs ao estudante e definir o seu horário. 
 
-5 - Poder gravar um horário em formato CSV ou JSON para posterior utilização.
+5 - Poder gravar um horário em formato CSV ou JSON para posterior utilização mas apenas localmente.
 
 6 - Visualização de aulas em sobreposição e sobrelotação para o utilizador poder visualizar as aulas em sobreposição e em sobrelotação.
 
