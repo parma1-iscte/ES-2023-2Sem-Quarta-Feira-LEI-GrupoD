@@ -1,0 +1,805 @@
+
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+@RunWith(JUnitPlatform.class)
+public class HorarioTest2 {
+
+    @Test
+    public void testGetHorarioFromJsonRemote() throws IOException {
+        String path = "https://example.com/horario.json";
+        String user = "username";
+        String password = "password";
+
+        Horario horario = MyClass.getHorarioFromJsonRemote(path, user, password);
+
+        assertNotNull(horario);
+        // More assertions go here
+    }
+
+
+
+@Test
+public void testGetHorarioFromJsonLocal() throws Exception {
+        String json = "{ \"horario\": \"09:00 - 18:00\" }";
+        File tempFile = File.createTempFile("test", ".json");
+        tempFile.deleteOnExit();
+        FileWriter writer = new FileWriter(tempFile);
+        writer.write(json);
+        writer.close();
+
+        Horario horario = MyClass.getHorarioFromJsonLocal(tempFile);
+
+        assertNotNull(horario);
+        assertEquals("09:00 - 18:00", horario.getHorario());
+}
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+
+
+
+@Test
+public void testGetWebContent() throws IOException {
+        MockWebServer server = new MockWebServer();
+        server.start();
+
+        String response = "{ \"horario\": \"09:00 - 18:00\" }";
+        server.enqueue(new MockResponse()
+            .setBody(response)
+            .addHeader("Content-Type", "application/json"));
+
+        URL url = server.url("/path").url();
+        BufferedReader br = MyClass.getWebContent(url.toString(), "user", "password");
+
+        assertNotNull(br);
+
+        String line;
+        StringBuilder sb = new StringBuilder();
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+        }
+
+        assertEquals(response, sb.toString());
+
+        server.shutdown();
+}
+
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
+@Test
+public void testReadFileJsonWithBufferedReader() {
+        String json = "[{\"nome\":\"Matematica\",\"horario\":\"09:00 - 10:30\"},"
+                + "{\"nome\":\"Fisica\",\"horario\":\"10:45 - 12:15\"}]";
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+        List<Aula> aulas = MyClass.readFileJsonWithBufferedReader(br);
+
+        assertNotNull(aulas);
+        assertEquals(2, aulas.size());
+
+        Aula aula1 = aulas.get(0);
+        assertEquals("Matematica", aula1.getNome());
+        assertEquals("09:00 - 10:30", aula1.getHorario());
+
+        Aula aula2 = aulas.get(1);
+        assertEquals("Fisica", aula2.getNome());
+        assertEquals("10:45 - 12:15", aula2.getHorario());
+    }
+}
+
+private static final String PATH = "http://example.com/data.csv";
+private static final String USER = "user";
+private static final String PASSWORD = "password";
+private static final String CSV_DATA = "1,Monday,Math\n2,Tuesday,Science\n3,Wednesday,History\n";
+
+@Test
+void testGetHorarioFromCsvRemoto() throws IOException {
+        // create a mock BufferedReader that returns CSV_DATA
+        BufferedReader br = new BufferedReader(new java.io.StringReader(CSV_DATA));
+
+        // mock the getWebContent method to return the mock BufferedReader
+        Horario.setWebContentGetter((path, user, password) -> br);
+
+        // get the Horario object from the CSV data
+        Horario result = Horario.getHorarioFromCsvRemoto(PATH, USER, PASSWORD);
+
+        // verify that the list of Aulas is correct
+        List<Aula> aulas = result.getAulas();
+        Assertions.assertEquals(3, aulas.size());
+        Assertions.assertEquals(new Aula("1", "Monday", "Math"), aulas.get(0));
+        Assertions.assertEquals(new Aula("2", "Tuesday", "Science"), aulas.get(1));
+        Assertions.assertEquals(new Aula("3", "Wednesday", "History"), aulas.get(2));
+}   
+
+private static final String CSV_DATA = "1,Monday,Math\n2,Tuesday,Science\n3,Wednesday,History\n";
+
+@Test
+void testGetHorarioFromCsvLocal() throws IOException {
+        // create a temporary file with the CSV data
+        File file = File.createTempFile("data", ".csv");
+        Files.write(file.toPath(), CSV_DATA.getBytes());
+
+        // read the Horario object from the CSV file
+        Horario result = Horario.getHorarioFromCsvLocal(file);
+
+        // verify that the list of Aulas is correct
+        List<Aula> aulas = result.getAulas();
+        Assertions.assertEquals(3, aulas.size());
+        Assertions.assertEquals(new Aula("1", "Monday", "Math"), aulas.get(0));
+        Assertions.assertEquals(new Aula("2", "Tuesday", "Science"), aulas.get(1));
+        Assertions.assertEquals(new Aula("3", "Wednesday", "History"), aulas.get(2));
+
+        // delete the temporary file
+        file.delete();
+}
+
+@Test
+void testReadFileCsvWithBufferedReader_invalidCsvFile() {
+    BufferedReader in = new BufferedReader(new StringReader("Curso,Unidade Curricular,Inscritos no turno\n" +
+                                                           "Computação,Programação,20\n" +
+                                                           "Engenharia,Matemática,30\n" +
+                                                           "Letras,Português,25\n"));
+    assertThrows(IllegalArgumentException.class, () -> {
+        readFileCsvWithBufferedReader(in);
+    });
+}
+
+@Test
+void testSaveToCsvLocal_newFileCreated() throws Exception {
+    File file = new File("test.csv");
+    if (file.exists()) {
+        file.delete();
+    }
+    assertFalse(file.exists());
+
+    saveToCsvLocal(file);
+
+    assertTrue(file.exists());
+
+    file.delete();
+}
+
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.apache.commons.csv.*;
+
+import java.io.*;
+import java.net.*;
+import java.nio.charset.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
+
+private static final String PATH_TESTE = "http://localhost:8080/teste";
+    private static final String USER = "user";
+    private static final String PASSWORD = "password";
+
+    private static HttpServer server;
+
+    @BeforeAll
+    public static void startServer() throws IOException {
+        server = HttpServer.create(new InetSocketAddress(8080), 0);
+        server.createContext("/teste", new HttpHandler() {
+            @Override
+            public void handle(HttpExchange exchange) throws IOException {
+                InputStream inputStream = exchange.getRequestBody();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+                List<CSVRecord> records = new CSVParser(reader, CSVFormat.DEFAULT).getRecords();
+                assertEquals(2, records.size()); // verificando se a quantidade de registros está correta
+                assertEquals("Curso", records.get(0).get(0)); // verificando se o cabeçalho está correto
+                exchange.sendResponseHeaders(200, 0);
+                exchange.close();
+            }
+        });
+        server.start();
+    }
+
+    @AfterAll
+    public static void stopServer() {
+        server.stop(0);
+    }
+
+    @Test
+    public void testSaveToCsvRemoto() throws Exception {
+        // cria o arquivo CSV com os dados de teste
+        StringWriter sw = new StringWriter();
+        CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        printer.printRecord("Curso", "Unidade Curricular", "Turno");
+        printer.printRecord("Ciência da Computação", "Introdução à Programação", "Manhã");
+        printer.flush();
+
+        // chama a função saveToCsvRemoto com as informações de conexão
+        Funcoes funcoes = new Funcoes();
+        funcoes.saveToCsvRemoto(PATH_TESTE, USER, PASSWORD, sw.toString());
+
+        // verifica se a resposta do servidor é a esperada
+        // no caso, o servidor deve responder com status 200
+        HttpURLConnection connection = (HttpURLConnection) new URL(PATH_TESTE).openConnection();
+        connection.setRequestMethod("GET");
+        connection.connect();
+        int responseCode = connection.getResponseCode();
+        assertEquals(200, responseCode);
+   }
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.junit.jupiter.api.Test;
+
+@Test
+    public void testWriteHorarioWithCSVPrinter() throws IOException {
+        // Cria o CSVPrinter simulado
+        StringWriter writer = new StringWriter();
+        CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
+        
+        // Cria a lista de objetos Aula simulados
+        List<Aula> aulas = new ArrayList<>();
+        aulas.add(new Aula("curso1", "uc1", "turno1", "turma1", 10, "segunda", "08:00", "10:00", "2023-05-10", "sala1", 50));
+        aulas.add(new Aula("curso2", "uc2", "turno2", "turma2", 20, "terça", "10:00", "12:00", "2023-05-11", "sala2", 30));
+        
+        // Chama a função a ser testada
+        writeHorarioWithCSVPrinter(csvPrinter, aulas);
+        
+        // Validar que as linhas impressas correspondem aos valores esperados
+        String expectedOutput = "Curso,Unidade Curricular,Turno,Turma,Inscritos no turno,Dia da semana,Hora início da aula,Hora fim da aula,Data da aula,Sala atribuída à aula,Lotação da sala\n"
+                                + "curso1,uc1,turno1,turma1,10,segunda,08:00,10:00,2023-05-10,sala1,50\n"
+                                + "curso2,uc2,turno2,turma2,20,terça,10:00,12:00,2023-05-11,sala2,30\n";
+        assertEquals(expectedOutput, writer.toString());
+    }
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
+import org.junit.jupiter.api.Test;
+
+@Test
+    public void testSaveToJsonLocal() throws Exception {
+        // Cria o objeto File simulado
+        File file = new File("testFile.json");
+        
+        // Chama a função a ser testada
+        saveToJsonLocal(file);
+        
+        // Lê o conteúdo do arquivo salvo
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+        }
+        
+        // Validar se o conteúdo lido do arquivo corresponde aos valores esperados
+        String expectedOutput = gson.toJson(horario);
+        assertEquals(expectedOutput, sb.toString());
+        
+        // Apaga o arquivo criado no teste
+        file.delete();
+    }
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+
+@Test
+	public void testSaveToJsonRemoto() throws Exception {
+		// Mockar a conexão HTTP
+		HttpURLConnection conexao = mock(HttpURLConnection.class);
+		when(conexao.getResponseCode()).thenReturn(200);
+		when(conexao.getOutputStream()).thenReturn(new ByteArrayOutputStream());
+		when(conexao.getInputStream()).thenReturn(new StringBufferInputStream("Resposta do servidor"));
+		
+		// Chama a função a ser testada
+		saveToJsonRemoto("https://www.exemplo.com/arquivo.json", "usuario", "senha");
+		
+		// Validar a resposta do servidor
+		assertEquals(200, conexao.getResponseCode());
+		InputStream is = conexao.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		String response = reader.readLine();
+		assertEquals("Resposta do servidor", response);
+	}
+
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import org.junit.jupiter.api.Test;
+
+@Test
+	public void testConnectToPage() throws Exception {
+		// Cria um servidor mock
+		URL url = new URL("http://localhost:8080");
+		HttpURLConnection connection = mock(HttpURLConnection.class);
+		when(connection.getResponseCode()).thenReturn(200);
+		
+		// Chama a função a ser testada
+		HttpURLConnection con = connectToPage(url, "user", "password");
+		
+		// Valida a conexão
+		assertNotNull(con);
+		assertEquals(url, con.getURL());
+		assertEquals("Basic dXNlcjpwYXNzd29yZA==", con.getRequestProperty("Authorization"));
+	}
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.Component;
+import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.util.CalendarBuilder;
+
+import org.junit.jupiter.api.Test;
+
+//função: getHorarioFromFenix
+
+@Test
+    void testGetHorarioFromFenix() throws IOException, ParserException {
+        String webCal = "webcal://fenix.tecnico.ulisboa.pt/icalendar.php?component=curricular&academic=true&student=true&private=true";
+        Horario horario = Horario.getHorarioFromFenix(webCal);
+        assertNotNull(horario, "O objeto Horario não pode ser nulo.");
+        List<Aula> aulas = horario.getAulas();
+        assertNotNull(aulas, "A lista de aulas não pode ser nula.");
+        assertTrue(aulas.size() > 0, "A lista de aulas não pode ser vazia.");
+        for(Aula aula : aulas) {
+            assertNotNull(aula.getCurso(), "O nome do curso não pode ser nulo.");
+            assertNotNull(aula.getUC(), "O nome da UC não pode ser nulo.");
+            assertNotNull(aula.getTurno(), "O nome do turno não pode ser nulo.");
+            assertNotNull(aula.getTurma(), "O nome da turma não pode ser nulo.");
+            assertNotNull(aula.getDia(), "O dia da aula não pode ser nulo.");
+            assertNotNull(aula.getDiaSemana(), "O dia da semana da aula não pode ser nulo.");
+            assertNotNull(aula.getHoraInicio(), "A hora de início da aula não pode ser nula.");
+            assertNotNull(aula.getHoraFim(), "A hora de fim da aula não pode ser nula.");
+            assertNotNull(aula.getSala(), "O nome da sala não pode ser nulo.");
+            assertNotNull(aula.getLotacaoSala(), "A lotação da sala não pode ser nula.");
+            assertTrue(aula.getLotacaoSala() >= 0, "A lotação da sala não pode ser negativa.");
+            assertTrue(aula.getHoraInicio().isBefore(aula.getHoraFim()), "A hora de início da aula deve ser antes da hora de fim.");
+            assertTrue(aula.getDia().isAfter(LocalDate.now().minusDays(7)), "A data da aula não pode ser anterior a uma semana atrás.");
+            assertTrue(aula.getDia().isBefore(LocalDate.now().plusDays(30)), "A data da aula não pode ser posterior a um mês à frente.");
+        }
+    }
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+private List<Aula> horario;
+
+    @BeforeEach
+    public void setUp() {
+        horario = new ArrayList<>();
+        horario.add(new Aula("Curso A", "UC1", "Manhã", "Turma 1", 10,
+                "Segunda-feira", LocalTime.of(8, 0), LocalTime.of(10, 0),
+                LocalDate.of(2023, 5, 8), "Sala 1", 20));
+        horario.add(new Aula("Curso B", "UC1", "Tarde", "Turma 1", 20,
+                "Terça-feira", LocalTime.of(14, 0), LocalTime.of(16, 0),
+                LocalDate.of(2023, 5, 9), "Sala 2", 30));
+        horario.add(new Aula("Curso C", "UC2", "Noite", "Turma 1", 30,
+                "Quarta-feira", LocalTime.of(19, 0), LocalTime.of(21, 0),
+                LocalDate.of(2023, 5, 10), "Sala 3", 40));
+        horario.add(new Aula("Curso D", "UC2", "Manhã", "Turma 1", 40,
+                "Quinta-feira", LocalTime.of(8, 0), LocalTime.of(10, 0),
+                LocalDate.of(2023, 5, 11), "Sala 4", 50));
+    }
+
+    @Test
+    public void testGetUcList() {
+        Horario h = new Horario(horario);
+        List<String> ucs = h.getUcList();
+        Assertions.assertEquals(2, ucs.size());
+        Assertions.assertTrue(ucs.contains("UC1"));
+        Assertions.assertTrue(ucs.contains("UC2"));
+    }
+
+    @Test
+    public void testGetUcListEmpty() {
+        Horario h = new Horario(new ArrayList<>());
+        List<String> ucs = h.getUcList();
+        Assertions.assertEquals(0, ucs.size());
+    }
+
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+private Horario horario;
+    private List<Aula> aulas;
+
+    @BeforeEach
+    public void setUp() {
+        // Criar horário de teste com algumas aulas
+        aulas = new ArrayList<>();
+        aulas.add(new Aula("Curso A", "UC1", "T1", "Turma A", 20, "Segunda", LocalTime.of(8, 0), LocalTime.of(10, 0), LocalDate.of(2023, 5, 8), "Sala 1", 50));
+        aulas.add(new Aula("Curso B", "UC2", "T2", "Turma B", 15, "Terça", LocalTime.of(14, 0), LocalTime.of(16, 0), LocalDate.of(2023, 5, 9), "Sala 2", 40));
+        aulas.add(new Aula("Curso C", "UC3", "T3", "Turma C", 25, "Quarta", LocalTime.of(10, 0), LocalTime.of(12, 0), LocalDate.of(2023, 5, 10), "Sala 3", 30));
+        horario = new Horario(aulas);
+    }
+
+ @Test
+    public void testGetHorarioFromUcList() {
+        // UCs esperadas
+        List<String> ucs = new ArrayList<>();
+        ucs.add("UC1");
+        ucs.add("UC3");
+
+        // Obter horário filtrado
+        Horario horarioFiltrado = horario.getHorarioFromUcList(ucs);
+
+        // Aulas esperadas
+        List<Aula> aulasEsperadas = new ArrayList<>();
+        aulasEsperadas.add(new Aula("Curso A", "UC1", "T1", "Turma A", 20, "Segunda", LocalTime.of(8, 0), LocalTime.of(10, 0), LocalDate.of(2023, 5, 8), "Sala 1", 50));
+        aulasEsperadas.add(new Aula("Curso C", "UC3", "T3", "Turma C", 25, "Quarta", LocalTime.of(10, 0), LocalTime.of(12, 0), LocalDate.of(2023, 5, 10), "Sala 3", 30));
+
+        // Verificar se as listas de aulas são iguais
+        assertEquals(aulasEsperadas, horarioFiltrado.getAulas());
+    }
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+@Test
+    void testGetHorarioFromFile_local() {
+        String path = "test/horario.ics";
+        try {
+            Horario horario = HorarioUtils.getHorarioFromFile(path, null, null);
+            Assertions.assertEquals(2, horario.getHorario().size());
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+    }
+    
+    @Test
+    void testGetHorarioFromFile_remote() {
+        String path = "https://example.com/horario.ics";
+        String user = "user";
+        String password = "password";
+        try {
+            Horario horario = HorarioUtils.getHorarioFromFile(path, user, password);
+            Assertions.assertEquals(3, horario.getHorario().size());
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+    }
+    
+    @Test
+    void testGetHorarioFromFile_fenix() {
+        String path = "webcal://fenix.tecnico.ulisboa.pt/icalendar.cgi?component=CurricularPeriod&curricularPeriodID=368912&selectedClasses=60662&selectedPeriods=5606472";
+        try {
+            Horario horario = HorarioUtils.getHorarioFromFile(path, null, null);
+            Assertions.assertEquals(5, horario.getHorario().size());
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+    }
+
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+
+@Test
+	void testGetHorarioFromLocalFile() {
+		String jsonPath = "example.json";
+		String csvPath = "example.csv";
+		String invalidPath = "invalid.txt";
+		
+		// Test for JSON file
+		try {
+			Horario horarioJson = MyClass.getHorarioFromLocalFile(jsonPath);
+			assertNotNull(horarioJson);
+			// Add more assertions here for the horario object created from JSON file
+		} catch (Exception e) {
+			fail("Should not have thrown an exception: " + e.getMessage());
+		}
+		
+		// Test for CSV file
+		try {
+			Horario horarioCsv = MyClass.getHorarioFromLocalFile(csvPath);
+			assertNotNull(horarioCsv);
+			// Add more assertions here for the horario object created from CSV file
+		} catch (Exception e) {
+			fail("Should not have thrown an exception: " + e.getMessage());
+		}
+		
+		// Test for invalid file type
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+			MyClass.getHorarioFromLocalFile(invalidPath);
+		});
+		assertEquals("Ficheiro não suportado", exception.getMessage());
+	}
+
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+ @Test
+    public void testGetHorarioFromRemoteFileWithJsonFile() {
+        String path = "https://example.com/schedule.json";
+        String user = "username";
+        String password = "password";
+        try {
+            Horario horario = YourClass.getHorarioFromRemoteFile(path, user, password);
+            assertNotNull(horario, "Horario should not be null");
+            // add more assertions to check the correctness of the returned Horario object
+        } catch (IOException e) {
+            fail("IOException should not be thrown", e);
+        }
+    }
+
+    @Test
+    public void testGetHorarioFromRemoteFileWithCsvFile() {
+        String path = "https://example.com/schedule.csv";
+        String user = null;
+        String password = null;
+        try {
+            Horario horario = YourClass.getHorarioFromRemoteFile(path, user, password);
+            assertNotNull(horario, "Horario should not be null");
+            // add more assertions to check the correctness of the returned Horario object
+        } catch (IOException e) {
+            fail("IOException should not be thrown", e);
+        }
+    }
+
+    @Test
+    public void testGetHorarioFromRemoteFileWithInvalidPath() {
+        String path = "https://example.com/schedule.doc";
+        String user = null;
+        String password = null;
+        assertThrows(IllegalArgumentException.class, () -> {
+            YourClass.getHorarioFromRemoteFile(path, user, password);
+        }, "IllegalArgumentException should be thrown for unsupported file type");
+    }
+
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import java.io.IOException;
+
+@Test
+    void saveHorarioInFile_localPath_shouldCallSaveHorarioInLocalFile() throws Exception {
+        Horario horario = new Horario();
+        String path = "path/to/local/file.csv";
+
+        Horario horarioMock = Mockito.spy(horario);
+        Mockito.doNothing().when(horarioMock).saveHorarioInLocalFile(path);
+
+        horarioMock.saveHorarioInFile(path, null, null);
+
+        Mockito.verify(horarioMock, Mockito.times(1)).saveHorarioInLocalFile(path);
+    }
+
+    @Test
+    void saveHorarioInFile_remotePath_shouldCallSaveHorarioInRemoteFile() throws Exception {
+        Horario horario = new Horario();
+        String path = "https://example.com/file.json";
+        String user = "user";
+        String password = "password";
+
+        Horario horarioMock = Mockito.spy(horario);
+        Mockito.doNothing().when(horarioMock).saveHorarioInRemoteFile(path, user, password);
+
+        horarioMock.saveHorarioInFile(path, user, password);
+
+        Mockito.verify(horarioMock, Mockito.times(1)).saveHorarioInRemoteFile(path, user, password);
+    }
+
+    @Test
+    void saveHorarioInFile_invalidPath_shouldThrowException() {
+        Horario horario = new Horario();
+        String path = "invalid/path";
+
+        try {
+            horario.saveHorarioInFile(path, null, null);
+        } catch (Exception e) {
+            assert e instanceof IllegalArgumentException;
+            assert e.getMessage().equals("Caminho não suportado");
+        }
+    }
+
+    @Test
+    void saveHorarioInFile_blankUser_shouldThrowException() {
+        Horario horario = new Horario();
+        String path = "https://example.com/file.json";
+        String user = " ";
+        String password = "password";
+
+        try {
+            horario.saveHorarioInFile(path, user, password);
+        } catch (IOException e) {
+            assert e.getMessage().equals("Credenciais inválidas");
+        }
+    }
+
+    @Test
+    void saveHorarioInFile_blankPassword_shouldThrowException() {
+        Horario horario = new Horario();
+        String path = "https://example.com/file.json";
+        String user = "user";
+        String password = " ";
+
+        try {
+            horario.saveHorarioInFile(path, user, password);
+        } catch (IOException e) {
+            assert e.getMessage().equals("Credenciais inválidas");
+        }
+    }
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+@Test
+  void saveHorarioInLocalFile_JsonFile_Success() throws Exception {
+    // Arrange
+    Horario horario = new Horario();
+    File file = new File("horario.json");
+    
+    // Act
+    horario.saveHorarioInLocalFile(file.getAbsolutePath());
+    
+    // Assert
+    assertTrue(file.exists());
+    assertTrue(file.length() > 0);
+    assertEquals("application/json", Files.probeContentType(file.toPath()));
+    
+    // Clean up
+    file.delete();
+  }
+  
+  @Test
+  void saveHorarioInLocalFile_CsvFile_Success() throws Exception {
+    // Arrange
+    Horario horario = new Horario();
+    File file = new File("horario.csv");
+    
+    // Act
+    horario.saveHorarioInLocalFile(file.getAbsolutePath());
+    
+    // Assert
+    assertTrue(file.exists());
+    assertTrue(file.length() > 0);
+    assertEquals("text/csv", Files.probeContentType(file.toPath()));
+    
+    // Clean up
+    file.delete();
+  }
+  
+  @Test
+  void saveHorarioInLocalFile_InvalidExtension_ExceptionThrown() {
+    // Arrange
+    Horario horario = new Horario();
+    String path = "horario.txt";
+    
+    // Act & Assert
+    assertThrows(Exception.class, () -> horario.saveHorarioInLocalFile(path));
+  }
+
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockserver.client.MockServerClient;
+import org.mockserver.junit.jupiter.MockServerExtension;
+import org.mockserver.model.HttpRequest;
+import org.mockserver.model.HttpResponse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+private static final String REMOTE_PATH = "http://localhost:8080/test";
+    private static final String USERNAME = "testuser";
+    private static final String PASSWORD = "testpassword";
+
+    @Test
+    void testSaveToJsonRemoto(MockServerClient mockServer) throws Exception {
+        // Cria uma instância da classe Horario
+        Horario horario = new Horario();
+
+        // Configura o mock server para responder a requisição HTTP
+        mockServer.when(HttpRequest.request(REMOTE_PATH)
+            .withMethod("PUT")
+            .withHeader("Authorization", "Basic dGVzdHVzZXI6dGVzdHBhc3N3b3Jk"))
+            .respond(HttpResponse.response()
+            .withStatusCode(200));
+
+        // Testa a função saveHorarioInRemoteFile
+        horario.saveHorarioInRemoteFile(REMOTE_PATH, USERNAME, PASSWORD);
+
+        // Verifica se a requisição HTTP foi enviada corretamente
+        mockServer.verify(HttpRequest.request(REMOTE_PATH)
+            .withMethod("PUT")
+            .withHeader("Authorization", "Basic dGVzdHVzZXI6dGVzdHBhc3N3b3Jk"));
+    }
+
+    @Test
+    void testSaveToCsvRemoto(MockServerClient mockServer) throws Exception {
+        // Cria uma instância da classe Horario
+        Horario horario = new Horario();
+
+        // Configura o mock server para responder a requisição HTTP
+        mockServer.when(HttpRequest.request(REMOTE_PATH)
+            .withMethod("POST")
+            .withHeader("Authorization", "Basic dGVzdHVzZXI6dGVzdHBhc3N3b3Jk"))
+            .respond(HttpResponse.response()
+            .withStatusCode(200));
+
+        // Testa a função saveHorarioInRemoteFile
+        horario.saveHorarioInRemoteFile(REMOTE_PATH, USERNAME, PASSWORD);
+
+        // Verifica se a requisição HTTP foi enviada corretamente
+        mockServer.verify(HttpRequest.request(REMOTE_PATH)
+            .withMethod("POST")
+            .withHeader("Authorization", "Basic dGVzdHVzZXI6dGVzdHBhc3N3b3Jk"));
+    }
+
+    @Test
+    void testInvalidFileExtension() throws Exception {
+        // Cria uma instância da classe Horario
+        Horario horario = new Horario();
+
+        // Testa a função saveHorarioInRemoteFile com uma extensão de arquivo inválida
+        assertThrows(Exception.class, () -> {
+            horario.saveHorarioInRemoteFile("http://localhost:8080/test.pdf", USERNAME, PASSWORD);
+        });
+    }
+
+
+}
+
+
+
+
