@@ -1,26 +1,40 @@
 package Horario;
 
-import java.io.*;
+
+import java.util.HashSet;
 import java.util.List;
-import java.nio.charset.Charset;
+//import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.io.IOException;
+
 import org.apache.commons.csv.*;
-import com.google.gson.JsonObject;
+
 
 /**
- * 
  * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
  *         Versão 1.0
  */
 
 public class Validacao {
 
-    private static final List<String> colunasDoCSV = List.of("Curso",
-            "Unidade Curricular", "Turno", "Turma", "Inscritos no turno", "Dia da semana", "Hora início da aula",
-            "Hora fim da aula",
-            "Data da aula", "Lotação da sala", "Sala atribuída à aula");
+    private Validacao() {
+    }
+
+    public static final String CURSO = "Curso";
+    public static final String UNIDADE_CURRICULAR = "Unidade Curricular";
+    public static final String TURMA = "Turma";
+    public static final String HORA_FIM_DA_AULA = "Hora fim da aula";
+    public static final String TURNO = "Turno";
+    public static final String INSCRITOS_NO_TURNO = "Inscritos no turno";
+    public static final String DIA_DA_SEMANA = "Dia da semana";
+    public static final String HORA_INICIO_DA_AULA = "Hora início da aula";
+    public static final String LOTACAO_DA_SALA = "Lotação da sala";
+    public static final String DATA_DA_AULA = "Data da aula";
+    public static final String SALA_ATRIBUIDA_A_AULA = "Sala atribuída à aula";
+    private static final List<String> colunasDoCSV = List.of(CURSO,
+            UNIDADE_CURRICULAR, TURNO, TURMA, INSCRITOS_NO_TURNO, DIA_DA_SEMANA, HORA_INICIO_DA_AULA,
+            HORA_FIM_DA_AULA,
+            DATA_DA_AULA, LOTACAO_DA_SALA, SALA_ATRIBUIDA_A_AULA);
 
     /**
      * Verifica se o curso informado foi preenchido.
@@ -127,7 +141,7 @@ public class Validacao {
      * @param hora_inicio hora de início da aula para validar.
      * @return true se a hora de início da aula for válida, false caso contrário.
      */
-    public static boolean validarHoraInicioAula(LocalTime hora_inicio) {
+    public static boolean validarHoraInicioAula(LocalTime horaInicio) {
 
         //String[] hora_inicio_aula = objeto.get("Hora de início da aula").toString().split(":");
         //int hora_inicio = Integer.parseInt(hora_inicio_aula[0]);
@@ -136,8 +150,7 @@ public class Validacao {
 
 //        if (objeto.get("Hora de início da aula").toString().isEmpty() || !(hora_inicio >= 0 && hora_inicio <= 23)
 //                || !(minutos_inicio >= 0 && minutos_inicio <= 59) || !(segundos_inicio >= 0 && segundos_inicio <= 59)) {
-    	if(hora_inicio== null || !(hora_inicio.getHour()>= 0 && hora_inicio.getHour() <=23) ||
-    			!(hora_inicio.getMinute()>=0 && hora_inicio.getMinute()<=59) || !(hora_inicio.getSecond()>=0 && hora_inicio.getSecond()<=59)	){   
+    	if(horaInicio== null ){
     	
     	// throw new RuntimeException("A hora de início da aula é de preenchimento
             // obrigatório e tem de estar no formato \"(hh:mm:ss)\", por exemplo,
@@ -164,12 +177,12 @@ public class Validacao {
      * @param hora_inicio hora de fima da aula para validar.
      * @return true se a hora de início da aula for válida, false caso contrário.
      */
-   public static boolean validarHoraFim(LocalTime hora_fim) { 
-    if(hora_fim== null || !(hora_fim.getHour()>= 0 && hora_fim.getHour() <=23) ||
-			!(hora_fim.getMinute()>=0 && hora_fim.getMinute()<=59) || !(hora_fim.getSecond()>=0 && hora_fim.getSecond()<=59)	){   
-	
+   public static boolean validarHoraFim(LocalTime horaFim) {
+    if(horaFim== null){
             System.out.println(
-                    "A hora de fim da aula é de preenchimento obrigatório e tem de estar no formato \"(hh:mm:ss)\", por exemplo, \"(12:59:06)\" ");
+                    "A hora de fim da aula é de preenchimento obrigatório e " +
+                            "tem de estar no formato \"(hh:mm:ss)\", " +
+                            "por exemplo, \"(12:59:06)\" ");
             return false;
         }
     return true;
@@ -193,9 +206,10 @@ public class Validacao {
     *
     */
    public static boolean validarDataAula(LocalDate dataAula) {
-	   if(dataAula == null || !(dataAula.getDayOfMonth()>=1 &&dataAula.getDayOfMonth()<=31) || !(dataAula.getMonthValue()>=1 && dataAula.getMonthValue()<=12) || !(dataAula.getYear()>=0)) {
+	   if(dataAula == null || (dataAula.getYear()< 0)) {
             System.out.println(
-                    "A hora de início da aula é de preenchimento obrigatório e tem de estar no formato \"(dia/mes/ano)\", por exemplo, \"(12/12/2023)\" ");
+                    "A hora de início da aula é de preenchimento obrigatório e tem de estar " +
+                            "no formato \"(dia/mes/ano)\", por exemplo, \"(12/12/2023)\" ");
             return false;
 	   }
 	   return true;
@@ -249,22 +263,22 @@ public class Validacao {
     */
 
     public static boolean validarDocumento(CSVParser parser) {
-        if (!(parser.getHeaderNames().containsAll(colunasDoCSV) && colunasDoCSV.containsAll(parser.getHeaderNames())))
+        if (!(new HashSet<>(parser.getHeaderNames()).equals(new HashSet<>(colunasDoCSV))  ))
             return false;
 
 
         List<CSVRecord> list = parser.getRecords();
-        for (CSVRecord record : list) {
+        for (CSVRecord csvRecord : list) {
             
-            if (!areAllFieldsNotEmptyStrings(record))
+            if (!areAllFieldsNotEmptyStrings(csvRecord))
                 return false;
-            if (!areAllFieldsNonNull(record))
+            if (!areAllFieldsNonNull(csvRecord))
                 return false;
 
 
             
-            boolean areTheIntsValid = Integer.parseInt(record.get("Inscritos no turno")) >= 0
-                    && Integer.parseInt(record.get("Lotação da sala")) >= 0;
+            boolean areTheIntsValid = Integer.parseInt(csvRecord.get(INSCRITOS_NO_TURNO)) >= 0
+                    && Integer.parseInt(csvRecord.get(LOTACAO_DA_SALA)) >= 0;
 
             if (!areTheIntsValid)
                 return false;
@@ -274,32 +288,32 @@ public class Validacao {
 
     /**
     *Verifica se todos os campos do registro CSV passado como parâmetro não são vazios.
-    *@param record O registro CSV a ser verificado.
+    *@param csvRecord O registro CSV a ser verificado.
     *@return true se todos os campos não forem vazios, false caso contrário.
     */
 
-    private static boolean areAllFieldsNotEmptyStrings(CSVRecord record) {
+    private static boolean areAllFieldsNotEmptyStrings(CSVRecord csvRecord) {
 
-        return !record.get("Curso").isEmpty() &&
-                !record.get("Unidade Curricular").isEmpty() &&
-                !record.get("Turno").isEmpty() && !record.get("Turma").isEmpty() &&
-                !record.get("Inscritos no turno").isEmpty()
-                && !record.get("Dia da semana").isEmpty() && !record.get("Hora início da aula").isEmpty()
-                && !record.get("Hora fim da aula").isEmpty() && !record.get("Data da aula").isEmpty() &&
-                !record.get("Lotação da sala").isEmpty() && !record.get("Sala atribuída à aula").isEmpty();
+        return !csvRecord.get(CURSO).isEmpty() &&
+                !csvRecord.get(UNIDADE_CURRICULAR).isEmpty() &&
+                !csvRecord.get(TURNO).isEmpty() && !csvRecord.get(TURMA).isEmpty() &&
+                !csvRecord.get(INSCRITOS_NO_TURNO).isEmpty()
+                && !csvRecord.get(DIA_DA_SEMANA).isEmpty() && !csvRecord.get(HORA_INICIO_DA_AULA).isEmpty()
+                && !csvRecord.get(HORA_FIM_DA_AULA).isEmpty() && !csvRecord.get(DATA_DA_AULA).isEmpty() &&
+                !csvRecord.get(LOTACAO_DA_SALA).isEmpty() && !csvRecord.get(SALA_ATRIBUIDA_A_AULA).isEmpty();
     }
 
      /**
     /**
     *Verifica se todos os campos do registro CSV passado como parâmetro não são nulos.
-    *@param record O registro CSV a ser verificado.
+    *@param csvRecord O registro CSV a ser verificado.
     *@return true se todos os campos não forem nulos, false caso contrário.
     */
-    private static boolean areAllFieldsNonNull(CSVRecord record) {
-        return record.get("Curso") != null && record.get("Unidade Curricular") != null &&
-                record.get("Turno") != null && record.get("Turma") != null && record.get("Inscritos no turno") != null
-                && record.get("Dia da semana") != null && record.get("Hora início da aula") != null
-                && record.get("Hora fim da aula") != null && record.get("Data da aula") != null &&
-                record.get("Lotação da sala") != null && record.get("Sala atribuída à aula") != null;
+    private static boolean areAllFieldsNonNull(CSVRecord csvRecord) {
+        return csvRecord.get(CURSO) != null && csvRecord.get(UNIDADE_CURRICULAR) != null &&
+                csvRecord.get(TURNO) != null && csvRecord.get(TURMA) != null && csvRecord.get(INSCRITOS_NO_TURNO) != null
+                && csvRecord.get(DIA_DA_SEMANA) != null && csvRecord.get(HORA_INICIO_DA_AULA) != null
+                && csvRecord.get(HORA_FIM_DA_AULA) != null && csvRecord.get(DATA_DA_AULA) != null &&
+                csvRecord.get(LOTACAO_DA_SALA) != null && csvRecord.get(SALA_ATRIBUIDA_A_AULA) != null;
     }
 }
