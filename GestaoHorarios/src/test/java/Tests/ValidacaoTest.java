@@ -1,6 +1,6 @@
-package GestaoHorarios.src.test.java.Tests;
+package Tests;
 
-import GestaoHorarios.src.main.java.Horario.Validacao;
+
 import org.apache.commons.csv.CSVFormat;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ import java.time.LocalTime;
 import java.io.IOException;
 import org.apache.commons.csv.*;
 
-//import Horario.*;
+import Horario.*;
 
 
 
