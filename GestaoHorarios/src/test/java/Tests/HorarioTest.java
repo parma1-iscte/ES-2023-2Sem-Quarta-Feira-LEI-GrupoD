@@ -50,7 +50,7 @@ public class HorarioTest {
     Testa o método {@link Horario#getHorarioFromJsonLocal(File)} para o caso em que o arquivo
     de origem não existe.
     @throws IOException se ocorrer um erro de I/O durante o teste.
-    */
+    */ 
 
 	@Test
 	public void testGetHorarioFromJsonLocalNonexistentFile() throws IOException {
