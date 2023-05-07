@@ -1,4 +1,4 @@
-package Tests;
+package GestaoHorarios.src.test.java.Tests;
 
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -7,10 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalTime;
 
+import GestaoHorarios.src.main.java.Horario.Aula;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import Horario.*;
+//import Horario.*;
 
 /**
  * 

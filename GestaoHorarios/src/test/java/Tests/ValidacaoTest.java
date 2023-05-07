@@ -1,5 +1,6 @@
-package Tests;
+package GestaoHorarios.src.test.java.Tests;
 
+import GestaoHorarios.src.main.java.Horario.Validacao;
 import org.apache.commons.csv.CSVFormat;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ import java.time.LocalTime;
 import java.io.IOException;
 import org.apache.commons.csv.*;
 
-import Horario.*;
+//import Horario.*;
 
 
 
@@ -217,7 +218,7 @@ public class ValidacaoTest {
         // Ficheiro valido
         CSVParser correto = null;
         try {
-            File csvData = new File("C:\\Users\\pamen\\ES-2023-2Sem-Quarta-Feira-LEI-GrupoD-9\\GestaoHorarios\\Conjunto de teste\\Correto.csv");
+            File csvData = new File("C:\\Users\\pamen\\OneDrive\\Ambiente de Trabalho\\PISID shit\\ES-\\GestaoHorarios\\Conjunto de teste\\Correto.csv");
             correto = CSVParser.parse(csvData, StandardCharsets.UTF_8, format);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -236,7 +237,7 @@ public class ValidacaoTest {
     public void validarCSVComHeaderAlterado() {
         CSVParser headerAlterado = null;
            try {
-               File csvData5 = new File("Conjunto de teste/Header com colunas a alteradas.csv");
+               File csvData5 = new File("C:\\Users\\pamen\\OneDrive\\Ambiente de Trabalho\\PISID shit\\ES-\\GestaoHorarios\\Conjunto de teste\\Header com colunas a alteradas.csv");
                headerAlterado = CSVParser.parse(csvData5, StandardCharsets.UTF_8, format);
            } catch (IOException e) {
                throw new RuntimeException(e);
@@ -254,7 +255,7 @@ public class ValidacaoTest {
     public void validarCSVComHeaderComLinhasAMais() {
         CSVParser headerComRowsAmais = null;
            try {
-               File csvData6 = new File("Conjunto de teste/Header com colunas a mais.csv");
+               File csvData6 = new File("C:\\Users\\pamen\\OneDrive\\Ambiente de Trabalho\\PISID shit\\ES-\\GestaoHorarios\\Conjunto de teste\\Header com colunas a mais.csv");
                headerComRowsAmais = CSVParser.parse(csvData6, StandardCharsets.UTF_8, format);
            } catch (IOException e) {
                throw new RuntimeException(e);
@@ -271,7 +272,7 @@ public class ValidacaoTest {
     public void validarCSVComHeaderComColunasAMenos() {
         CSVParser headerComRowsAmenos = null;
            try {
-               File csvData7 = new File("Conjunto de teste/Header com colunas a menos.csv");
+               File csvData7 = new File("C:\\Users\\pamen\\OneDrive\\Ambiente de Trabalho\\PISID shit\\ES-\\GestaoHorarios\\Conjunto de teste\\Header com colunas a menos.csv");
                headerComRowsAmenos = CSVParser.parse(csvData7, StandardCharsets.UTF_8, format);
            } catch (IOException e) {
                throw new RuntimeException(e);
@@ -290,7 +291,7 @@ public class ValidacaoTest {
         // Record com um campo com empty String
          CSVParser recordComEmptyString = null;
         try {
-            File csvData3 = new File("Conjunto de teste/Record com um campo com empty String.csv");
+            File csvData3 = new File("C:\\Users\\pamen\\OneDrive\\Ambiente de Trabalho\\PISID shit\\ES-\\GestaoHorarios\\Conjunto de teste\\Record com um campo com empty String.csv");
             recordComEmptyString = CSVParser.parse(csvData3, StandardCharsets.UTF_8, format);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -309,7 +310,7 @@ public class ValidacaoTest {
         // Record com campo numerico negativo
            CSVParser recordComNumNeg = null;
            try {
-               File csvData4 = new File("Conjunto de teste/Record com campo numerico negativo.csv");
+               File csvData4 = new File("C:\\Users\\pamen\\OneDrive\\Ambiente de Trabalho\\PISID shit\\ES-\\GestaoHorarios\\Conjunto de teste\\Record com campo numerico negativo.csv");
                recordComNumNeg = CSVParser.parse(csvData4, StandardCharsets.UTF_8, format);
            } catch (IOException e) {
                throw new RuntimeException(e);

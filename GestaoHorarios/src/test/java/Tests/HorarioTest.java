@@ -1,6 +1,8 @@
-package Tests;
+package GestaoHorarios.src.test.java.Tests;
 
-import Horario.*;
+import GestaoHorarios.src.main.java.Horario.Aula;
+import GestaoHorarios.src.main.java.Horario.Horario;
+//import Horario.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
