@@ -1,5 +1,5 @@
 package Horario;
-import java.io.*;
+
 import java.time.*;
 
 import java.time.format.DateTimeFormatter;
@@ -372,9 +372,11 @@ public class Horario {
 	/**
 	 Retorna um objeto Horario a partir de um arquivo local, cujo caminho é especificado pela string "path"
 	 @return um objeto Horario contendo as Aulas presentes no arquivo especificado.
-	 @throws IllegalArgumentException, IOException caso a extensão do arquivo não seja suportada.
+	 @throws IllegalArgumentException caso a extensão do arquivo não seja suportada.
+	 @throws IOException caso getHorarioFromJsonLocal ou getHorarioFromCsvLocal lançem-na.
 	 */
-	public static Horario getHorarioFromLocalFile(String path) throws IOException{
+	public static Horario getHorarioFromLocalFile(String path) throws IOException
+	 {
 		if(path.endsWith(JSON_EXTENSION_NAME))
 			return getHorarioFromJsonLocal(new File(path));
 		else if(path.endsWith(CSV_EXTENSION_NAME))
@@ -426,6 +428,7 @@ public class Horario {
 	 O método determina o tipo de arquivo a partir da extensão e chama um método específico para salvar o Horario.
 	 @param path uma string contendo o caminho para o arquivo no qual o Horario deve ser salvo.
 	 @throws IOException caso ocorra algum erro ao salvar o Horario no arquivo local ou a extensão do arquivo não seja suportada.
+	 @throws IllegalArgumentException path não terminar com a substring ".csv" ou ".json"
 	 */
 	public void saveHorarioInLocalFile(String path) throws IOException {
 		if(path.endsWith(JSON_EXTENSION_NAME))
@@ -440,6 +443,7 @@ public class Horario {
 	 @param user uma string contendo o nome de usuário, caso seja necessário para acessar o arquivo remoto.
 	 @param password uma string contendo a senha de usuário, caso seja necessário para acessar o arquivo remoto.
 	 @throws IOException caso ocorra algum erro ao salvar o Horario no arquivo remoto ou a extensão do arquivo não seja suportada.
+	 @throws IllegalArgumentException path não terminar com a substring ".csv" ou ".json"
 	 */
 	public void saveHorarioInRemoteFile(String path, String user, String password) throws IOException {
 		if(user != null)
