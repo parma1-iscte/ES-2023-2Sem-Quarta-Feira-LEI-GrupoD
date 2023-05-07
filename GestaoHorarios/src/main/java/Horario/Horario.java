@@ -16,14 +16,16 @@ import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
+import net.fortuna.ical4j.model.Parameter;
+import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VEvent;
 
-
+import java.io.*;
 
 /**
  * 
  * @author ES-2023-2Sem-Quarta-Feira-LEI-GrupoD
- * Versão 2.0
+ * Versão 3.0
  */
 
 public class Horario {
@@ -48,6 +50,7 @@ public class Horario {
 	public Horario(List<Aula> horario) {
 		this.horario = horario;
 	}
+
 
 
 	public List<Aula> getHorario() {
@@ -88,11 +91,11 @@ public class Horario {
 	/**
 
     Retorna um objeto BufferedReader que contém o conteúdo da página web localizada em um caminho remoto, usando o usuário e a senha fornecidos para autenticação
-	 @param path o caminho remoto para a página web
-	 @param user o nome de usuário a ser usado para autenticação
-	 @param password a senha a ser usada para autenticação
-	 @return um objeto BufferedReader contendo o conteúdo da página web
-	 @throws IOException se ocorrer um erro ao conectar à página web ou ao ler o seu conteúdo
+	@param path o caminho remoto para a página web
+	@param user o nome de usuário a ser usado para autenticação
+	@param password a senha a ser usada para autenticação
+	@return um objeto BufferedReader contendo o conteúdo da página web
+	@throws IOException se ocorrer um erro ao conectar à página web ou ao ler o seu conteúdo
 	 */
 
 	public static BufferedReader getWebContent(String path, String user, String password) throws IOException {
@@ -101,6 +104,7 @@ public class Horario {
 		con.setRequestMethod("GET");
 		return new BufferedReader(new InputStreamReader(con.getInputStream(), UTF_8));
 	}
+
 
 
 	/**
@@ -260,7 +264,6 @@ public class Horario {
 	}
 
 	/**
-
     Cria uma conexão HttpURLConnection com uma página web usando a URL fornecida e as credenciais de autenticação especificadas.
     @param url a URL da página web
     @param user o nome de usuário a ser usado para autenticação (pode ser nulo se a página não requer autenticação)
@@ -280,9 +283,15 @@ public class Horario {
 		}
 		return con;
 	}
-
-	// Fazer JavaDoc (Nicholas)
-
+	
+	/**
+    Analisa uma URL webcal e extrai informações sobre as aulas agendadas usando o formato iCalendar.
+    @param webCal a URL webcal a ser analisada
+    @return um objeto Horario contendo as informações das aulas extraídas do calendário
+    @throws IOException se houver um erro de entrada/saída ao abrir a conexão com a URL
+    @throws ParserException se houver um erro ao analisar o calendário iCalendar
+    */
+	
 	public static Horario getHorarioFromFenix(String webCal) throws IOException, ParserException {
         List<Aula> aulas = new ArrayList<>();
         CalendarBuilder builder = new CalendarBuilder();
@@ -311,9 +320,12 @@ public class Horario {
 
         return new Horario(aulas);
     }
-
-	// Fazer JavaDoc (Nicholas)
-
+	
+	/**
+    Retorna uma lista de todas as unidades curriculares (UCs) presentes no horário.
+    @return uma lista de Strings contendo o nome de todas as UCs presentes no horário.
+    */
+	
 	public List<String> getUcList(){
         List<String> ucs = new ArrayList<>();
         for(Aula aula : horario)
@@ -321,6 +333,14 @@ public class Horario {
                 ucs.add(aula.getUc());
         return ucs;
     }
+
+	/**
+    Retorna um objeto Horario contendo todas as Aulas correspondentes às Unidades Curriculares
+    especificadas na lista de Strings fornecida.
+    @param ucs uma lista de Strings contendo os nomes das Unidades Curriculares desejadas.
+    @return um objeto Horario contendo todas as Aulas correspondentes às Unidades Curriculares
+    especificadas na lista de Strings fornecida.
+    */
 
 	public Horario getHorarioFromUcList(List<String> ucs) {
 		List<Aula> aulas = new ArrayList<>();
@@ -330,7 +350,17 @@ public class Horario {
 		return new Horario(aulas);
 	}
 
-	public static Horario getHorarioFromFile(String path, String user, String password) throws ParserException, IOException {
+
+	/**
+	Retorna o Horario obtido ou lança uma exceção em caso de erro
+	@param path uma string contendo o caminho para o arquivo desejado.
+	@param user uma string contendo o nome de usuário, caso seja necessário para acessar o arquivo.
+	@param password uma string contendo a senha de usuário, caso seja necessário para acessar o arquivo.
+	@return um objeto Horario contendo as Aulas presentes no arquivo especificado.
+	@throws Exception caso ocorra algum erro ao obter o Horario a partir do arquivo.
+	*/
+
+	public static Horario getHorarioFromFile(String path, String user, String password) throws Exception {
 		if(path.startsWith("webcal"))
 			return getHorarioFromFenix(path);
 		else if(path.startsWith("http"))
@@ -339,15 +369,31 @@ public class Horario {
 			return getHorarioFromLocalFile(path);
 	}
 
+	/**
+	 Retorna um objeto Horario a partir de um arquivo local, cujo caminho é especificado pela string "path"
+	 @return um objeto Horario contendo as Aulas presentes no arquivo especificado.
+	 @throws IllegalArgumentException, IOException caso a extensão do arquivo não seja suportada.
+	 */
 	public static Horario getHorarioFromLocalFile(String path) throws IOException{
 		if(path.endsWith(JSON_EXTENSION_NAME))
 			return getHorarioFromJsonLocal(new File(path));
 		else if(path.endsWith(CSV_EXTENSION_NAME))
 			return getHorarioFromCsvLocal(new File(path));
 		else
-
 			throw new IllegalArgumentException("Ficheiro não suportado");
 	}
+
+	/**
+
+    Retorna um objeto Horario a partir de um arquivo remoto, cujo caminho é especificado pela string "path".
+    O método determina o tipo de arquivo a partir da extensão e chama um método específico para obter o Horario
+    @param path uma string contendo o caminho para o arquivo desejado.
+    @param user uma string contendo o nome de usuário, caso seja necessário para acessar o arquivo.
+    @param password uma string contendo a senha de usuário, caso seja necessário para acessar o arquivo.
+    @return um objeto Horario contendo as Aulas presentes no arquivo especificado.
+    @throws IOException caso ocorra um erro de entrada/saída ao obter o Horario a partir do arquivo.
+    @throws IllegalArgumentException caso a extensão do arquivo não seja suportada.
+    */
 
 	public static Horario getHorarioFromRemoteFile(String path, String user, String password) throws IOException {
 		if(user != null)
@@ -362,6 +408,13 @@ public class Horario {
 			throw new IllegalArgumentException("Ficheiro não suportado");
 	}
 
+	/**
+	 O método determina o tipo de arquivo a partir da extensão e chama um método específico para salvar o Horario.
+	 @param path uma string contendo o caminho para o arquivo no qual o Horario deve ser salvo.
+	 @param user uma string contendo o nome de usuário para autenticação no caso de um arquivo remoto. Pode ser nulo.
+	 @param password uma string contendo a senha para autenticação no caso de um arquivo remoto. Pode ser nulo.
+	 @throws IOException caso ocorra algum erro ao salvar o Horario no arquivo ou a extensão do arquivo não seja suportada.
+	 */
 	public void saveHorarioInFile(String path, String user, String password) throws IOException {
 		if(path.startsWith("http"))
 			saveHorarioInRemoteFile(path,user,password);
@@ -369,6 +422,11 @@ public class Horario {
 			saveHorarioInLocalFile(path);
 	}
 
+	/**
+	 O método determina o tipo de arquivo a partir da extensão e chama um método específico para salvar o Horario.
+	 @param path uma string contendo o caminho para o arquivo no qual o Horario deve ser salvo.
+	 @throws IOException caso ocorra algum erro ao salvar o Horario no arquivo local ou a extensão do arquivo não seja suportada.
+	 */
 	public void saveHorarioInLocalFile(String path) throws IOException {
 		if(path.endsWith(JSON_EXTENSION_NAME))
 			saveToJsonLocal(new File(path));
@@ -377,7 +435,12 @@ public class Horario {
 		else
 			throw new IllegalArgumentException();
 	}
-
+	/**
+	 @param path uma string contendo o caminho para o arquivo no qual o Horario deve ser salvo.
+	 @param user uma string contendo o nome de usuário, caso seja necessário para acessar o arquivo remoto.
+	 @param password uma string contendo a senha de usuário, caso seja necessário para acessar o arquivo remoto.
+	 @throws IOException caso ocorra algum erro ao salvar o Horario no arquivo remoto ou a extensão do arquivo não seja suportada.
+	 */
 	public void saveHorarioInRemoteFile(String path, String user, String password) throws IOException {
 		if(user != null)
 			if(user.isBlank() || user.isEmpty()) user = null;
