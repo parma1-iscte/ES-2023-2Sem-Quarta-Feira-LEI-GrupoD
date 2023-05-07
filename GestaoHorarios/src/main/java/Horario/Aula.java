@@ -98,15 +98,15 @@ public class Aula {
 	}
 
 	public String getHoraInicio() {
-		return horaInicio.format(timeFormatter).toString();
+		return horaInicio.format(timeFormatter);
 	}
 
 	public String getHoraFim() {
-		return horaFim.format(timeFormatter).toString();
+		return horaFim.format(timeFormatter);
 	}
 
 	public String getDia() {
-		return dia.format(dateFormatter).toString();
+		return dia.format(dateFormatter);
 	}
 
 	public String getSala() {
@@ -151,10 +151,12 @@ public class Aula {
 	
 	public boolean isSobreposta(Aula aula) {
 		// Verificar se a aula atual começa antes ou no mesmo horário da outra aula
-		boolean comecaAntes = horaInicio.isBefore(LocalTime.parse(aula.getHoraInicio(),timeFormatter)) || horaInicio.equals(aula.getHoraInicio());
+		boolean comecaAntes = horaInicio.isBefore(LocalTime.parse(aula.getHoraInicio(),timeFormatter))
+				|| horaInicio.equals(LocalTime.parse(aula.getHoraInicio(),timeFormatter));
 
 		// Verificar se a aula atual termina depois ou no mesmo horário da outra aula
-		boolean terminaDepois = horaFim.isAfter(LocalTime.parse(aula.getHoraFim(),timeFormatter)) || horaFim.equals(aula.getHoraFim());
+		boolean terminaDepois = horaFim.isAfter(LocalTime.parse(aula.getHoraFim(),timeFormatter))
+				|| horaFim.equals(LocalTime.parse(aula.getHoraFim(),timeFormatter));
 
 		// Verificar se a aula atual começa depois do horário de início e antes do horário de término da outra aula
 		boolean comecaNoMeio = horaInicio.isAfter(LocalTime.parse(aula.getHoraInicio(),timeFormatter)) && horaInicio.isBefore(LocalTime.parse(aula.getHoraFim(),timeFormatter));
@@ -167,7 +169,7 @@ public class Aula {
 		// ou se a aula atual começa depois do horário de início e antes do horário de término da outra aula,
 		// ou se a outra aula começa depois do horário de início e antes do horário de término da aula atual,
 		// então as aulas estão sobrepostas
-		return comecaAntes && terminaDepois || horaInicio.equals(aula.getHoraInicio()) || comecaNoMeio || outraAulaComecaNoMeio;
+		return comecaAntes && terminaDepois || horaInicio.equals(LocalTime.parse(aula.getHoraInicio(),timeFormatter)) || comecaNoMeio || outraAulaComecaNoMeio;
 	}
 
 	//criar hora - LocalTime h1 = LocalTime.of(horas,minutos,segundos)
